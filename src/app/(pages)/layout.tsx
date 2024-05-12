@@ -21,9 +21,14 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
   return (
     <AuthProvider value={{ authStatus, setAuthStatus }}>
       <TooltipProvider>
+        <div className="flex flex-col sm:gap-4 sm:py-4 min-h-screen w-full bg-muted/40">
+          <Navbar />
+          <main className="sm:pl-14">
+            {/*TODO: Implement a loading spinner  */}
+            {isLoading ? <p>Loading...</p> : children}
+          </main>
+        </div>
       </TooltipProvider>
-      {/*TODO: Implement a loading spinner  */}
-      {isLoading ? <p>Loading...</p> : <div className="">{children}</div>}
     </AuthProvider>
   );
 }
