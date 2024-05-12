@@ -9,7 +9,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   const { authStatus } = useAuth();
 
   if (!authStatus) {
-    router.replace("/signin");
+    router.replace("/auth");
     return <></>;
   }
 
