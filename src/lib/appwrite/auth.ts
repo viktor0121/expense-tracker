@@ -40,7 +40,9 @@ export class AuthService {
     try {
       return await this.account.get();
     } catch (error: any) {
-      console.log("Appwrite :: getCurrentUser() :: ", error);
+      // Random guest wil not be able to access account scope
+      if (error.type !== "general_unauthorized_scope")
+        console.log("Appwrite :: getCurrentUser() :: ", error);
       return null;
     }
   }
