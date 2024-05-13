@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { Home, LucideProps, Package2, PanelLeft, Search, Settings } from "lucide-react";
+import { Home, LucideProps, Package2, PanelLeft, Search, Settings, User2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useActivePath from "@/hooks/useActivePath";
+import { useRouter } from "next/navigation";
 
 interface NavLogoProps {
   isLarge?: boolean;
@@ -25,6 +25,8 @@ interface NavItemProps {
 type NavItem = Omit<NavItemProps, "isExpanded">;
 
 export default function Navbar() {
+  const router = useRouter();
+
   const navItems: NavItem[] = [
     {
       title: "Home",
@@ -39,8 +41,14 @@ export default function Navbar() {
     },
   ];
 
+  const handleSignOut = async () => {
+    await auth.signOut();
+    router.replace("/auth");
+  };
+
   return (
     <>
+      {/*SideBar*/}
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
         <nav className="flex flex-col h-full items-center gap-4 px-2 sm:py-5">
           <NavLogo />
@@ -57,7 +65,9 @@ export default function Navbar() {
         </nav>
       </aside>
 
+      {/*Navbar*/}
       <header className="sm:ml-14 sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        {/*Mobile Menu*/}
         <Sheet>
           <SheetTrigger asChild>
             <Button size="icon" variant="outline" className="sm:hidden">
@@ -81,6 +91,39 @@ export default function Navbar() {
             </nav>
           </SheetContent>
         </Sheet>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
+              <User2 className="size-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <button onClick={handleSignOut} className="w-full">
+                Logout
+              </button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {authStatus ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
+                <User2 className="size-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuItem asChild>
+                <button onClick={handleSignOut} className="w-full">
+                  Logout
+                </button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : null}
       </header>
     </>
   );
