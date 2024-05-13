@@ -13,6 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import ButtonWithSpinner from "@/components/button-with-spinner";
 
 interface SignInCardProps {
   goToSignUp: () => void;
@@ -40,6 +41,7 @@ export default function SignInCard({ goToSignUp }: SignInCardProps) {
     },
   });
 
+  const { isSubmitting } = form.formState;
   const submit = form.handleSubmit(async () => {});
 
   return (
@@ -86,9 +88,12 @@ export default function SignInCard({ goToSignUp }: SignInCardProps) {
             </Link>
 
             {/*Submit Button*/}
-            <Button type="submit" className="mt-2 w-full">
-              Sign in to account
-            </Button>
+            <ButtonWithSpinner
+              isLoading={isSubmitting}
+              type="submit"
+              className="mt-2 w-full"
+              btnText="Sign in to account"
+            />
           </form>
         </Form>
 
