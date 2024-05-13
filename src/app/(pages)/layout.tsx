@@ -5,6 +5,7 @@ import authService from "@/lib/appwrite/auth";
 import { AuthProvider } from "@/context/auth/context";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/navbar";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const [authStatus, setAuthStatus] = useState<boolean>(false);
@@ -28,6 +29,8 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
             {isLoading ? <p>Loading...</p> : children}
           </main>
         </div>
+
+        <Toaster />
       </TooltipProvider>
     </AuthProvider>
   );
