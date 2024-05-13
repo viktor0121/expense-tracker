@@ -1,12 +1,12 @@
-import Link from "next/link";
-import { Label } from "@/components/ui/label";
 "use client";
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -17,6 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import ButtonWithSpinner from "@/components/button-with-spinner";
+import auth from "@/lib/appwrite/auth";
+import useAuth from "@/context/auth/useAuth";
 
 interface SignUpCardProps {
   goToSignIn: () => void;
@@ -56,8 +58,28 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
     },
   });
 
+  const router = useRouter();
+  const { toast } = useToast();
+  const { setAuthStatus } = useAuth();
   const { isSubmitting } = form.formState;
-  const submit = form.handleSubmit(async () => {});
+
+  const submit = form.handleSubmit(async ({ firstName, lastName, email, password }) => {
+    try {
+      await auth.createAccount({ name: `${firstName} ${lastName}`, email, password });
+      setAuthStatus(true);
+      toast({
+        title: `Welcome Aboard, ${firstName}!`,
+        description: "Your account has been created successfully",
+      });
+      router.push("/");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: `Uh oh! Something went wrong.`,
+        description: error.message,
+      });
+    }
+  });
 
   return (
     <Card>
@@ -138,6 +160,7 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
             />
           </form>
         </Form>
+
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}
           <Button onClick={goToSignIn} variant="link" className="p-0">
