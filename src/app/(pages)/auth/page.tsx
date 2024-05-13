@@ -49,10 +49,10 @@ export default function AuthPage() {
         <TabsTrigger value={EAuthTabs.Register}>Register</TabsTrigger>
       </TabsList>
       <TabsContent value={EAuthTabs.Login}>
-        <SignInCard />
+        <SignInCard goToSignUp={() => replaceSearchParam("tab", EAuthTabs.Register)} />
       </TabsContent>
       <TabsContent value={EAuthTabs.Register}>
-        <SignUpCard />
+        <SignUpCard goToSignIn={() => replaceSearchParam("tab", EAuthTabs.Login)} />
       </TabsContent>
     </Tabs>
   );

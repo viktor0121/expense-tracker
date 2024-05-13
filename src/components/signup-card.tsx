@@ -17,7 +17,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export default function SignUpCard() {
+interface SignUpCardProps {
+  goToSignIn: () => void;
+}
+
+export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
   const formSchema = z.object({
     firstName: z
       .string()
@@ -131,9 +135,9 @@ export default function SignUpCard() {
         </Form>
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}
-          <Link href="#" className="underline">
+          <Button onClick={goToSignIn} variant="link" className="p-0">
             Sign in
-          </Link>
+          </Button>
         </div>
       </CardContent>
     </Card>
