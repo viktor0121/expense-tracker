@@ -2,10 +2,10 @@
 
 import React from "react";
 import useAuth from "@/context/auth/useAuth";
-import RedirectToAuth from "@/components/redirect-to-auth";
+import Redirect from "@/components/redirect";
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const { authStatus } = useAuth();
-  if (!authStatus) return <RedirectToAuth />;
+  if (!authStatus) return <Redirect pathname="/auth" />;
   return children;
 }
