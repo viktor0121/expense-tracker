@@ -31,10 +31,8 @@ export default function SignInCard({ goToSignUp }: SignInCardProps) {
       .max(100, "Email must be at most 100 characters"),
     password: z
       .string()
-      .min(8, "Password must be at least 8 characters long")
-      .regex(/[a-z]/, "Password must contain a lowercase letter")
-      .regex(/[A-Z]/, "Password must contain an uppercase letter")
-      .regex(/\d/, "Password must contain a number"),
+      .min(1, "Password is required")
+      .max(100, "Password must be at most 100 characters"),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
