@@ -39,11 +39,7 @@ export default function AuthPage() {
    * It also includes the SignInCard and SignUpCard components as the content of the tabs.
    */
   return (
-    <Tabs
-      value={tab}
-      onValueChange={handleTabOnChange}
-      className="max-w-[500px] px-4 sm:px-6 mt-16 mx-auto"
-    >
+    <Tabs value={tab} onValueChange={handleTabOnChange} className="">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value={EAuthTabs.Login}>Login</TabsTrigger>
         <TabsTrigger value={EAuthTabs.Register}>Register</TabsTrigger>

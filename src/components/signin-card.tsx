@@ -103,6 +103,7 @@ export default function SignInCard({ goToSignUp }: SignInCardProps) {
             />
 
             {/*Forgot Password */}
+            <Link className="ml-auto inline-block text-xs underline" href="/auth/reset-password">
               Forgot your password?
             </Link>
 
