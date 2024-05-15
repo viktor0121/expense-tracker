@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,7 +57,6 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
     },
   });
 
-  const router = useRouter();
   const { toast } = useToast();
   const { setAuthStatus } = useAuth();
   const { isSubmitting } = form.formState;
@@ -71,7 +69,6 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
         title: `Welcome Aboard, ${firstName}!`,
         description: "Your account has been created successfully",
       });
-      router.push("/");
     } catch (error: any) {
       toast({
         variant: "destructive",

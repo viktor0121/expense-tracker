@@ -2,10 +2,8 @@ import Link from "next/link";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import useAuth from "@/context/auth/useAuth";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -17,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import ButtonWithSpinner from "@/components/button-with-spinner";
+import useAuth from "@/context/auth/useAuth";
 import auth from "@/lib/appwrite/auth";
 
 interface SignInCardProps {
@@ -45,7 +44,6 @@ export default function SignInCard({ goToSignUp }: SignInCardProps) {
     },
   });
 
-  const router = useRouter();
   const { toast } = useToast();
   const { setAuthStatus } = useAuth();
   const { isSubmitting } = form.formState;
@@ -58,7 +56,6 @@ export default function SignInCard({ goToSignUp }: SignInCardProps) {
         title: `Welcome Back`,
         description: "Login successful! Redirecting you to your dashboard.",
       });
-      router.push("/");
     } catch (error: any) {
       toast({
         variant: "destructive",

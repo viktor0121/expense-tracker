@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useActivePath from "@/hooks/useActivePath";
 import { useRouter } from "next/navigation";
+import auth from "@/lib/appwrite/auth";
+import useAuth from "@/context/auth/useAuth";
 
 interface NavLogoProps {
   isLarge?: boolean;
@@ -25,7 +27,7 @@ interface NavItemProps {
 type NavItem = Omit<NavItemProps, "isExpanded">;
 
 export default function Navbar() {
-  const router = useRouter();
+  const { authStatus, setAuthStatus } = useAuth();
 
   const navItems: NavItem[] = [
     {
@@ -43,7 +45,7 @@ export default function Navbar() {
 
   const handleSignOut = async () => {
     await auth.signOut();
-    router.replace("/auth");
+    setAuthStatus(false);
   };
 
   return (
