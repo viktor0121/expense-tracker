@@ -18,24 +18,25 @@ export default function NavTrail({ navTrails }: NavTrailProps) {
   return (
     <Breadcrumb className="hidden md:flex">
       <BreadcrumbList>
-        {navTrails.map((trail, index) =>
-          index < navTrails.length - 1 ? (
-            <>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href={trail.href}>{trail.title}</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-            </>
-          ) : (
-            <>
+        {navTrails.map((trail, index) => (
+          <React.Fragment key={index}>
+            {index !== navTrails.length - 1 ? (
+              <>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={trail.href}>{trail.title}</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+
+                <BreadcrumbSeparator />
+              </>
+            ) : (
               <BreadcrumbItem>
                 <BreadcrumbPage>{trail.title}</BreadcrumbPage>
               </BreadcrumbItem>
-            </>
-          ),
-        )}
+            )}
+          </React.Fragment>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   );
