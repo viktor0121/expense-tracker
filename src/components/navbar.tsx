@@ -6,11 +6,20 @@ import { Home, LucideProps, Package2, PanelLeft, Search, Settings, User2 } from 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { cn } from "@/lib/utils";
 import useActivePath from "@/hooks/useActivePath";
 import { useRouter } from "next/navigation";
 import auth from "@/lib/appwrite/auth";
 import useAuth from "@/context/auth/useAuth";
+import useNavTrail from "@/context/nav-trail/useNavTrail";
 
 interface NavLogoProps {
   isLarge?: boolean;
@@ -28,6 +37,7 @@ type NavItem = Omit<NavItemProps, "isExpanded">;
 
 export default function Navbar() {
   const { authStatus, setAuthStatus } = useAuth();
+  const { navTrails } = useNavTrail();
 
   const navItems: NavItem[] = [
     {
@@ -118,6 +128,32 @@ export default function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
+
+        {/*TODO: Implement breadcrumb*/}
+        <div className="hidden md:flex">
+          <Breadcrumb>
+            <BreadcrumbList>
+              {navTrails.map((trail, index) =>
+                index < navTrails.length - 1 ? (
+                  <>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink asChild>
+                        <Link href={trail.href}>{trail.title}</Link>
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                  </>
+                ) : (
+                  <>
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>{trail.title}</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                ),
+              )}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
               <DropdownMenuItem asChild>
                 <button onClick={handleSignOut} className="w-full">
                   Logout
