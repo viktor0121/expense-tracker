@@ -6,13 +6,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/context/auth/context";
 import { NavTrailProvider } from "@/context/nav-trail/context";
-import { NavTrail } from "@/lib/types";
+import { INavTrail } from "@/lib/types";
 import auth from "@/lib/appwrite/auth";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const [authStatus, setAuthStatus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [navTrails, setNavTrails] = useState<NavTrail[]>([]);
+  const [navTrails, setNavTrails] = useState<INavTrail[]>([]);
 
   useEffect(() => {
     // Check if user is logged in

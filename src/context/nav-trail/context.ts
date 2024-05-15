@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import { NavTrail } from "@/lib/types";
+import { INavTrail } from "@/lib/types";
 
 interface NavTrailContextValues {
-  navTrails: NavTrail[];
-  setNavTrails: (navTrail: NavTrail[]) => void;
+  navTrails: INavTrail[];
+  setNavTrails: (navTrail: INavTrail[]) => void;
 }
 
 export const NavTrailContext = createContext<NavTrailContextValues>({

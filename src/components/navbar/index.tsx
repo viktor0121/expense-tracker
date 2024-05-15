@@ -1,0 +1,47 @@
+"use client";
+
+import React from "react";
+import { Home, Settings } from "lucide-react";
+import useAuth from "@/context/auth/useAuth";
+import useNavTrail from "@/context/nav-trail/useNavTrail";
+import NavSidebar from "@/components/navbar/nav-sidebar";
+import NavBurgerMenu from "@/components/navbar/nav-burger-menu";
+import NavTrail from "@/components/navbar/nav-trail";
+import NavDropdownMenu from "@/components/navbar/nav-dropdown-menu";
+import auth from "@/lib/appwrite/auth";
+import { INavItem } from "@/lib/types";
+
+export default function Navbar() {
+  const { authStatus, setAuthStatus } = useAuth();
+  const { navTrails } = useNavTrail();
+  const navItems: INavItem[] = [
+    {
+      title: "Home",
+      Icon: Home,
+      url: "/",
+    },
+    {
+      title: "Settings",
+      Icon: Settings,
+      url: "/settings",
+      posBottom: true,
+    },
+  ];
+
+  const handleSignOut = async () => {
+    await auth.signOut();
+    setAuthStatus(false);
+  };
+
+  return (
+    <>
+      <NavSidebar navItems={navItems} />
+
+      <header className="sm:ml-14 sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <NavBurgerMenu navItems={navItems} />
+        <NavTrail navTrails={navTrails} />
+        {authStatus ? <NavDropdownMenu handleSignOut={handleSignOut} /> : null}
+      </header>
+    </>
+  );
+}
