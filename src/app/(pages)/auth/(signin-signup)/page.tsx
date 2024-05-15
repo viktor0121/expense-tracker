@@ -7,11 +7,16 @@ import SignInCard from "@/components/signin-card";
 import SignUpCard from "@/components/signup-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EAuthTabs } from "@/lib/enums";
+import useNavTrail from "@/context/nav-trail/useNavTrail";
+import { trails } from "@/lib/constants";
 
 export default function AuthPage() {
   const searchParams = useSearchParams();
   const replaceSearchParam = useReplaceSearchParam();
+  const { setNavTrails } = useNavTrail();
   const [tab, setTab] = useState<EAuthTabs>();
+
+  useEffect(() => setNavTrails(trails["/auth"]), []);
 
   /**
    * handleTabOnChange function is responsible for handling the tab changes.
