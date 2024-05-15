@@ -1,3 +1,5 @@
+import heroImage from "../assets/signin-side.png";
+
 export const trails = {
   "/": [{ title: "Home", href: "/" }],
   "/auth": [
@@ -14,3 +16,5 @@ export const trails = {
     { title: "Dashboard", href: "/dashboard" },
   ],
 };
+
+export const images = { heroImage };
