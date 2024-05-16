@@ -27,10 +27,10 @@ export default function NavDropdownMenu({ handleSignOut }: NavDropdownMenuProps)
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="#">Settings</Link>
+          <Link href="#">Profile</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="#">Profile</Link>
+          <Link href="#">Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
