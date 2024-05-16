@@ -9,6 +9,7 @@ import NavBurgerMenu from "@/components/navbar/nav-burger-menu";
 import NavTrail from "@/components/navbar/nav-trail";
 import CommandPallet from "@/components/command-pallet";
 import NavDropdownMenu from "@/components/navbar/nav-dropdown-menu";
+import NavThemeToggle from "@/components/navbar/nav-theme-toggle";
 import auth from "@/lib/appwrite/auth";
 import { INavItem } from "@/lib/types";
 
@@ -42,6 +43,7 @@ export default function Navbar() {
         <NavBurgerMenu navItems={navItems} />
         <NavTrail navTrails={navTrails} />
         <CommandPallet />
+        <NavThemeToggle />
         {authStatus ? <NavDropdownMenu handleSignOut={handleSignOut} /> : null}
       </header>
     </>

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/context/theme/context";
 import { AuthProvider } from "@/context/auth/context";
 import { NavTrailProvider } from "@/context/nav-trail/context";
 import { INavTrail } from "@/lib/types";
@@ -25,17 +26,24 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
   return (
     <AuthProvider value={{ authStatus, setAuthStatus }}>
       <NavTrailProvider value={{ navTrails, setNavTrails }}>
-        <TooltipProvider>
-          <div className="flex flex-col sm:gap-4 sm:py-4 min-h-screen w-full bg-muted/40">
-            <Navbar />
-            <main className="sm:pl-14">
-              {/*TODO: Implement a loading spinner  */}
-              {isLoading ? <p>Loading...</p> : children}
-            </main>
-          </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TooltipProvider>
+            <div className="flex flex-col sm:gap-4 sm:py-4 min-h-screen w-full bg-muted/40">
+              <Navbar />
+              <main className="sm:pl-14">
+                {/*TODO: Implement a loading spinner  */}
+                {isLoading ? <p>Loading...</p> : children}
+              </main>
+            </div>
 
-          <Toaster />
-        </TooltipProvider>
+            <Toaster />
+          </TooltipProvider>
+        </ThemeProvider>
       </NavTrailProvider>
     </AuthProvider>
   );
