@@ -7,6 +7,7 @@ import useNavTrail from "@/context/nav-trail/useNavTrail";
 import NavSidebar from "@/components/navbar/nav-sidebar";
 import NavBurgerMenu from "@/components/navbar/nav-burger-menu";
 import NavTrail from "@/components/navbar/nav-trail";
+import CommandPallet from "@/components/command-pallet";
 import NavDropdownMenu from "@/components/navbar/nav-dropdown-menu";
 import auth from "@/lib/appwrite/auth";
 import { INavItem } from "@/lib/types";
@@ -40,6 +41,7 @@ export default function Navbar() {
       <header className="sm:ml-14 sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
         <NavBurgerMenu navItems={navItems} />
         <NavTrail navTrails={navTrails} />
+        <CommandPallet />
         {authStatus ? <NavDropdownMenu handleSignOut={handleSignOut} /> : null}
       </header>
     </>
