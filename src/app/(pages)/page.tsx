@@ -1,20 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { BarChart, DollarSign, Wallet } from "lucide-react";
 import Redirect from "@/components/redirect";
 import useAuth from "@/context/auth/useAuth";
-import useNavTrail from "@/context/nav-trail/useNavTrail";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { EAuthTabs } from "@/lib/enums";
-import { images, trails } from "@/lib/constants";
+import { images } from "@/lib/constants";
 
 export default function Page() {
   const { authStatus } = useAuth();
-  const { setNavTrails } = useNavTrail();
   const features = [
     {
       title: "Manage Expenses",
@@ -45,8 +42,6 @@ export default function Page() {
       </Button>
     </div>
   );
-
-  useEffect(() => setNavTrails(trails["/"]), []);
 
   return authStatus ? (
     <Redirect pathname="/dashboard" />

@@ -7,21 +7,31 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/context/theme/context";
 import { AuthProvider } from "@/context/auth/context";
 import { NavTrailProvider } from "@/context/nav-trail/context";
-import { INavTrail } from "@/lib/types";
+import { trails } from "@/lib/constants";
 import auth from "@/lib/appwrite/auth";
+import { INavTrail } from "@/lib/types";
+import { usePathname } from "next/navigation";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const [authStatus, setAuthStatus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [navTrails, setNavTrails] = useState<INavTrail[]>([]);
+  const pathname = usePathname();
 
+  // Check if the user is logged in on page load
   useEffect(() => {
-    // Check if user is logged in
     auth
       .isLoggedIn()
       .then(setAuthStatus)
       .finally(() => setIsLoading(false));
   }, []);
+
+  // Set the nav trails based on the current pathname
+  useEffect(() => {
+    const trail = trails[pathname];
+    if (!trail) console.log("No trail found: ", pathname);
+    setNavTrails(trail || []);
+  }, [pathname]);
 
   return (
     <AuthProvider value={{ authStatus, setAuthStatus }}>

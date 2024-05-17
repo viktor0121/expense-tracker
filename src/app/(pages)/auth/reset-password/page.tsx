@@ -1,17 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
 import Link from "next/link";
-import useNavTrail from "@/context/nav-trail/useNavTrail";
 import ResetPasswordCard from "@/app/(pages)/auth/components/reset-password-card";
 import { EAuthTabs } from "@/lib/enums";
-import { trails } from "@/lib/constants";
 
 // TODO: Enable Forgot Password functionality
 export default function ForgotPasswordPage() {
-  const { setNavTrails } = useNavTrail();
-  useEffect(() => setNavTrails(trails["/auth/reset-password"]), []);
-
   return (
     <div className="flex items-center justify-center 1h-screen">
       <ResetPasswordCard
