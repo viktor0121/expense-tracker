@@ -1,4 +1,5 @@
 import { Account, Client, ID, Models } from "appwrite";
+import { IUser } from "@/lib/types";
 import env from "../env";
 
 interface CreateAccountParams {
@@ -6,6 +7,35 @@ interface CreateAccountParams {
   email: string;
   password: string;
 }
+
+interface UpdateNameParams {
+  name: string;
+}
+
+interface UpdateEmailParams {
+  email: string;
+  password: string;
+}
+
+interface UpdatePhoneParams {
+  phone: string;
+  password: string;
+}
+
+// Password not required when only param is name
+type UpdateUserParams =
+  | {
+      name?: string;
+      email?: never;
+      phone?: never;
+      password?: never;
+    }
+  | {
+      name?: string;
+      email?: string;
+      phone?: string;
+      password: string;
+    };
 
 interface LoginParams {
   email: string;
@@ -36,7 +66,7 @@ export class AuthService {
     }
   }
 
-  async getCurrentUser(): Promise<Models.User<Models.Preferences> | null> {
+  async getCurrentUser(): Promise<IUser | null> {
     try {
       return await this.account.get();
     } catch (error: any) {
@@ -44,6 +74,33 @@ export class AuthService {
       if (error.type !== "general_unauthorized_scope")
         console.log("Appwrite :: getCurrentUser() :: ", error);
       return null;
+    }
+  }
+
+  async updateName({ name }: UpdateNameParams): Promise<IUser> {
+    try {
+      return await this.account.updateName(name);
+    } catch (error: any) {
+      console.error("Appwrite :: updateName() :: ", error);
+      throw error;
+    }
+  }
+
+  async updateEmail({ email, password }: UpdateEmailParams): Promise<IUser> {
+    try {
+      return await this.account.updateEmail(email, password);
+    } catch (error: any) {
+      console.error("Appwrite :: updateEmail() :: ", error);
+      throw error;
+    }
+  }
+
+  async updatePhone({ phone, password }: UpdatePhoneParams): Promise<IUser> {
+    try {
+      return await this.account.updatePhone(phone, password);
+    } catch (error: any) {
+      console.error("Appwrite :: updatePhone() :: ", error);
+      throw error;
     }
   }
 
