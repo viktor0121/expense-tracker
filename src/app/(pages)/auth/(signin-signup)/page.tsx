@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import useReplaceSearchParam from "@/hooks/useReplaceSearchParam";
-import SignInCard from "@/components/signin-card";
-import SignUpCard from "@/components/signup-card";
+import SignInCard from "@/app/(pages)/auth/components/signin-card";
+import SignUpCard from "@/app/(pages)/auth/components/signup-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EAuthTabs } from "@/lib/enums";
 import useNavTrail from "@/context/nav-trail/useNavTrail";
