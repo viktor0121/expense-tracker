@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,7 +11,6 @@ import { NavTrailProvider } from "@/context/nav-trail/context";
 import { trails } from "@/lib/constants";
 import auth from "@/lib/appwrite/auth";
 import { INavTrail } from "@/lib/types";
-import { usePathname } from "next/navigation";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const [authStatus, setAuthStatus] = useState<boolean>(false);

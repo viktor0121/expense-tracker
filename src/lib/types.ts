@@ -1,6 +1,7 @@
 import React from "react";
 import { LucideProps } from "lucide-react";
 import { Models } from "appwrite";
+import { ETheme } from "@/lib/enums";
 
 export interface INavTrail {
   href: string;
@@ -14,4 +15,8 @@ export interface INavItem {
   posBottom?: boolean;
 }
 
-export type IUser = Models.User<Models.Preferences>;
+export interface IUserPreferences {
+  theme: ETheme;
+}
+
+export type IUser = Models.User<IUserPreferences>;

@@ -1,5 +1,6 @@
 import { Account, Client, ID, Models } from "appwrite";
 import { IUser } from "@/lib/types";
+import { ETheme } from "@/lib/enums";
 import env from "../env";
 
 interface CreateAccountParams {
@@ -20,6 +21,10 @@ interface UpdateEmailParams {
 interface UpdatePhoneParams {
   phone: string;
   password: string;
+}
+
+interface UpdateThemePrefParams {
+  theme: ETheme;
 }
 
 // Password not required when only param is name
@@ -100,6 +105,26 @@ export class AuthService {
       return await this.account.updatePhone(phone, password);
     } catch (error: any) {
       console.error("Appwrite :: updatePhone() :: ", error);
+      throw error;
+    }
+  }
+
+  async updateThemePref({ theme }: UpdateThemePrefParams): Promise<IUser> {
+    try {
+      const preferences = await this.account.getPrefs();
+      return await this.account.updatePrefs({ ...preferences, theme });
+    } catch (error: any) {
+      console.error("Appwrite :: updateThemePref() :: ", error);
+      throw error;
+    }
+  }
+
+  async getThemePref(): Promise<ETheme | null> {
+    try {
+      const preferences = await this.account.getPrefs();
+      return preferences.theme || null;
+    } catch (error: any) {
+      console.error("Appwrite :: getThemePref() :: ", error);
       throw error;
     }
   }
