@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import LoadingProvider from "@/context/loading/provider";
 import AuthProvider from "@/context/auth/provider";
 import NavTrailProvider from "@/context/nav-trail/provider";
 import ThemeProvider from "@/context/theme/provider";
@@ -18,12 +19,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>
-        {children}
+        <LoadingProvider>
           <AuthProvider>
             <NavTrailProvider>
               <ThemeProvider>{children}</ThemeProvider>
             </NavTrailProvider>
           </AuthProvider>
+        </LoadingProvider>
       </body>
     </html>
   );
