@@ -5,9 +5,9 @@ interface AuthContextValues {
   setAuthStatus: (status: boolean) => void;
 }
 
-export const AuthContext = createContext<AuthContextValues>({
+const AuthContext = createContext<AuthContextValues>({
   authStatus: false,
   setAuthStatus: () => {},
 });
 
-export const AuthProvider = AuthContext.Provider;
+export default AuthContext;

@@ -4,6 +4,8 @@ import React from "react";
 import { Home, Settings } from "lucide-react";
 import useAuth from "@/context/auth/useAuth";
 import useNavTrail from "@/context/nav-trail/useNavTrail";
+import useAuthContext from "@/context/auth/useAuthContext";
+import useNavTrailContext from "@/context/nav-trail/useNavTrailContext";
 import NavSidebar from "@/components/navbar/nav-sidebar";
 import NavBurgerMenu from "@/components/navbar/nav-burger-menu";
 import NavTrail from "@/components/navbar/nav-trail";
@@ -23,6 +25,25 @@ export default function Navbar() {
       url: "/",
     },
     {
+  const { authStatus, setAuthStatus } = useAuthContext();
+  const navItems: INavItem[] = (function () {
+    const items: INavItem[] = [];
+
+    if (authStatus) {
+      items.push({
+        title: "Dashboard",
+        Icon: Home,
+        url: "/dashboard",
+      });
+    } else {
+      items.push({
+        title: "SignIn",
+        Icon: LogIn,
+        url: "/auth",
+      });
+    }
+
+    items.push({
       title: "Settings",
       Icon: Settings,
       url: "/settings",

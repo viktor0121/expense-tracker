@@ -11,12 +11,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useAuth from "@/context/auth/useAuth";
+import useAuthContext from "@/context/auth/useAuthContext";
 import { ETheme } from "@/lib/enums";
 import auth from "@/lib/appwrite/auth";
 
 export default function NavThemeToggle() {
-  const { authStatus } = useAuth();
+  const { authStatus } = useAuthContext();
   const { setTheme, theme } = useTheme();
 
   useEffect(() => {

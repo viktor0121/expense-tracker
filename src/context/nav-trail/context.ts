@@ -6,9 +6,9 @@ interface NavTrailContextValues {
   setNavTrails: (navTrail: INavTrail[]) => void;
 }
 
-export const NavTrailContext = createContext<NavTrailContextValues>({
+const NavTrailContext = createContext<NavTrailContextValues>({
   navTrails: [],
   setNavTrails: () => {},
 });
 
-export const NavTrailProvider = NavTrailContext.Provider;
+export default NavTrailContext;

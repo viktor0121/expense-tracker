@@ -4,14 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { BarChart, DollarSign, Wallet } from "lucide-react";
 import Redirect from "@/components/redirect";
-import useAuth from "@/context/auth/useAuth";
+import useAuthContext from "@/context/auth/useAuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { EAuthTabs } from "@/lib/enums";
 import { images } from "@/lib/constants";
 
 export default function Page() {
-  const { authStatus } = useAuth();
+  const { authStatus } = useAuthContext();
   const features = [
     {
       title: "Manage Expenses",

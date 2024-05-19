@@ -16,8 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import ButtonWithSpinner from "@/components/button-with-spinner";
+import useAuthContext from "@/context/auth/useAuthContext";
 import auth from "@/lib/appwrite/auth";
-import useAuth from "@/context/auth/useAuth";
 
 interface SignUpCardProps {
   goToSignIn: () => void;
@@ -59,7 +59,7 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
   });
 
   const { toast } = useToast();
-  const { setAuthStatus } = useAuth();
+  const { setAuthStatus } = useAuthContext();
   const { isSubmitting } = form.formState;
 
   const submit = form.handleSubmit(async ({ firstName, lastName, email, password }) => {
