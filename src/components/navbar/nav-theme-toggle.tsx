@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-import { useEffect } from "react";
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,33 +9,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useAuthContext from "@/context/auth/useAuthContext";
-import { ETheme } from "@/lib/enums";
-import auth from "@/lib/appwrite/auth";
 
 export default function NavThemeToggle() {
-  const { authStatus } = useAuthContext();
-  const { setTheme, theme } = useTheme();
-
-  useEffect(() => {
-    (async function () {
-      try {
-        const themePref = await auth.getThemePref();
-        if (themePref) setTheme(themePref);
-      } catch (error: any) {}
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async function () {
-      try {
-        if (authStatus) {
-          const newTheme = theme === ETheme.Light || theme === ETheme.Dark ? theme : ETheme.System;
-          await auth.updateThemePref({ theme: newTheme });
-        }
-      } catch (error: any) {}
-    })();
-  }, [theme]);
+  const { setTheme } = useTheme();
 
   return (
     <DropdownMenu>
