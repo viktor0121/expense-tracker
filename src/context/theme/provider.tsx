@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
+import { toast } from "@/components/ui/use-toast";
 import useAuthContext from "@/context/auth/useAuthContext";
 import { ETheme } from "@/lib/enums";
 import auth from "@/lib/appwrite/auth";
@@ -26,6 +27,7 @@ function ProviderChildWrapper({ children }: { children: React.ReactNode }) {
   const { authStatus } = useAuthContext();
   const { theme, setTheme } = useTheme();
 
+  // Get theme preference from the user account if user is authenticated
   useEffect(() => {
     (async function () {
       try {
@@ -43,7 +45,15 @@ function ProviderChildWrapper({ children }: { children: React.ReactNode }) {
           const newTheme = theme === ETheme.Light || theme === ETheme.Dark ? theme : ETheme.System;
           await auth.updateThemePref({ theme: newTheme });
         }
-      } catch (error: any) {}
+      } catch (error: any) {
+        if (authStatus) {
+          toast({
+            title: "Error",
+            description: error.message,
+            variant: "destructive",
+          });
+        }
+      }
     })();
   }, [theme]);
 
