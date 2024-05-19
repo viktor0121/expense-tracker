@@ -1,9 +1,7 @@
 "use client";
 
 import React from "react";
-import { Home, Settings } from "lucide-react";
-import useAuth from "@/context/auth/useAuth";
-import useNavTrail from "@/context/nav-trail/useNavTrail";
+import { Home, LogIn, Settings } from "lucide-react";
 import useAuthContext from "@/context/auth/useAuthContext";
 import useNavTrailContext from "@/context/nav-trail/useNavTrailContext";
 import NavSidebar from "@/components/navbar/nav-sidebar";
@@ -16,40 +14,44 @@ import auth from "@/lib/appwrite/auth";
 import { INavItem } from "@/lib/types";
 
 export default function Navbar() {
-  const { authStatus, setAuthStatus } = useAuth();
-  const { navTrails } = useNavTrail();
-  const navItems: INavItem[] = [
-    {
-      title: "Home",
-      Icon: Home,
-      url: "/",
-    },
-    {
   const { authStatus, setAuthStatus } = useAuthContext();
+  const { navTrails } = useNavTrailContext();
   const navItems: INavItem[] = (function () {
-    const items: INavItem[] = [];
-
-    if (authStatus) {
-      items.push({
+    const items: { [key: string]: INavItem } = {
+      home: {
+        title: "Home",
+        Icon: Home,
+        url: "/",
+      },
+      dashboard: {
         title: "Dashboard",
         Icon: Home,
         url: "/dashboard",
-      });
-    } else {
-      items.push({
+      },
+      signin: {
         title: "SignIn",
         Icon: LogIn,
         url: "/auth",
-      });
+      },
+      settings: {
+        title: "Settings",
+        Icon: Settings,
+        url: "/settings",
+        posBottom: true,
+      },
+    };
+
+    const result: INavItem[] = [];
+    if (authStatus) {
+      result.push(items.dashboard);
+      result.push(items.settings);
+    } else {
+      result.push(items.home);
+      result.push(items.signin);
     }
 
-    items.push({
-      title: "Settings",
-      Icon: Settings,
-      url: "/settings",
-      posBottom: true,
-    },
-  ];
+    return result;
+  })();
 
   const handleSignOut = async () => {
     await auth.signOut();
@@ -60,7 +62,7 @@ export default function Navbar() {
     <>
       <NavSidebar navItems={navItems} />
 
-      <header className="sm:ml-14 sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      <header className="sm:ml-14 sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-14 sm:px-6">
         <NavBurgerMenu navItems={navItems} />
         <NavTrail navTrails={navTrails} />
         <CommandPallet />
