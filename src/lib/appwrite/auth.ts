@@ -102,6 +102,7 @@ export class AuthService {
 
   async updatePhone({ phone, password }: UpdatePhoneParams): Promise<IUser> {
     try {
+      if (phone.charAt(0) !== "+") phone = `+${phone}`;
       return await this.account.updatePhone(phone, password);
     } catch (error: any) {
       console.error("Appwrite :: updatePhone() :: ", error);

@@ -15,6 +15,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -38,8 +39,12 @@ const formSchema = z.object({
     .optional() // Makes the field optional
     .transform((val) => val?.trim()) // Trim whitespace if a value is provided
     .refine(
-      (val) => val?.length === 10 || val?.length === 0,
+      (val) => (val?.length && val.length > 10) || val?.length === 0,
       "Phone number must be 10 characters long.",
+    )
+    .refine(
+      (val) => (val?.length && val.length <= 15) || val?.length === 0,
+      "Phone number must not be longer than 15 characters.",
     ),
 });
 
@@ -94,10 +99,9 @@ export default function ProfileForm() {
   const formValuesChanged = user?.name !== name || user?.email !== email || user?.phone !== phone;
 
   const onSubmit = form.handleSubmit(async ({ name, email, phone }) => {
-    console.log(password);
     try {
-      if (user?.name !== name) setUser(await auth.updateName({ name }));
-      if (user?.email !== email) setUser(await auth.updateEmail({ email, password }));
+      if (user?.name !== name && name) setUser(await auth.updateName({ name }));
+      if (user?.email !== email && email) setUser(await auth.updateEmail({ email, password }));
       if (user?.phone !== phone && phone) setUser(await auth.updatePhone({ phone, password }));
 
       toast({
@@ -184,12 +188,15 @@ export default function ProfileForm() {
               <FormLabel>Phone No</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Input className="pr-8" type="number" placeholder="Your Phone No" {...field} />
+                  <Input className="pr-8" type="tel" placeholder="Your Phone No" {...field} />
                   {phone !== user?.phone ? (
                     <InputResetButton reset={() => form.setValue("phone", user?.phone || "")} />
                   ) : null}
                 </div>
               </FormControl>
+              <FormDescription>
+                Please enter your phone number starting with your country code.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
