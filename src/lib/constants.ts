@@ -20,6 +20,16 @@ export const trails: Trails = {
     { title: "Home", href: "/" },
     { title: "Dashboard", href: "/dashboard" },
   ],
+  "/settings/profile": [
+    { title: "Dashboard", href: "/" },
+    { title: "Settings", href: "/settings" },
+    { title: "Profile", href: "/settings/profile" },
+  ],
+  "/settings/appearance": [
+    { title: "Dashboard", href: "/" },
+    { title: "Settings", href: "/settings" },
+    { title: "Appearance", href: "/settings/appearance" },
+  ],
 };
 
 export const images = { heroImage };
