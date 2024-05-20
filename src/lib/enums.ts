@@ -1,3 +1,9 @@
+export enum EDashboardTabs {
+  Overview = "overview",
+  Expenses = "expenses",
+  Savings = "savings",
+}
+
 export enum EAuthTabs {
   Register = "register",
   Login = "login",
