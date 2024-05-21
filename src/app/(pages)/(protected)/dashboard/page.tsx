@@ -1,10 +1,11 @@
 "use client";
 
+import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTable, SortHeader } from "@/components/ui/data-table";
+import useTab from "@/hooks/useTab";
+import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-table-card";
-import useTab from "@/hooks/useTab";
 import { EDashboardTabs } from "@/lib/enums";
 
 type Expense = {};
@@ -75,25 +76,26 @@ export default function DashboardPage() {
         <TabsTrigger value={EDashboardTabs.Expenses}>Expenses</TabsTrigger>
         <TabsTrigger value={EDashboardTabs.Savings}>Savings</TabsTrigger>
       </TabsList>
+
       <TabsContent
         value={EDashboardTabs.Overview}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
-      ></TabsContent>
+      >
+        Overview
+      </TabsContent>
+
       <TabsContent
         value={EDashboardTabs.Expenses}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        <DataTableCard title="Expenses">
-          <DataTable columns={expenseColumns} data={expenses} />
-        </DataTableCard>
+        <DataTableCard title="expense" columns={expenseColumns} data={expenses} />
       </TabsContent>
+
       <TabsContent
         value={EDashboardTabs.Savings}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        <DataTableCard title="Savings">
-          <DataTable columns={savingColumns} data={savings} />
-        </DataTableCard>
+        <DataTableCard title="saving" columns={savingColumns} data={savings} />
       </TabsContent>
     </Tabs>
   );
