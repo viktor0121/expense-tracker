@@ -4,6 +4,11 @@ export enum EDashboardTabs {
   Savings = "savings",
 }
 
+export enum EAddSheetTabs {
+  Expense = "expense",
+  Saving = "saving",
+}
+
 export enum EAuthTabs {
   Register = "register",
   Login = "login",
