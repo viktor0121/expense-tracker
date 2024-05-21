@@ -23,6 +23,7 @@ import auth from "@/lib/appwrite/auth";
 
 interface SkeletonProps {
   containerClasses?: string;
+  containerStyles?: React.CSSProperties;
 }
 
 interface ThemeFormItemProps {
@@ -32,15 +33,15 @@ interface ThemeFormItemProps {
 }
 
 interface ThemeItemDimensions {
-  height: `${number}px`;
-  width: `${number}px`;
-  tilt: `${number}deg`;
+  height: number;
+  width: number;
+  tilt: number;
 }
 
 const themeItemDimensions: ThemeItemDimensions = {
-  height: "148px",
-  width: "202.66px",
-  tilt: "30deg",
+  height: 148,
+  width: 202.66,
+  tilt: 30,
 };
 
 const formSchema = z.object({
@@ -49,9 +50,12 @@ const formSchema = z.object({
   }),
 });
 
-function LightSkeleton({ containerClasses }: SkeletonProps) {
+function LightSkeleton({ containerClasses, containerStyles }: SkeletonProps) {
   return (
-    <div className={cn("space-y-2 rounded-sm bg-slate-50 p-2", containerClasses)}>
+    <div
+      style={containerStyles}
+      className={cn("space-y-2 rounded-sm bg-slate-50 p-2", containerClasses)}
+    >
       <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
         <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />
         <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
@@ -68,9 +72,12 @@ function LightSkeleton({ containerClasses }: SkeletonProps) {
   );
 }
 
-function DarkSkeleton({ containerClasses }: SkeletonProps) {
+function DarkSkeleton({ containerClasses, containerStyles }: SkeletonProps) {
   return (
-    <div className={cn("space-y-2 rounded-sm bg-slate-950 p-2", containerClasses)}>
+    <div
+      style={containerStyles}
+      className={cn("space-y-2 rounded-sm bg-slate-950 p-2", containerClasses)}
+    >
       <div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
         <div className="h-2 w-[80px] rounded-lg bg-slate-400" />
         <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
@@ -95,7 +102,10 @@ function ThemeFormItem({ children, value, title }: ThemeFormItemProps) {
           <RadioGroupItem value={value} className="sr-only" />
         </FormControl>
         <div
-          style={{ height: themeItemDimensions.height, width: themeItemDimensions.width }}
+          style={{
+            height: `${themeItemDimensions.height}px`,
+            width: `${themeItemDimensions.width}px`,
+          }}
           className="items-center rounded-md border-2 border-muted p-1 hover:border-accent bg-popover hover:bg-accent hover:text-accent-foreground"
         >
           {children}
@@ -118,6 +128,9 @@ export default function AppearanceForm() {
   const { isValid, isSubmitting } = form.formState;
   const formValuesChanged = form.watch("theme") !== theme;
 
+  const getTailwindTransformRotateValue = (tilt: number): string => {
+    return `translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(${tilt}deg) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))`;
+  };
   const onSubmit = form.handleSubmit(async ({ theme }) => {
     setTheme(theme);
     toast({
@@ -164,14 +177,22 @@ export default function AppearanceForm() {
                 <ThemeFormItem value={ETheme.System} title="System">
                   <div className="relative overflow-clip size-full rounded-[inherit]">
                     <div className="absolute -inset-full flex rotate-[30deg] ">
-                      <div className="relative w-1/2 overflow-clip ">
+                      <div className="relative w-1/2 - overflow-clip ">
                         <LightSkeleton
-                          containerClasses={`w-[${themeItemDimensions.width}] -rotate-[${themeItemDimensions.tilt}] translate-x-1/2 right-0 absolute top-1/2 -translate-y-1/2`}
+                          containerStyles={{
+                            width: `${themeItemDimensions.width}px`,
+                            transform: getTailwindTransformRotateValue(-themeItemDimensions.tilt),
+                          }}
+                          containerClasses="translate-x-1/2 right-0 absolute top-1/2 -translate-y-1/2"
                         />
                       </div>
                       <div className="relative w-1/2 overflow-clip">
                         <DarkSkeleton
-                          containerClasses={`w-[${themeItemDimensions.width}] -rotate-[${themeItemDimensions.tilt}] -translate-x-1/2 left-0 absolute top-1/2 -translate-y-1/2`}
+                          containerStyles={{
+                            width: `${themeItemDimensions.width}px`,
+                            transform: getTailwindTransformRotateValue(-themeItemDimensions.tilt),
+                          }}
+                          containerClasses="-translate-x-1/2 left-0 absolute top-1/2 -translate-y-1/2"
                         />
                       </div>
                     </div>
