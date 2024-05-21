@@ -44,6 +44,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   filter?: Filter;
   initialState?: InitialTableState;
+  addVisibilityToggle?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -51,6 +52,7 @@ export function DataTable<TData, TValue>({
   data,
   initialState,
   filter,
+  addVisibilityToggle,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -74,42 +76,46 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex flex-col min-[300px]:flex-row py-4 gap-2">
-        {/*Table Search*/}
-        {filter && filter.columnId && filter.placeholder && filterColumn && (
-          <SearchBar
-            placeholder={filter.placeholder}
-            value={(filterColumn.getFilterValue() as string) ?? ""}
-            setValue={filterColumn.setFilterValue}
-          />
-        )}
+      {filter || addVisibilityToggle ? (
+        <div className="flex flex-col min-[300px]:flex-row py-4 gap-2">
+          {/*Table Search*/}
+          {filter && filter.columnId && filter.placeholder && filterColumn && (
+            <SearchBar
+              placeholder={filter.placeholder}
+              value={(filterColumn.getFilterValue() as string) ?? ""}
+              setValue={filterColumn.setFilterValue}
+            />
+          )}
 
-        {/*Column Visibility*/}
-        <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">Columns</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) => column.toggleVisibility(value)}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/*Column Visibility*/}
+          {addVisibilityToggle ? (
+            <div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">Columns</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {table
+                    .getAllColumns()
+                    .filter((column) => column.getCanHide())
+                    .map((column) => {
+                      return (
+                        <DropdownMenuCheckboxItem
+                          key={column.id}
+                          className="capitalize"
+                          checked={column.getIsVisible()}
+                          onCheckedChange={(value) => column.toggleVisibility(value)}
+                        >
+                          {column.id}
+                        </DropdownMenuCheckboxItem>
+                      );
+                    })}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          ) : null}
         </div>
-      </div>
+      ) : null}
 
       <Table>
         <TableHeader>
