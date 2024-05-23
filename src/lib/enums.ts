@@ -19,3 +19,16 @@ export enum ETheme {
   Dark = "dark",
   System = "system",
 }
+
+export enum EExpenseType {
+  Need = "need",
+  Want = "want",
+}
+
+export enum EExpenseCategory {
+  Food = "food",
+  Rent = "rent",
+  Shopping = "shopping",
+  Travel = "travel",
+  Other = "other",
+}
