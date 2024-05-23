@@ -3,11 +3,21 @@ import env from "@/lib/env";
 
 interface CreateExpenseParams {}
 
-interface GetExpensesParams {}
+interface GetExpensesParams {
+  queries?: string[];
+}
 
 interface CreateIncomeParams {}
 
-interface GetIncomesParams {}
+interface GetIncomesParams {
+  queries?: string[];
+}
+
+interface CreateExpenseCategoryParams {}
+
+interface GetExpenseCategoriesParams {
+  queries?: string[];
+}
 
 export class DatabaseServices {
   client = new Client();
@@ -18,12 +28,52 @@ export class DatabaseServices {
     this.databases = new Databases(this.client);
   }
 
-  async createExpense({}: CreateExpenseParams) {}
+  async createExpense({}: CreateExpenseParams) {
+    try {
+    } catch (error: any) {
+      console.error("Appwrite :: createExpense() :: ", error);
+      throw error;
+    }
+  }
 
-  async getExpenses({}: GetExpensesParams) {}
+  async getExpenses({ queries }: GetExpensesParams) {
+    try {
+    } catch (error: any) {
+      console.error("Appwrite :: getExpenses() :: ", error);
+      throw error;
+    }
+  }
 
-  async createIncome({}: CreateIncomeParams) {}
+  async createIncome({}: CreateIncomeParams) {
+    try {
+    } catch (error: any) {
+      console.error("Appwrite :: createIncome() :: ", error);
+      throw error;
+    }
+  }
 
-  async getIncomes({}: GetIncomesParams) {}
+  async getIncomes({ queries }: GetIncomesParams) {
+    try {
+    } catch (error: any) {
+      console.error("Appwrite :: getIncomes() :: ", error);
+      throw error;
+    }
+  }
+
+  async createExpenseCategory({}: CreateExpenseCategoryParams) {
+    try {
+    } catch (error: any) {
+      console.error("Appwrite :: createExpenseCategory() :: ", error);
+      throw error;
+    }
+  }
+
+  async getExpenseCategories({ queries }: GetExpenseCategoriesParams) {
+    try {
+    } catch (error: any) {
+      console.error("Appwrite :: getExpenseCategories() :: ", error);
+      throw error;
+    }
+  }
 }
 export default new DatabaseServices();
