@@ -13,7 +13,7 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
     <TooltipProvider>
       <div className="flex flex-col min-h-screen w-full bg-muted/40">
         <Navbar />
-        <main className="sm:pl-14">
+        <main>
           {/*TODO: Implement a loading spinner  */}
           {isLoading ? <p>Loading...</p> : children}
         </main>

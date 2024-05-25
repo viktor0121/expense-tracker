@@ -10,6 +10,7 @@ import { INavItem } from "@/lib/types";
 
 interface MobileNavProps {
   navItems: INavItem[];
+  className?: string;
 }
 
 const NavItem = ({ url, title, Icon, posBottom }: INavItem) => {
@@ -29,30 +30,32 @@ const NavItem = ({ url, title, Icon, posBottom }: INavItem) => {
   );
 };
 
-export default function NavBurgerMenu({ navItems }: MobileNavProps) {
+export default function NavBurgerMenu({ navItems, className }: MobileNavProps) {
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button size="icon" variant="outline" className="sm:hidden">
-          <PanelLeft className="h-5 w-5" />
-          <span className="sr-only">Toggle Menu</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="sm:max-w-xs">
-        <nav className="h-full flex flex-col gap-6 text-lg font-medium">
-          <NavLogo isLarge={true} />
+    <div className={className}>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button size="icon" variant="outline">
+            <PanelLeft className="h-5 w-5" />
+            <span className="sr-only">Toggle Menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="sm:max-w-xs">
+          <nav className="h-full flex flex-col gap-6 text-lg font-medium">
+            <NavLogo isLarge={true} />
 
-          {navItems.map((navItem) => (
-            <NavItem
-              key={navItem.url}
-              url={navItem.url}
-              title={navItem.title}
-              Icon={navItem.Icon}
-              posBottom={navItem.posBottom}
-            />
-          ))}
-        </nav>
-      </SheetContent>
-    </Sheet>
+            {navItems.map((navItem) => (
+              <NavItem
+                key={navItem.url}
+                url={navItem.url}
+                title={navItem.title}
+                Icon={navItem.Icon}
+                posBottom={navItem.posBottom}
+              />
+            ))}
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 }

@@ -30,7 +30,7 @@ export default function NavDropdownMenu({ handleSignOut }: NavDropdownMenuProps)
           <Link href="#">Profile</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="#">Settings</Link>
+          <Link href="/settings">Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
