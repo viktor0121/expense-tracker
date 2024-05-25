@@ -1,10 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { z } from "zod";
-import { EExpenseCategory, EExpenseType, ETheme } from "@/lib/enums";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import FormDateField from "@/components/form-date-field";
+import ButtonWithSpinner from "@/components/button-with-spinner";
 import {
   Form,
   FormControl,
@@ -13,14 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import ButtonWithSpinner from "@/components/button-with-spinner";
 import {
   Select,
   SelectContent,
@@ -28,8 +26,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Link from "next/link";
-import FormDateField from "@/components/form-date-field";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { EExpenseType } from "@/lib/enums";
+import { cn } from "@/lib/utils";
+import database from "@/lib/appwrite/database";
 
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
@@ -49,9 +56,7 @@ const formSchema = z.object({
   type: z.nativeEnum(EExpenseType, {
     required_error: "Please select an expense type.",
   }),
-  category: z.nativeEnum(EExpenseCategory, {
-    required_error: "Please select a category.",
-  }),
+  category: z.string().min(1, "Category is required"),
 });
 
 export default function ExpenseForm() {
@@ -63,13 +68,14 @@ export default function ExpenseForm() {
       amount: "",
       // @ts-ignore
       type: "",
-      // @ts-ignore
       category: "",
     },
   });
 
   const { toast } = useToast();
   const { isSubmitting, isValid } = form.formState;
+
+  const [categories, setCategories] = useState([]);
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     console.log({ date, amount, title, type, category });
@@ -88,6 +94,20 @@ export default function ExpenseForm() {
       });
     }
   });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await database.getExpenseCategories({ queries: [] });
+      } catch (error: any) {
+        toast({
+          title: "Unable to fetch categories.",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    })();
+  }, []);
 
   return (
     <Form {...form}>
@@ -127,22 +147,53 @@ export default function ExpenseForm() {
           control={form.control}
           name="category"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col">
               <FormLabel>Category</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="capitalize">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {Object.values(EExpenseCategory).map((category, index) => (
-                    <SelectItem key={index} value={category} className="capitalize">
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "justify-between capitalize",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value
+                        ? categories.find((category) => category === field.value)
+                        : "Select Category"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="p-0">
+                  <Command>
+                    <CommandInput placeholder="Search Category" />
+                    <CommandEmpty>No category found.</CommandEmpty>
+                    <CommandList>
+                      <CommandGroup>
+                        {categories.map((category) => (
+                          <CommandItem
+                            value={category}
+                            key={category}
+                            onSelect={() => form.setValue("category", category)}
+                            className="capitalize"
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                category === field.value ? "opacity-100" : "opacity-0",
+                              )}
+                            />
+                            {category}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
