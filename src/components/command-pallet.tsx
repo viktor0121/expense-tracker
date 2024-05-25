@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
-import { useEffect } from "react";
-import { Calculator, Calendar, CreditCard, Settings, Smile, Terminal, User } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { LucideIcon, CreditCard, DollarSign, SunMoon, Target, Terminal, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -13,12 +13,53 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 
+interface Command {
+  title: string;
+  Icon: LucideIcon;
+  action: () => void;
+}
+
 export default function CommandPallet() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
   const toggle = () => setOpen((open) => !open);
+  const commandAction = (func: () => void) => {
+    func();
+    setOpen(false);
+  };
+
+  const dashboardCommands: Command[] = [
+    {
+      title: "Overview",
+      Icon: Target,
+      action: () => commandAction(() => router.push("/dashboard?tab=overview")),
+    },
+    {
+      title: "Expenses",
+      Icon: CreditCard,
+      action: () => commandAction(() => router.push("/dashboard?tab=expenses")),
+    },
+    {
+      title: "Savings",
+      Icon: DollarSign,
+      action: () => commandAction(() => router.push("/dashboard?tab=savings")),
+    },
+  ];
+  const settingsCommands: Command[] = [
+    {
+      title: "Profile",
+      Icon: User,
+      action: () => commandAction(() => router.push("/settings/profile")),
+    },
+    {
+      title: "Appearance",
+      Icon: SunMoon,
+      action: () => commandAction(() => router.push("/settings/appearance")),
+    },
+  ];
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -27,7 +68,6 @@ export default function CommandPallet() {
         toggle();
       }
     };
-
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
@@ -52,39 +92,24 @@ export default function CommandPallet() {
         <CommandList className="">
           <CommandEmpty>No results found.</CommandEmpty>
 
-          <CommandGroup heading="Suggestions">
-            <CommandItem>
-              <Calendar className="mr-2 h-4 w-4" />
-              <span>Calendar</span>
-            </CommandItem>
-            <CommandItem>
-              <Smile className="mr-2 h-4 w-4" />
-              <span>Search Emoji</span>
-            </CommandItem>
-            <CommandItem>
-              <Calculator className="mr-2 h-4 w-4" />
-              <span>Calculator</span>
-            </CommandItem>
+          <CommandGroup heading="Dashboard">
+            {dashboardCommands.map((command, index) => (
+              <CommandItem key={index} onSelect={command.action}>
+                <command.Icon className="mr-2 h-4 w-4" />
+                <span>{command.title}</span>
+              </CommandItem>
+            ))}
           </CommandGroup>
 
           <CommandSeparator />
 
           <CommandGroup heading="Settings">
-            <CommandItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-              <CommandShortcut>⌘P</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <CreditCard className="mr-2 h-4 w-4" />
-              <span>Billing</span>
-              <CommandShortcut>⌘B</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-              <CommandShortcut>⌘S</CommandShortcut>
-            </CommandItem>
+            {settingsCommands.map((command, index) => (
+              <CommandItem key={index} onSelect={command.action}>
+                <command.Icon className="mr-2 h-4 w-4" />
+                <span>{command.title}</span>
+              </CommandItem>
+            ))}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
