@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -75,7 +75,10 @@ export default function ExpenseForm() {
   const { toast } = useToast();
   const { isSubmitting, isValid } = form.formState;
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  // TODO: Add type
   const [categories, setCategories] = useState([]);
+  const [comboBoxWidth, setComboBoxWidth] = useState<Number>(-1);
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     console.log({ date, amount, title, type, category });
@@ -96,6 +99,14 @@ export default function ExpenseForm() {
   });
 
   useEffect(() => {
+    // Set ComboBox Width
+    const updateComboBoxWidth = () => {
+      if (buttonRef.current) setComboBoxWidth(buttonRef.current.offsetWidth);
+    };
+    updateComboBoxWidth();
+    window.addEventListener("resize", updateComboBoxWidth);
+
+    // Fetch Categories
     (async () => {
       try {
         await database.getExpenseCategories({ queries: [] });
@@ -107,6 +118,9 @@ export default function ExpenseForm() {
         });
       }
     })();
+
+    // Cleanup function to remove event listener on unmount
+    return () => window.removeEventListener("resize", updateComboBoxWidth);
   }, []);
 
   return (
@@ -153,6 +167,7 @@ export default function ExpenseForm() {
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
+                      ref={buttonRef}
                       variant="outline"
                       role="combobox"
                       className={cn(
@@ -167,7 +182,7 @@ export default function ExpenseForm() {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="p-0">
+                <PopoverContent className="p-0" style={{ width: `${comboBoxWidth}px` }}>
                   <Command>
                     <CommandInput placeholder="Search Category" />
                     <CommandEmpty>No category found.</CommandEmpty>
