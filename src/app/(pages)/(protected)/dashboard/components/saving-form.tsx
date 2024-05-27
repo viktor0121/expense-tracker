@@ -29,7 +29,7 @@ const formSchema = z.object({
     .string()
     .trim()
     .min(1, "Title is required")
-    .max(100, "First Name must be at most 100 characters"),
+    .max(250, "Title must be at most 100 characters"),
   amount: z
     .string()
     .trim()
@@ -37,7 +37,7 @@ const formSchema = z.object({
     .refine((str) => /^[0-9.-]+$/.test(str), "Amount must contain only numbers")
     .refine((str) => parseFloat(str) >= 0, "Amount must be a positive number")
     .refine((str) => parseFloat(str) >= 0.01, "Amount must be at least 0.01")
-    .refine((str) => parseFloat(str) < 10_000_000, "Amount must be at most 10,00,00,000"),
+    .refine((str) => parseFloat(str) < 10_00_00_000, "Amount must be at most 10,00,00,000"),
 });
 
 export default function SavingForm() {
