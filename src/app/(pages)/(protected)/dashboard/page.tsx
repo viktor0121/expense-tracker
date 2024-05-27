@@ -1,12 +1,16 @@
 "use client";
 
 import React from "react";
-import { ColumnDef } from "@tanstack/react-table";
 import useTab from "@/hooks/useTab";
+import { formatDate } from "date-fns";
+import { ColumnDef } from "@tanstack/react-table";
+import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-table-card";
 import { EDashboardTabs } from "@/lib/enums";
+import { IIncome } from "@/lib/types";
+import database from "@/lib/appwrite/database";
 
 type Expense = {};
 const expenses: Expense[] = [];
@@ -37,13 +41,11 @@ const expenseColumns: ColumnDef<Expense>[] = [
   },
 ];
 
-type Saving = {};
-const savings: Saving[] = [];
-const savingColumns: ColumnDef<Saving>[] = [
+const savingColumns: ColumnDef<IIncome>[] = [
   {
-    accessorKey: "date",
+    accessorKey: "amount",
     header: ({ column }) => {
-      return <SortHeader column={column} title="Date" />;
+      return <SortHeader column={column} title="Amount" />;
     },
   },
   {
@@ -51,14 +53,20 @@ const savingColumns: ColumnDef<Saving>[] = [
     header: "Title",
   },
   {
-    accessorKey: "amount",
+    accessorKey: "date",
     header: ({ column }) => {
-      return <SortHeader column={column} title="Amount" />;
+      return <SortHeader column={column} title="Date" className="ml-auto" />;
+    },
+    cell: ({ row, column }) => {
+      const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
+      return <div className="text-right">{formatted}</div>;
     },
   },
 ];
 
 export default function DashboardPage() {
+  const { data: incomes } = useAppwriteFetch(() => database.getIncomes());
+
   const { tab, onTabChange } = useTab<EDashboardTabs>({
     defaultTab: EDashboardTabs.Overview,
     tabs: [EDashboardTabs.Overview, EDashboardTabs.Expenses, EDashboardTabs.Savings],
@@ -95,7 +103,7 @@ export default function DashboardPage() {
         value={EDashboardTabs.Savings}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        <DataTableCard title="saving" columns={savingColumns} data={savings} />
+        <DataTableCard title="saving" columns={savingColumns} data={incomes} />
       </TabsContent>
     </Tabs>
   );

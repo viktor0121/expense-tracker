@@ -1,6 +1,7 @@
 import { Client, Databases, ID, Permission, Query, Role } from "appwrite";
 import env from "@/lib/env";
 import auth from "@/lib/appwrite/auth";
+import { IIncome } from "@/lib/types";
 
 interface CreateExpenseParams {}
 
@@ -12,10 +13,6 @@ interface CreateIncomeParams {
   title: string;
   amount: number;
   date: Date;
-}
-
-interface GetIncomesParams {
-  queries?: string[];
 }
 
 interface CreateExpenseCategoryParams {}
@@ -75,8 +72,14 @@ export class DatabaseServices {
     }
   }
 
-  async getIncomes({ queries }: GetIncomesParams) {
+  async getIncomes(queries?: string[]): Promise<IIncome[]> {
     try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awIncomeCollectionId,
+        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
+      );
+      return data.documents as IIncome[];
     } catch (error: any) {
       console.error("Appwrite :: getIncomes() :: ", error);
       throw error;

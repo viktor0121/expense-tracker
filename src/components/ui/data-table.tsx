@@ -168,7 +168,7 @@ export function SortHeader({ column, title, className }: SortButtonProps) {
     <div className={cn("flex", className)}>
       <Button
         variant="ghost"
-        className="p-0.5"
+        className={cn("p-0.5", className)}
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         {title}

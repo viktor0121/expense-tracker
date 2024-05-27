@@ -20,3 +20,9 @@ export interface IUserPreferences {
 }
 
 export type IUser = Models.User<IUserPreferences>;
+
+export interface IIncome extends Models.Document {
+ title: string;
+ amount: number;
+ date: Date
+}
