@@ -2,9 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LucideIcon, CreditCard, DollarSign, SunMoon, Target, Terminal, User } from "lucide-react";
+import { CreditCard, DollarSign, LucideIcon, SunMoon, Target, Terminal, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   CommandDialog,
   CommandEmpty,
@@ -14,6 +13,8 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { checkIsMobile, getModifierKey } from "@/lib/utils";
+import { EModifierKey } from "@/lib/enums";
 
 interface Command {
   title: string;
@@ -22,7 +23,9 @@ interface Command {
 }
 
 export default function CommandPallet() {
-  const [open, setOpen] = useState(false);
+  const [modifierKey, setModifierKey] = useState<EModifierKey>(EModifierKey.Other);
+  const [isMobile, setIsMobile] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
   const router = useRouter();
 
   const toggle = () => setOpen((open) => !open);
@@ -62,6 +65,9 @@ export default function CommandPallet() {
   ];
 
   useEffect(() => {
+    setIsMobile(checkIsMobile());
+    setModifierKey(getModifierKey());
+
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -74,17 +80,19 @@ export default function CommandPallet() {
 
   return (
     <>
-      <Button onClick={toggle} variant="outline" className="ml-auto ">
+      <Button onClick={toggle} variant="outline" className="ml-auto gap-2 text-muted-foreground hover:text-accent-foreground ">
         <div className="flex items-center">
           <Terminal className="h-4" />
           <span>Command</span>
         </div>
 
-        <Separator orientation="vertical" className="hidden sm:block mx-2" />
-
-        <kbd className="hidden sm:inline-flex pointer-events-none h-5 select-none items-center justify-center gap-1 rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground opacity-100">
-          <span className="text-[0.6rem]">⌘</span>K
-        </kbd>
+        {!isMobile ? (
+          //TODO: Check if any font size mismatch is there in mac device
+          <kbd className="pointer-events-none hidden text-xs select-none items-center gap-1 rounded border bg-muted h-5 px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+            <span>{modifierKey}</span>
+            {"K"}
+          </kbd>
+        ) : null}
       </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>

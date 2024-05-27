@@ -24,3 +24,9 @@ export enum EExpenseType {
   Need = "need",
   Want = "want",
 }
+
+export enum EModifierKey {
+  Mac = "⌘",
+  Windows = "Ctrl",
+  Other = "Ctrl",
+}
