@@ -1,27 +1,21 @@
 "use client";
 
 import { z } from "zod";
-import { format } from "date-fns";
 import { useForm } from "react-hook-form";
-import { CalendarIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ButtonWithSpinner from "@/components/button-with-spinner";
-import { cn } from "@/lib/utils";
 import FormDateField from "@/components/form-date-field";
+import ButtonWithSpinner from "@/components/button-with-spinner";
+import database from "@/lib/appwrite/database";
 
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
@@ -55,10 +49,12 @@ export default function SavingForm() {
   const { isSubmitting, isValid } = form.formState;
 
   const submit = form.handleSubmit(async ({ date, amount, title }) => {
-    console.log({ date, amount, title });
-
     try {
-      // TODO: Handle saving form submission
+      await database.createIncome({
+        title,
+        amount: Number(amount),
+        date,
+      });
       toast({
         title: "Success!",
         description: "Your savings have been added successfully.",

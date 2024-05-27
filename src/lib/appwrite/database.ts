@@ -1,5 +1,6 @@
-import { Client, Databases } from "appwrite";
+import { Client, Databases, ID, Permission, Query, Role } from "appwrite";
 import env from "@/lib/env";
+import auth from "@/lib/appwrite/auth";
 
 interface CreateExpenseParams {}
 
@@ -7,7 +8,11 @@ interface GetExpensesParams {
   queries?: string[];
 }
 
-interface CreateIncomeParams {}
+interface CreateIncomeParams {
+  title: string;
+  amount: number;
+  date: Date;
+}
 
 interface GetIncomesParams {
   queries?: string[];
@@ -44,8 +49,26 @@ export class DatabaseServices {
     }
   }
 
-  async createIncome({}: CreateIncomeParams) {
+  async createIncome({ title, amount, date }: CreateIncomeParams) {
     try {
+      const user = await auth.getCurrentUser();
+      if (!user) throw new Error("No user is authenticated to create income");
+
+      return this.databases.createDocument(
+        env.awDatabaseId,
+        env.awIncomeCollectionId,
+        ID.unique(),
+        {
+          title,
+          amount,
+          date,
+        },
+        [
+          Permission.delete(Role.user(user.$id)),
+          Permission.update(Role.user(user.$id)),
+          Permission.read(Role.user(user.$id)),
+        ],
+      );
     } catch (error: any) {
       console.error("Appwrite :: createIncome() :: ", error);
       throw error;
