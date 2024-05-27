@@ -27,21 +27,6 @@ interface UpdateThemePrefParams {
   theme: ETheme;
 }
 
-// Password not required when only param is name
-type UpdateUserParams =
-  | {
-      name?: string;
-      email?: never;
-      phone?: never;
-      password?: never;
-    }
-  | {
-      name?: string;
-      email?: string;
-      phone?: string;
-      password: string;
-    };
-
 interface LoginParams {
   email: string;
   password: string;
