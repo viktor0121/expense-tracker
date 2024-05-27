@@ -6,6 +6,7 @@ const EnvSchema = z.object({
   awDatabaseId: z.string(),
   awExpenseCollectionId: z.string(),
   awIncomeCollectionId: z.string(),
+  awExpenseCategoryCollectionId: z.string(),
 });
 
 const env = {
@@ -14,6 +15,7 @@ const env = {
   awDatabaseId: process.env.NEXT_PUBLIC_AW_DATABASE_ID as string,
   awExpenseCollectionId: process.env.NEXT_PUBLIC_AW_EXPENSE_COLLECTION_ID as string,
   awIncomeCollectionId: process.env.NEXT_PUBLIC_AW_INCOME_COLLECTION_ID as string,
+  awExpenseCategoryCollectionId: process.env.NEXT_PUBLIC_AW_EXPENSE_CATEGORY_COLLECTION_ID as string,
 };
 
 try {
@@ -22,5 +24,4 @@ try {
   throw new Error(`Environment variable validation error: ${error.message}`);
 }
 
-// console.log(env);
 export default env;
