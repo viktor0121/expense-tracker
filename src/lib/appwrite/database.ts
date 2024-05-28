@@ -30,6 +30,17 @@ export class DatabaseServices {
     this.databases = new Databases(this.client);
   }
 
+  async _getRUDPermissions() {
+    const user = await auth.getCurrentUser();
+    if (!user) throw new Error("No user is authenticated to create income");
+
+    return [
+      Permission.delete(Role.user(user.$id)),
+      Permission.update(Role.user(user.$id)),
+      Permission.read(Role.user(user.$id)),
+    ];
+  }
+
   async createExpense({}: CreateExpenseParams) {
     try {
     } catch (error: any) {
@@ -46,25 +57,17 @@ export class DatabaseServices {
     }
   }
 
-  async createIncome({ title, amount, date }: CreateIncomeParams) {
+  async createIncome({ title, amount, date }: CreateIncomeParams): Promise<IIncome> {
     try {
-      const user = await auth.getCurrentUser();
-      if (!user) throw new Error("No user is authenticated to create income");
+      const data = { title, amount, date };
+      const permissions = await this._getRUDPermissions();
 
       return this.databases.createDocument(
         env.awDatabaseId,
         env.awIncomeCollectionId,
         ID.unique(),
-        {
-          title,
-          amount,
-          date,
-        },
-        [
-          Permission.delete(Role.user(user.$id)),
-          Permission.update(Role.user(user.$id)),
-          Permission.read(Role.user(user.$id)),
-        ],
+        data,
+        permissions,
       );
     } catch (error: any) {
       console.error("Appwrite :: createIncome() :: ", error);
