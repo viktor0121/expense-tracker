@@ -5,12 +5,9 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import FormDateField from "@/components/form-date-field";
-import ButtonWithSpinner from "@/components/button-with-spinner";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Form,
@@ -35,7 +32,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import useAppwriteFetch from "@/hooks/useAppwriteFetch";
+import FormDateField from "@/components/form-date-field";
+import ButtonWithSpinner from "@/components/button-with-spinner";
 import NewCategoryDialog from "@/app/(pages)/(protected)/dashboard/components/new-category-dialog";
+import CategoryDeleteDialog from "@/app/(pages)/(protected)/dashboard/components/category-delete-dialog";
 import { cn } from "@/lib/utils";
 import { EExpenseType } from "@/lib/enums";
 import { IExpenseCategory } from "@/lib/types";
@@ -77,7 +78,7 @@ export default function ExpenseForm() {
   const { isSubmitting, isValid } = form.formState;
 
   const { toast } = useToast();
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const categoryTriggerButtonRef = useRef<HTMLButtonElement>(null);
 
   const [comboBoxWidth, setComboBoxWidth] = useState<Number>(-1);
   const { data: categories, setData: setCategories } = useAppwriteFetch<IExpenseCategory>(() =>
@@ -105,7 +106,8 @@ export default function ExpenseForm() {
   useEffect(() => {
     // Set ComboBox Width
     const updateComboBoxWidth = () => {
-      if (buttonRef.current) setComboBoxWidth(buttonRef.current.offsetWidth);
+      if (categoryTriggerButtonRef.current)
+        setComboBoxWidth(categoryTriggerButtonRef.current.offsetWidth);
     };
     updateComboBoxWidth();
     window.addEventListener("resize", updateComboBoxWidth);
@@ -158,7 +160,7 @@ export default function ExpenseForm() {
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      ref={buttonRef}
+                      ref={categoryTriggerButtonRef}
                       variant="outline"
                       role="combobox"
                       className={cn(
@@ -183,32 +185,35 @@ export default function ExpenseForm() {
                   <Command>
                     <div className="relative">
                       <NewCategoryDialog setCategories={setCategories} />
-                      <CommandInput
-                        id="categories-search-input"
-                        placeholder="Search Category"
-                        className="pr-8"
-                      />
+                      <CommandInput placeholder="Search Category" className="pr-8" />
                     </div>
 
                     <CommandEmpty>No category found.</CommandEmpty>
 
                     <CommandList>
                       <CommandGroup>
-                        {categories.map((category) => (
-                          <CommandItem
-                            value={category.title}
-                            key={category.$id}
-                            onSelect={() => form.setValue("category", category.$id)}
-                            className="capitalize"
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                category.$id === field.value ? "opacity-100" : "opacity-0",
-                              )}
+                        {categories.map((category, index) => (
+                          <div key={index} className="flex hover:bg-accent rounded-md group">
+                            <CommandItem
+                              value={category.title}
+                              key={category.$id}
+                              className="flex-1"
+                              onSelect={() => form.setValue("category", category.$id)}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 size-4",
+                                  category.$id === field.value ? "opacity-100" : "opacity-0",
+                                )}
+                              />
+                              {category.title}
+                            </CommandItem>
+
+                            <CategoryDeleteDialog
+                              category={category}
+                              setCategories={setCategories}
                             />
-                            {category.title}
-                          </CommandItem>
+                          </div>
                         ))}
                       </CommandGroup>
                     </CommandList>

@@ -19,6 +19,10 @@ interface CreateExpenseCategoryParams {
   title: string;
 }
 
+interface DeleteExpenseCategoryParams {
+  id: string;
+}
+
 export class DatabaseServices {
   client = new Client();
   databases;
@@ -60,7 +64,13 @@ export class DatabaseServices {
       const data = { title, amount, date };
       const permissions = await this._getRUDPermissions();
 
-      return this.databases.createDocument(env.awDatabaseId, env.awIncomeCollectionId, ID.unique(), data, permissions);
+      return this.databases.createDocument(
+        env.awDatabaseId,
+        env.awIncomeCollectionId,
+        ID.unique(),
+        data,
+        permissions,
+      );
     } catch (error: any) {
       console.error("Appwrite :: createIncome() :: ", error);
       throw error;
@@ -95,6 +105,19 @@ export class DatabaseServices {
       );
     } catch (error: any) {
       console.error("Appwrite :: createExpenseCategory() :: ", error);
+      throw error;
+    }
+  }
+
+  async deleteExpenseCategory({ id }: DeleteExpenseCategoryParams): Promise<{}> {
+    try {
+      return await this.databases.deleteDocument(
+        env.awDatabaseId,
+        env.awExpenseCategoryCollectionId,
+        id,
+      );
+    } catch (error: any) {
+      console.log("Appwrite :: deleteExpenseCategory() :: ", error);
       throw error;
     }
   }
