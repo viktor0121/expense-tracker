@@ -86,20 +86,21 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
   });
   const { isSubmitting, isValid } = form.formState;
 
-  const { expenseCategories, setExpenseCategories } = useDataContext();
+  const { setExpenses, expenseCategories, setExpenseCategories } = useDataContext();
   const { data: categoriesData } = useAppwriteFetch<IExpenseCategory>(() =>
     database.getExpenseCategories(),
   );
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     try {
-      await database.createExpense({
+      const newExpense = await database.createExpense({
         title,
         amount: Number(amount),
         date,
         type,
         category,
       });
+      setExpenses((prev) => [...prev, newExpense]);
       toast({
         title: "Success!",
         description: "Your expense has been added successfully.",

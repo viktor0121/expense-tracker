@@ -16,6 +16,7 @@ import {
 import FormDateField from "@/components/form-date-field";
 import ButtonWithSpinner from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
+import useDataContext from "@/context/data/useDataContext";
 
 interface SavingFormProps {
   runAfterSubmit?: () => void;
@@ -48,17 +49,19 @@ export default function SavingForm({ runAfterSubmit }: SavingFormProps) {
       amount: "",
     },
   });
+  const { isSubmitting, isValid } = form.formState;
 
   const { toast } = useToast();
-  const { isSubmitting, isValid } = form.formState;
+  const { setSavings } = useDataContext();
 
   const submit = form.handleSubmit(async ({ date, amount, title }) => {
     try {
-      await database.createIncome({
+      const newIncome = await database.createIncome({
         title,
         amount: Number(amount),
         date,
       });
+      setSavings((prev) => [...prev, newIncome]);
       toast({
         title: "Success!",
         description: "Your savings have been added successfully.",

@@ -45,7 +45,7 @@ export class DatabaseServices {
     ];
   }
 
-  async createExpense({ title, amount, category, type, date }: CreateExpenseParams) {
+  async createExpense({ title, amount, category, type, date }: CreateExpenseParams): Promise<IExpense> {
     try {
       const data = { title, amount, date, category, type };
       const permissions = await this._getRUDPermissions();
