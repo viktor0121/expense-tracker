@@ -24,5 +24,5 @@ export default function useAppwriteFetch<T>(fn: () => Promise<T[]>) {
     })();
   }, []);
 
-  return { data, isLoading };
+  return { data, setData, isLoading };
 }

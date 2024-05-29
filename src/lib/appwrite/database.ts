@@ -15,7 +15,9 @@ interface CreateIncomeParams {
   date: Date;
 }
 
-interface CreateExpenseCategoryParams {}
+interface CreateExpenseCategoryParams {
+  title: string;
+}
 
 export class DatabaseServices {
   client = new Client();
@@ -58,13 +60,7 @@ export class DatabaseServices {
       const data = { title, amount, date };
       const permissions = await this._getRUDPermissions();
 
-      return this.databases.createDocument(
-        env.awDatabaseId,
-        env.awIncomeCollectionId,
-        ID.unique(),
-        data,
-        permissions,
-      );
+      return this.databases.createDocument(env.awDatabaseId, env.awIncomeCollectionId, ID.unique(), data, permissions);
     } catch (error: any) {
       console.error("Appwrite :: createIncome() :: ", error);
       throw error;
@@ -85,8 +81,18 @@ export class DatabaseServices {
     }
   }
 
-  async createExpenseCategory({}: CreateExpenseCategoryParams) {
+  async createExpenseCategory({ title }: CreateExpenseCategoryParams): Promise<IExpenseCategory> {
     try {
+      const data = { title };
+      const permissions = await this._getRUDPermissions();
+
+      return this.databases.createDocument(
+        env.awDatabaseId,
+        env.awExpenseCategoryCollectionId,
+        ID.unique(),
+        data,
+        permissions,
+      );
     } catch (error: any) {
       console.error("Appwrite :: createExpenseCategory() :: ", error);
       throw error;
@@ -107,4 +113,5 @@ export class DatabaseServices {
     }
   }
 }
+
 export default new DatabaseServices();

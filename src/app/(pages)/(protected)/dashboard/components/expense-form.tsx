@@ -5,24 +5,49 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import FormDateField from "@/components/form-date-field";
 import ButtonWithSpinner from "@/components/button-with-spinner";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { EExpenseType } from "@/lib/enums";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import NewCategoryDialog from "@/app/(pages)/(protected)/dashboard/components/new-category-dialog";
 import { cn } from "@/lib/utils";
-import database from "@/lib/appwrite/database";
-import useAppwriteFetch from "@/hooks/useAppwriteFetch";
+import { EExpenseType } from "@/lib/enums";
 import { IExpenseCategory } from "@/lib/types";
+import database from "@/lib/appwrite/database";
 
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
-  title: z.string().trim().min(1, "Title is required").max(250, "Title must be at most 100 characters"),
+  title: z
+    .string()
+    .trim()
+    .min(1, "Title is required")
+    .max(250, "Title must be at most 100 characters"),
   amount: z
     .string()
     .trim()
@@ -49,13 +74,15 @@ export default function ExpenseForm() {
       category: "",
     },
   });
+  const { isSubmitting, isValid } = form.formState;
 
   const { toast } = useToast();
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const { isSubmitting, isValid } = form.formState;
 
-  const { data: categories } = useAppwriteFetch<IExpenseCategory>(() => database.getExpenseCategories());
   const [comboBoxWidth, setComboBoxWidth] = useState<Number>(-1);
+  const { data: categories, setData: setCategories } = useAppwriteFetch<IExpenseCategory>(() =>
+    database.getExpenseCategories(),
+  );
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     console.log({ date, amount, title, type, category });
@@ -134,7 +161,10 @@ export default function ExpenseForm() {
                       ref={buttonRef}
                       variant="outline"
                       role="combobox"
-                      className={cn("justify-between capitalize", !field.value && "text-muted-foreground")}
+                      className={cn(
+                        "justify-between capitalize",
+                        !field.value && "text-muted-foreground",
+                      )}
                     >
                       {field.value
                         ? categories.find((category) => category.$id === field.value)?.title
@@ -145,12 +175,19 @@ export default function ExpenseForm() {
                 </PopoverTrigger>
 
                 <PopoverContent
+                  // This will prevent AddNewCategory buttons tooltip auto open
+                  onOpenAutoFocus={(e) => e.preventDefault()}
                   className="p-0"
                   style={{ width: `${comboBoxWidth}px` }}
                 >
                   <Command>
                     <div className="relative">
-                      <CommandInput id="categories-search-input" placeholder="Search Category" className="pr-8" />
+                      <NewCategoryDialog setCategories={setCategories} />
+                      <CommandInput
+                        id="categories-search-input"
+                        placeholder="Search Category"
+                        className="pr-8"
+                      />
                     </div>
 
                     <CommandEmpty>No category found.</CommandEmpty>
@@ -165,7 +202,10 @@ export default function ExpenseForm() {
                             className="capitalize"
                           >
                             <Check
-                              className={cn("mr-2 h-4 w-4", category.$id === field.value ? "opacity-100" : "opacity-0")}
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                category.$id === field.value ? "opacity-100" : "opacity-0",
+                              )}
                             />
                             {category.title}
                           </CommandItem>
