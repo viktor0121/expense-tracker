@@ -15,22 +15,21 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import useDataContext from "@/context/data/useDataContext";
 import { IExpenseCategory } from "@/lib/types";
 import database from "@/lib/appwrite/database";
 
 interface CategoryDeleteDialogProps {
   category: IExpenseCategory;
-  setCategories: React.Dispatch<React.SetStateAction<IExpenseCategory[]>>;
 }
 
-export default function CategoryDeleteDialog({
-  category,
-  setCategories,
-}: CategoryDeleteDialogProps) {
+export default function CategoryDeleteDialog({ category }: CategoryDeleteDialogProps) {
+  const { setExpenseCategories } = useDataContext();
+
   const deleteCategory = async () => {
     try {
       await database.deleteExpenseCategory({ id: category.$id });
-      setCategories((prev) => prev.filter((item) => item.$id !== category.$id));
+      setExpenseCategories((prev) => prev.filter((item) => item.$id !== category.$id));
       toast({
         title: "Category Deleted",
         description: (

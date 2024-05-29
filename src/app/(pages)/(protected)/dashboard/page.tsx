@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import useTab from "@/hooks/useTab";
 import { formatDate } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
 import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useDataContext from "@/context/data/useDataContext";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-table-card";
 import { EDashboardTabs } from "@/lib/enums";
@@ -69,13 +70,18 @@ const savingColumns: ColumnDef<IIncome>[] = [
 ];
 
 export default function DashboardPage() {
-  const { data: incomes } = useAppwriteFetch(() => database.getIncomes());
-  const { data: expenses } = useAppwriteFetch(() => database.getExpenses());
-
+  const { savings, setSavings, expenses, setExpenses } = useDataContext();
+  const { data: expensesData } = useAppwriteFetch(() => database.getExpenses());
+  const { data: incomesData } = useAppwriteFetch(() => database.getIncomes());
   const { tab, onTabChange } = useTab<EDashboardTabs>({
     defaultTab: EDashboardTabs.Overview,
     tabs: [EDashboardTabs.Overview, EDashboardTabs.Expenses, EDashboardTabs.Savings],
   });
+
+  useEffect(() => {
+    setExpenses(expensesData);
+    setSavings(incomesData);
+  }, [expensesData, setExpenses]);
 
   // NOTE: TabsContent Height is manually set to 100vh - 8rem for desktop and 100vh - 5rem for mobile
   return (
@@ -108,7 +114,7 @@ export default function DashboardPage() {
         value={EDashboardTabs.Savings}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        <DataTableCard title="saving" columns={savingColumns} data={incomes} />
+        <DataTableCard title="saving" columns={savingColumns} data={savings} />
       </TabsContent>
     </Tabs>
   );

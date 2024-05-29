@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import React from "react";
+import DataProvider from "@/context/data/provider";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return children;
+  return <DataProvider>{children}</DataProvider>;
 }

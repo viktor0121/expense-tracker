@@ -25,12 +25,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ButtonWithSpinner from "@/components/button-with-spinner";
-import { IExpenseCategory } from "@/lib/types";
+import useDataContext from "@/context/data/useDataContext";
 import database from "@/lib/appwrite/database";
 
-interface NewCategoryDialogProps {
-  setCategories: React.Dispatch<React.SetStateAction<IExpenseCategory[]>>;
-}
+interface NewCategoryDialogProps {}
 
 const formSchema = z.object({
   title: z
@@ -40,7 +38,7 @@ const formSchema = z.object({
     .max(250, "Title must be at most 100 characters"),
 });
 
-export default function NewCategoryDialog({ setCategories }: NewCategoryDialogProps) {
+export default function NewCategoryDialog({}: NewCategoryDialogProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,12 +46,14 @@ export default function NewCategoryDialog({ setCategories }: NewCategoryDialogPr
     },
   });
   const { isSubmitting, isValid } = form.formState;
+
   const [open, setOpen] = useState<boolean>(false);
+  const { setExpenseCategories } = useDataContext();
 
   const submit = form.handleSubmit(async ({ title }) => {
     try {
       const newCategory = await database.createExpenseCategory({ title });
-      setCategories((prev) => [...prev, newCategory]);
+      setExpenseCategories((prev) => [...prev, newCategory]);
       toast({
         title: "Success!",
         description: "New category has been added successfully.",

@@ -41,6 +41,7 @@ import { cn } from "@/lib/utils";
 import { EExpenseType } from "@/lib/enums";
 import { IExpenseCategory } from "@/lib/types";
 import database from "@/lib/appwrite/database";
+import useDataContext from "@/context/data/useDataContext";
 
 interface ExpenseFormProps {
   runAfterSubmit?: () => void;
@@ -68,6 +69,10 @@ const formSchema = z.object({
 });
 
 export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
+  const { toast } = useToast();
+  const categoryTriggerButtonRef = useRef<HTMLButtonElement>(null);
+  const [comboBoxWidth, setComboBoxWidth] = useState<Number>(-1);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,17 +86,12 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
   });
   const { isSubmitting, isValid } = form.formState;
 
-  const { toast } = useToast();
-  const categoryTriggerButtonRef = useRef<HTMLButtonElement>(null);
-
-  const [comboBoxWidth, setComboBoxWidth] = useState<Number>(-1);
-  const { data: categories, setData: setCategories } = useAppwriteFetch<IExpenseCategory>(() =>
+  const { expenseCategories, setExpenseCategories } = useDataContext();
+  const { data: categoriesData } = useAppwriteFetch<IExpenseCategory>(() =>
     database.getExpenseCategories(),
   );
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
-    console.log({ date, amount, title, type, category });
-
     try {
       await database.createExpense({
         title,
@@ -115,6 +115,10 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
       });
     }
   });
+
+  useEffect(() => {
+    setExpenseCategories(categoriesData);
+  }, [categoriesData]);
 
   useEffect(() => {
     // Set ComboBox Width
@@ -182,7 +186,7 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
                       )}
                     >
                       {field.value
-                        ? categories.find((category) => category.$id === field.value)?.title
+                        ? expenseCategories.find((category) => category.$id === field.value)?.title
                         : "Select Category"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -197,7 +201,7 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
                 >
                   <Command>
                     <div className="relative">
-                      <NewCategoryDialog setCategories={setCategories} />
+                      <NewCategoryDialog />
                       <CommandInput placeholder="Search Category" className="pr-8" />
                     </div>
 
@@ -205,7 +209,7 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
 
                     <CommandList>
                       <CommandGroup>
-                        {categories.map((category, index) => (
+                        {expenseCategories.map((category, index) => (
                           <div key={index} className="flex hover:bg-accent rounded-md group">
                             <CommandItem
                               value={category.title}
@@ -222,10 +226,7 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
                               {category.title}
                             </CommandItem>
 
-                            <CategoryDeleteDialog
-                              category={category}
-                              setCategories={setCategories}
-                            />
+                            <CategoryDeleteDialog category={category} />
                           </div>
                         ))}
                       </CommandGroup>
