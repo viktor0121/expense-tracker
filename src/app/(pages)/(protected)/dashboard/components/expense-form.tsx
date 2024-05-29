@@ -42,6 +42,10 @@ import { EExpenseType } from "@/lib/enums";
 import { IExpenseCategory } from "@/lib/types";
 import database from "@/lib/appwrite/database";
 
+interface ExpenseFormProps {
+  runAfterSubmit?: () => void;
+}
+
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
   title: z
@@ -63,7 +67,7 @@ const formSchema = z.object({
   category: z.string().min(1, "Category is required"),
 });
 
-export default function ExpenseForm() {
+export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -94,6 +98,9 @@ export default function ExpenseForm() {
         title: "Success!",
         description: "Your savings have been added successfully.",
       });
+      form.reset();
+      // Some extra function passed from parent component
+      runAfterSubmit && runAfterSubmit();
     } catch (error: any) {
       toast({
         title: "Error",

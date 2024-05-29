@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,8 +19,10 @@ export default function AddNewSheet({
   triggerIcon: Icon,
   defaultTab,
 }: AddNewSheetProps) {
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" className="space-x-1">
           <Icon className="size-5" />
@@ -40,13 +42,13 @@ export default function AddNewSheet({
 
           <TabsContent value={EAddSheetTabs.Expense}>
             <SheetCardWrapper title="Add New Expense">
-              <ExpenseForm />
+              <ExpenseForm runAfterSubmit={() => setOpen(false)} />
             </SheetCardWrapper>
           </TabsContent>
 
           <TabsContent value={EAddSheetTabs.Saving}>
             <SheetCardWrapper title="Add New Saving">
-              <SavingForm />
+              <SavingForm runAfterSubmit={() => setOpen(false)} />
             </SheetCardWrapper>
           </TabsContent>
         </Tabs>

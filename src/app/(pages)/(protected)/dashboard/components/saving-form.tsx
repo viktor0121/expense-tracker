@@ -17,6 +17,10 @@ import FormDateField from "@/components/form-date-field";
 import ButtonWithSpinner from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
 
+interface SavingFormProps {
+  runAfterSubmit?: () => void;
+}
+
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
   title: z
@@ -34,7 +38,7 @@ const formSchema = z.object({
     .refine((str) => parseFloat(str) < 10_00_00_000, "Amount must be at most 10,00,00,000"),
 });
 
-export default function SavingForm() {
+export default function SavingForm({ runAfterSubmit }: SavingFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,6 +63,9 @@ export default function SavingForm() {
         title: "Success!",
         description: "Your savings have been added successfully.",
       });
+      form.reset();
+      // Some extra function passed from parent component if any
+      runAfterSubmit && runAfterSubmit();
     } catch (error: any) {
       toast({
         variant: "destructive",
