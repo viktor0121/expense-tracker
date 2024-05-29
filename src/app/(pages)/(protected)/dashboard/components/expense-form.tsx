@@ -11,40 +11,18 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import FormDateField from "@/components/form-date-field";
 import ButtonWithSpinner from "@/components/button-with-spinner";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { EExpenseType } from "@/lib/enums";
 import { cn } from "@/lib/utils";
 import database from "@/lib/appwrite/database";
+import useAppwriteFetch from "@/hooks/useAppwriteFetch";
+import { IExpenseCategory } from "@/lib/types";
 
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
-  title: z
-    .string()
-    .trim()
-    .min(1, "Title is required")
-    .max(250, "Title must be at most 100 characters"),
+  title: z.string().trim().min(1, "Title is required").max(250, "Title must be at most 100 characters"),
   amount: z
     .string()
     .trim()
@@ -73,11 +51,10 @@ export default function ExpenseForm() {
   });
 
   const { toast } = useToast();
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const { isSubmitting, isValid } = form.formState;
 
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  // TODO: Add type
-  const [categories, setCategories] = useState([]);
+  const { data: categories } = useAppwriteFetch<IExpenseCategory>(() => database.getExpenseCategories());
   const [comboBoxWidth, setComboBoxWidth] = useState<Number>(-1);
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
@@ -105,19 +82,6 @@ export default function ExpenseForm() {
     };
     updateComboBoxWidth();
     window.addEventListener("resize", updateComboBoxWidth);
-
-    // Fetch Categories
-    (async () => {
-      try {
-        await database.getExpenseCategories({ queries: [] });
-      } catch (error: any) {
-        toast({
-          title: "Unable to fetch categories.",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-    })();
 
     // Cleanup function to remove event listener on unmount
     return () => window.removeEventListener("resize", updateComboBoxWidth);
@@ -170,38 +134,40 @@ export default function ExpenseForm() {
                       ref={buttonRef}
                       variant="outline"
                       role="combobox"
-                      className={cn(
-                        "justify-between capitalize",
-                        !field.value && "text-muted-foreground",
-                      )}
+                      className={cn("justify-between capitalize", !field.value && "text-muted-foreground")}
                     >
                       {field.value
-                        ? categories.find((category) => category === field.value)
+                        ? categories.find((category) => category.$id === field.value)?.title
                         : "Select Category"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="p-0" style={{ width: `${comboBoxWidth}px` }}>
+
+                <PopoverContent
+                  className="p-0"
+                  style={{ width: `${comboBoxWidth}px` }}
+                >
                   <Command>
-                    <CommandInput placeholder="Search Category" />
+                    <div className="relative">
+                      <CommandInput id="categories-search-input" placeholder="Search Category" className="pr-8" />
+                    </div>
+
                     <CommandEmpty>No category found.</CommandEmpty>
+
                     <CommandList>
                       <CommandGroup>
                         {categories.map((category) => (
                           <CommandItem
-                            value={category}
-                            key={category}
-                            onSelect={() => form.setValue("category", category)}
+                            value={category.title}
+                            key={category.$id}
+                            onSelect={() => form.setValue("category", category.$id)}
                             className="capitalize"
                           >
                             <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                category === field.value ? "opacity-100" : "opacity-0",
-                              )}
+                              className={cn("mr-2 h-4 w-4", category.$id === field.value ? "opacity-100" : "opacity-0")}
                             />
-                            {category}
+                            {category.title}
                           </CommandItem>
                         ))}
                       </CommandGroup>

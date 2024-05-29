@@ -26,3 +26,7 @@ export interface IIncome extends Models.Document {
  amount: number;
  date: Date
 }
+
+export interface IExpenseCategory extends Models.Document {
+  title: string;
+}

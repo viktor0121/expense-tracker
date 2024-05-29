@@ -1,7 +1,7 @@
 import { Client, Databases, ID, Permission, Query, Role } from "appwrite";
 import env from "@/lib/env";
 import auth from "@/lib/appwrite/auth";
-import { IIncome } from "@/lib/types";
+import { IExpenseCategory, IIncome } from "@/lib/types";
 
 interface CreateExpenseParams {}
 
@@ -16,10 +16,6 @@ interface CreateIncomeParams {
 }
 
 interface CreateExpenseCategoryParams {}
-
-interface GetExpenseCategoriesParams {
-  queries?: string[];
-}
 
 export class DatabaseServices {
   client = new Client();
@@ -97,8 +93,14 @@ export class DatabaseServices {
     }
   }
 
-  async getExpenseCategories({ queries }: GetExpenseCategoriesParams) {
+  async getExpenseCategories(queries?: string[]) {
     try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awExpenseCategoryCollectionId,
+        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
+      );
+      return data.documents as IExpenseCategory[];
     } catch (error: any) {
       console.error("Appwrite :: getExpenseCategories() :: ", error);
       throw error;
