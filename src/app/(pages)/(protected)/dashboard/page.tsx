@@ -31,7 +31,7 @@ const expenseColumns: ColumnDef<IExpense>[] = [
     },
     cell: ({ row, column }) => {
       const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
-      return <div>{formatted}</div>;
+      return formatted;
     },
   },
   {
@@ -64,7 +64,7 @@ const savingColumns: ColumnDef<IIncome>[] = [
     },
     cell: ({ row, column }) => {
       const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
-      return <div className="text-right">{formatted}</div>;
+      return formatted;
     },
   },
 ];

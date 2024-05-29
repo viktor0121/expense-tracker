@@ -38,7 +38,7 @@ export default function DataTableCard<T>({
 
       <div className="w-[inherit] h-[inherit] scrollbar-thin scrollbar-thumb-primary scrollbar-track-primary-foreground overflow-auto">
         <CardContent className="h-[inherit] w-[inherit] min-w-fit space-y-2">
-          <DataTable columns={columns} data={data} />
+          <DataTable addVisibilityToggle columns={columns} data={data} />
         </CardContent>
       </div>
     </Card>

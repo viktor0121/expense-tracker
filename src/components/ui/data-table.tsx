@@ -121,9 +121,17 @@ export function DataTable<TData, TValue>({
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
+              {headerGroup.headers.map((header, index) => {
                 return (
-                  <TableHead className="whitespace-nowrap" key={header.id}>
+                  <TableHead
+                    className={cn(
+                      "whitespace-nowrap",
+                      headerGroup.headers.length > 1 &&
+                        headerGroup.headers.length - 1 === index &&
+                        "text-right",
+                    )}
+                    key={header.id}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
@@ -137,8 +145,15 @@ export function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                {row.getVisibleCells().map((cell, index) => (
+                  <TableCell
+                    key={cell.id}
+                    className={cn(
+                      row.getVisibleCells().length > 1 &&
+                        row.getVisibleCells().length - 1 === index &&
+                        "text-right",
+                    )}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
