@@ -22,16 +22,20 @@ export default function NavTrail({ navTrails }: NavTrailProps) {
           <React.Fragment key={index}>
             {index !== navTrails.length - 1 ? (
               <>
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <Link href={trail.href}>{trail.title}</Link>
-                  </BreadcrumbLink>
+                <BreadcrumbItem className="capitalize">
+                  {trail.href == "" ? (
+                    trail.title
+                  ) : (
+                    <BreadcrumbLink asChild>
+                      <Link href={trail.href}>{trail.title}</Link>
+                    </BreadcrumbLink>
+                  )}
                 </BreadcrumbItem>
 
                 <BreadcrumbSeparator />
               </>
             ) : (
-              <BreadcrumbItem>
+              <BreadcrumbItem className="capitalize">
                 <BreadcrumbPage>{trail.title}</BreadcrumbPage>
               </BreadcrumbItem>
             )}

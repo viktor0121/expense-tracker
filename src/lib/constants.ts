@@ -6,29 +6,28 @@ type Trails = {
 };
 
 export const trails: Trails = {
-  "/": [{ title: "Home", href: "/" }],
+  // "/": [{ title: "Home", href: "/" }],
   "/auth": [
     { title: "Home", href: "/" },
-    { title: "Auth", href: "/auth" },
+    { title: "Auth", href: "" },
   ],
   "/auth/reset-password": [
     { title: "Home", href: "/" },
     { title: "Auth", href: "/auth" },
-    { title: "Reset Password", href: "/auth/reset-password" },
+    { title: "Reset Password", href: "" },
   ],
   "/dashboard": [
-    { title: "Home", href: "/" },
-    { title: "Dashboard", href: "/dashboard" },
+    { title: "Dashboard", href: "" },
   ],
   "/settings/profile": [
-    { title: "Dashboard", href: "/" },
-    { title: "Settings", href: "/settings" },
-    { title: "Profile", href: "/settings/profile" },
+    { title: "Dashboard", href: "/dashboard" },
+    { title: "Settings", href: "" },
+    { title: "Profile", href: "" },
   ],
   "/settings/appearance": [
-    { title: "Dashboard", href: "/" },
-    { title: "Settings", href: "/settings" },
-    { title: "Appearance", href: "/settings/appearance" },
+    { title: "Dashboard", href: "/dashboard" },
+    { title: "Settings", href: "" },
+    { title: "Appearance", href: "" },
   ],
 };
 
