@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Home, LogIn, Settings } from "lucide-react";
+import { CreditCard, DollarSign, Home, LogIn, Settings, Target } from "lucide-react";
 import useAuthContext from "@/context/auth/useAuthContext";
 import useNavTrailContext from "@/context/nav-trail/useNavTrailContext";
 import NavBurgerMenu from "@/components/navbar/nav-burger-menu";
@@ -9,9 +9,8 @@ import NavTrail from "@/components/navbar/nav-trail";
 import CommandPallet from "@/components/command-pallet";
 import NavDropdownMenu from "@/components/navbar/nav-dropdown-menu";
 import NavThemeToggle from "@/components/navbar/nav-theme-toggle";
-import auth from "@/lib/appwrite/auth";
 import { INavItem } from "@/lib/types";
-import NavLogo from "@/components/navbar/nav-logo";
+import auth from "@/lib/appwrite/auth";
 
 export default function Navbar() {
   const { authStatus, setAuthStatus } = useAuthContext();
@@ -23,15 +22,25 @@ export default function Navbar() {
         Icon: Home,
         url: "/",
       },
-      dashboard: {
-        title: "Dashboard",
-        Icon: Home,
-        url: "/dashboard",
-      },
       signin: {
         title: "SignIn",
         Icon: LogIn,
         url: "/auth",
+      },
+      overview: {
+        title: "Overview",
+        Icon: Target,
+        url: "/dashboard?tab=overview",
+      },
+      expense: {
+        title: "Expenses",
+        Icon: CreditCard,
+        url: "/dashboard?tab=expenses",
+      },
+      savings: {
+        title: "Savings",
+        Icon: DollarSign,
+        url: "/dashboard?tab=savings",
       },
       settings: {
         title: "Settings",
@@ -43,7 +52,9 @@ export default function Navbar() {
 
     const result: INavItem[] = [];
     if (authStatus) {
-      result.push(items.dashboard);
+      result.push(items.overview)
+      result.push(items.expense)
+      result.push(items.savings)
       result.push(items.settings);
     } else {
       result.push(items.home);

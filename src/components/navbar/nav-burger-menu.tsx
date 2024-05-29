@@ -1,9 +1,10 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Link from "next/link";
-import { LucideProps, PanelLeft } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import NavLogo from "@/components/navbar/nav-logo";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import NavLogo from "@/components/navbar/nav-logo";
 import useActivePath from "@/hooks/useActivePath";
 import { cn } from "@/lib/utils";
 import { INavItem } from "@/lib/types";
@@ -13,7 +14,7 @@ interface MobileNavProps {
   className?: string;
 }
 
-const NavItem = ({ url, title, Icon, posBottom }: INavItem) => {
+const NavItem = ({ url, title, Icon }: INavItem) => {
   const { isActive } = useActivePath(url);
   return (
     <Link
@@ -21,7 +22,6 @@ const NavItem = ({ url, title, Icon, posBottom }: INavItem) => {
       className={cn(
         "flex items-center gap-4 px-2.5",
         isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
-        posBottom ? "mt-auto" : "",
       )}
     >
       <Icon className="h-5 w-5" />
@@ -31,9 +31,11 @@ const NavItem = ({ url, title, Icon, posBottom }: INavItem) => {
 };
 
 export default function NavBurgerMenu({ navItems, className }: MobileNavProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className={className}>
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline">
             <PanelLeft className="h-5 w-5" />
@@ -45,13 +47,18 @@ export default function NavBurgerMenu({ navItems, className }: MobileNavProps) {
             <NavLogo isLarge={true} />
 
             {navItems.map((navItem) => (
-              <NavItem
-                key={navItem.url}
-                url={navItem.url}
-                title={navItem.title}
-                Icon={navItem.Icon}
-                posBottom={navItem.posBottom}
-              />
+              <div
+                onClick={() => setOpen(false)}
+                className={cn(navItem.posBottom ? "mt-auto" : "")}
+              >
+                <NavItem
+                  key={navItem.url}
+                  url={navItem.url}
+                  title={navItem.title}
+                  Icon={navItem.Icon}
+                  posBottom={navItem.posBottom}
+                />
+              </div>
             ))}
           </nav>
         </SheetContent>
