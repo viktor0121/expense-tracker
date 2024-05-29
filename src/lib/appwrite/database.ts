@@ -68,7 +68,7 @@ export class DatabaseServices {
       const data = await this.databases.listDocuments(
         env.awDatabaseId,
         env.awExpenseCollectionId,
-        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
+        [Query.orderDesc("date")].concat(queries && queries.length > 0 ? queries : []),
       );
       return data.documents as IExpense[];
     } catch (error: any) {
@@ -100,7 +100,7 @@ export class DatabaseServices {
       const data = await this.databases.listDocuments(
         env.awDatabaseId,
         env.awIncomeCollectionId,
-        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
+        [Query.orderDesc("date")].concat(queries && queries.length > 0 ? queries : []),
       );
       return data.documents as IIncome[];
     } catch (error: any) {
