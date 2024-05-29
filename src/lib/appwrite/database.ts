@@ -1,12 +1,14 @@
 import { Client, Databases, ID, Permission, Query, Role } from "appwrite";
 import env from "@/lib/env";
 import auth from "@/lib/appwrite/auth";
-import { IExpenseCategory, IIncome } from "@/lib/types";
+import { IExpense, IExpenseCategory, IIncome } from "@/lib/types";
 
-interface CreateExpenseParams {}
-
-interface GetExpensesParams {
-  queries?: string[];
+interface CreateExpenseParams {
+  title: string;
+  amount: number;
+  date: Date;
+  type: string;
+  category: string;
 }
 
 interface CreateIncomeParams {
@@ -43,16 +45,32 @@ export class DatabaseServices {
     ];
   }
 
-  async createExpense({}: CreateExpenseParams) {
+  async createExpense({ title, amount, category, type, date }: CreateExpenseParams) {
     try {
+      const data = { title, amount, date, category, type };
+      const permissions = await this._getRUDPermissions();
+
+      return this.databases.createDocument(
+        env.awDatabaseId,
+        env.awExpenseCollectionId,
+        ID.unique(),
+        data,
+        permissions,
+      );
     } catch (error: any) {
       console.error("Appwrite :: createExpense() :: ", error);
       throw error;
     }
   }
 
-  async getExpenses({ queries }: GetExpensesParams) {
+  async getExpenses(queries?: string[]): Promise<IExpense[]> {
     try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awExpenseCollectionId,
+        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
+      );
+      return data.documents as IExpense[];
     } catch (error: any) {
       console.error("Appwrite :: getExpenses() :: ", error);
       throw error;

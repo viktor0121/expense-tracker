@@ -93,10 +93,16 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
     console.log({ date, amount, title, type, category });
 
     try {
-      // TODO: Handle expense form submission
+      await database.createExpense({
+        title,
+        amount: Number(amount),
+        date,
+        type,
+        category,
+      });
       toast({
         title: "Success!",
-        description: "Your savings have been added successfully.",
+        description: "Your expense has been added successfully.",
       });
       form.reset();
       // Some extra function passed from parent component
@@ -238,7 +244,7 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="capitalize">
                     <SelectValue placeholder="Select a type" />

@@ -4,27 +4,15 @@ import React from "react";
 import useTab from "@/hooks/useTab";
 import { formatDate } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
-import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-table-card";
 import { EDashboardTabs } from "@/lib/enums";
-import { IIncome } from "@/lib/types";
+import { IExpense, IIncome } from "@/lib/types";
 import database from "@/lib/appwrite/database";
 
-type Expense = {};
-const expenses: Expense[] = [];
-const expenseColumns: ColumnDef<Expense>[] = [
-  {
-    accessorKey: "date",
-    header: ({ column }) => {
-      return <SortHeader column={column} title="Date" />;
-    },
-  },
-  {
-    accessorKey: "title",
-    header: "Title",
-  },
+const expenseColumns: ColumnDef<IExpense>[] = [
   {
     accessorKey: "amount",
     header: ({ column }) => {
@@ -32,15 +20,31 @@ const expenseColumns: ColumnDef<Expense>[] = [
     },
   },
   {
-    accessorKey: "category",
+    accessorKey: "title",
+    header: "Title",
+  },
+  {
+    accessorKey: "date",
+    header: ({ column }) => {
+      return <SortHeader column={column} title="Date" />;
+    },
+    cell: ({ row, column }) => {
+      const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
+      return <div>{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "category.title",
     header: "Category",
   },
   {
     accessorKey: "type",
     header: "Type",
+    cell: ({ row, column }) => {
+      return <p className="capitalize">{row.getValue(column.id)}</p>;
+    },
   },
 ];
-
 const savingColumns: ColumnDef<IIncome>[] = [
   {
     accessorKey: "amount",
@@ -66,6 +70,7 @@ const savingColumns: ColumnDef<IIncome>[] = [
 
 export default function DashboardPage() {
   const { data: incomes } = useAppwriteFetch(() => database.getIncomes());
+  const { data: expenses } = useAppwriteFetch(() => database.getExpenses());
 
   const { tab, onTabChange } = useTab<EDashboardTabs>({
     defaultTab: EDashboardTabs.Overview,
