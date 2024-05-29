@@ -88,7 +88,7 @@ export default function DashboardPage() {
     <Tabs
       value={tab}
       onValueChange={onTabChange}
-      className="max-h-screen flex-col flex px-3 sm:px-6 pt-3 sm:pt-6 space-y-4"
+      className="max-h-screen flex-col flex px-3 sm:px-6 space-y-4"
     >
       <TabsList className="w-fit">
         <TabsTrigger value={EDashboardTabs.Overview}>Overview</TabsTrigger>
