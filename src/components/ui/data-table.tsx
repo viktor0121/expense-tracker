@@ -35,14 +35,14 @@ import { className } from "postcss-selector-parser";
 import { Input } from "@/components/ui/input";
 // import SearchBar from "@/components/ui/search-bar";
 
-interface Filter {
+export interface IDataTableFilter {
   placeholder: string;
   columnId: string;
 }
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  filter?: Filter;
+  filter?: IDataTableFilter;
   initialState?: InitialTableState;
   addVisibilityToggle?: boolean;
 }

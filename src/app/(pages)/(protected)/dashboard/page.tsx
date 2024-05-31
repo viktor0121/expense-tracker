@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect } from "react";
-import useTab from "@/hooks/useTab";
 import { formatDate } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
 import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useTab from "@/hooks/useTab";
 import useDataContext from "@/context/data/useDataContext";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-table-card";
@@ -13,18 +13,34 @@ import { EDashboardTabs } from "@/lib/enums";
 import { IExpense, IIncome } from "@/lib/types";
 import database from "@/lib/appwrite/database";
 
+enum ESavingColumnIds {
+  Amount = "amount",
+  Title = "title",
+  Date = "date",
+}
+enum EExpenseColumnIds {
+  Amount = "amount",
+  Title = "title",
+  Date = "date",
+  Category = "category",
+  Type = "type",
+}
+
 const expenseColumns: ColumnDef<IExpense>[] = [
   {
+    id: EExpenseColumnIds.Amount,
     accessorKey: "amount",
     header: ({ column }) => {
       return <SortHeader column={column} title="Amount" />;
     },
   },
   {
+    id: EExpenseColumnIds.Title,
     accessorKey: "title",
     header: "Title",
   },
   {
+    id: EExpenseColumnIds.Date,
     accessorKey: "date",
     header: ({ column }) => {
       return <SortHeader column={column} title="Date" />;
@@ -35,10 +51,12 @@ const expenseColumns: ColumnDef<IExpense>[] = [
     },
   },
   {
+    id: EExpenseColumnIds.Category,
     accessorKey: "category.title",
     header: "Category",
   },
   {
+    id: EExpenseColumnIds.Type,
     accessorKey: "type",
     header: "Type",
     cell: ({ row, column }) => {
@@ -48,16 +66,19 @@ const expenseColumns: ColumnDef<IExpense>[] = [
 ];
 const savingColumns: ColumnDef<IIncome>[] = [
   {
+    id: ESavingColumnIds.Amount,
     accessorKey: "amount",
     header: ({ column }) => {
       return <SortHeader column={column} title="Amount" />;
     },
   },
   {
+    id: ESavingColumnIds.Title,
     accessorKey: "title",
     header: "Title",
   },
   {
+    id: ESavingColumnIds.Date,
     accessorKey: "date",
     header: ({ column }) => {
       return <SortHeader column={column} title="Date" className="ml-auto" />;
@@ -107,14 +128,30 @@ export default function DashboardPage() {
         value={EDashboardTabs.Expenses}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        <DataTableCard title="expense" columns={expenseColumns} data={expenses} />
+        <DataTableCard
+          filter={{
+            placeholder: "Search Expenses",
+            columnId: EExpenseColumnIds.Title,
+          }}
+          title="expense"
+          columns={expenseColumns}
+          data={expenses}
+        />
       </TabsContent>
 
       <TabsContent
         value={EDashboardTabs.Savings}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        <DataTableCard title="saving" columns={savingColumns} data={savings} />
+        <DataTableCard
+          filter={{
+            placeholder: "Search Savings",
+            columnId: ESavingColumnIds.Title,
+          }}
+          title="saving"
+          columns={savingColumns}
+          data={savings}
+        />
       </TabsContent>
     </Tabs>
   );

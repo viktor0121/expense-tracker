@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable, IDataTableFilter } from "@/components/ui/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import AddNewSheet from "@/app/(pages)/(protected)/dashboard/components/add-new-sheet";
 import { PlusIcon } from "lucide-react";
@@ -11,12 +11,14 @@ interface DataTableCardProps<T> {
   description?: string;
   columns: ColumnDef<T>[];
   data: T[];
+  filter?: IDataTableFilter;
 }
 
 export default function DataTableCard<T>({
   title,
   description,
   columns,
+  filter,
   data,
 }: DataTableCardProps<T>) {
   return (
@@ -38,7 +40,7 @@ export default function DataTableCard<T>({
 
       <div className="w-[inherit] h-[inherit] scrollbar-thin scrollbar-thumb-primary scrollbar-track-primary-foreground overflow-auto">
         <CardContent className="h-[inherit] w-[inherit] min-w-fit space-y-2">
-          <DataTable addVisibilityToggle columns={columns} data={data} />
+          <DataTable filter={filter} addVisibilityToggle columns={columns} data={data} />
         </CardContent>
       </div>
     </Card>
