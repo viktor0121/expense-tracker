@@ -16,7 +16,8 @@ export interface INavItem {
 }
 
 export interface IUserPreferences {
-  theme: ETheme;
+  theme?: ETheme;
+  photoUrl?: string;
 }
 
 export type IUser = Models.User<IUserPreferences>;

@@ -1,6 +1,7 @@
 import { Account, Client, ID, Models } from "appwrite";
 import { IUser } from "@/lib/types";
 import { ETheme } from "@/lib/enums";
+import avatars from "@/lib/appwrite/avatars";
 import env from "../env";
 
 interface CreateAccountParams {
@@ -25,6 +26,10 @@ interface UpdatePhoneParams {
 
 interface UpdateThemePrefParams {
   theme: ETheme;
+}
+
+interface UpdateProfilePhotoPrefParams {
+  photoUrl: string;
 }
 
 interface LoginParams {
@@ -111,6 +116,26 @@ export class AuthService {
       return preferences.theme || null;
     } catch (error: any) {
       console.error("Appwrite :: getThemePref() :: ", error);
+      throw error;
+    }
+  }
+
+  async updateProfilePhotoPref({ photoUrl }: UpdateProfilePhotoPrefParams): Promise<IUser> {
+    try {
+      const preferences = await this.account.getPrefs();
+      return await this.account.updatePrefs({ ...preferences, photoUrl });
+    } catch (error: any) {
+      console.error("Appwrite :: updateProfilePhotoPref() :: ", error);
+      throw error;
+    }
+  }
+
+  async getProfilePhotoPref(): Promise<string | null> {
+    try {
+      const preferences = await this.account.getPrefs();
+      return preferences.photoUrl || null;
+    } catch (error: any) {
+      console.error("Appwrite :: getProfilePhotoPref() :: ", error);
       throw error;
     }
   }

@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { User2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,22 +11,44 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { User2 } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import auth from "@/lib/appwrite/auth";
+import avatars from "@/lib/appwrite/avatars";
 
 interface NavDropdownMenuProps {
   handleSignOut: () => void;
 }
 
 export default function NavDropdownMenu({ handleSignOut }: NavDropdownMenuProps) {
+  const [avatar, setAvatar] = useState<string>("");
+
+  useEffect(() => {
+    (async function () {
+      try {
+        // Set the user's avatar if it exists
+        const avatar = await auth.getProfilePhotoPref();
+        if (avatar) return setAvatar(avatar);
+
+        // If the user doesn't have an avatar, set their initials
+        const user = await auth.getCurrentUser();
+        if (user) setAvatar(String(avatars.avatars.getInitials(user?.name)));
+      } catch (error) {
+        console.error("NavDropdownMenu :: useEffect() :: ", error);
+      }
+    })();
+  }, []);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
-          <User2 className="size-5" />
+          {avatar ? (
+            <Image src={avatar} alt="User avatar" width={40} height={40} className="rounded-full" />
+          ) : (
+            <User2 className="size-5" />
+          )}
         </Button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
