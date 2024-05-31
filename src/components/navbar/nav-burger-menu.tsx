@@ -48,11 +48,11 @@ export default function NavBurgerMenu({ navItems, className }: MobileNavProps) {
 
             {navItems.map((navItem) => (
               <div
+                key={navItem.url}
                 onClick={() => setOpen(false)}
                 className={cn(navItem.posBottom ? "mt-auto" : "")}
               >
                 <NavItem
-                  key={navItem.url}
                   url={navItem.url}
                   title={navItem.title}
                   Icon={navItem.Icon}
