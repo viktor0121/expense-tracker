@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { XIcon } from "lucide-react";
+import { User, XIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import ButtonWithSpinner from "@/components/button-with-spinner";
-import PasswordConfirmDialog from "@/app/(pages)/(protected)/settings/components/password-confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
@@ -21,10 +20,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import ButtonWithSpinner from "@/components/button-with-spinner";
+import PasswordConfirmDialog from "@/app/(pages)/(protected)/settings/components/password-confirm-dialog";
 import { IUser } from "@/lib/types";
+import { SUPPORTED_IMAGE_FORMATS } from "@/lib/constants";
 import auth from "@/lib/appwrite/auth";
+import avatars from "@/lib/appwrite/avatars";
+import storage from "@/lib/appwrite/storage";
 
 const formSchema = z.object({
+  photo: z.any().optional(),
   name: z
     .string()
     .min(2, "Name must be at least 2 characters.")
@@ -85,24 +90,38 @@ export default function ProfileForm() {
     },
     mode: "onChange",
   });
+  const fileRef = form.register("photo");
 
   const router = useRouter();
   const [user, setUser] = useState<IUser | null>(null);
   const [password, setPassword] = useState<string>("");
+  const [avatar, setAvatar] = useState<string>("");
 
   const name = form.watch("name");
   const email = form.watch("email");
   const phone = form.watch("phone");
+  const photo = form.watch("photo");
   const { isValid, isSubmitting } = form.formState;
 
   const isPasswordNeeded = user?.email !== email || user?.phone !== phone;
-  const formValuesChanged = user?.name !== name || user?.email !== email || user?.phone !== phone;
+  const formValuesChanged =
+    user?.name !== name || user?.email !== email || user?.phone !== phone || photo[0];
 
-  const onSubmit = form.handleSubmit(async ({ name, email, phone }) => {
+  const onSubmit = form.handleSubmit(async ({ name, email, phone, photo }) => {
     try {
       if (user?.name !== name && name) setUser(await auth.updateName({ name }));
       if (user?.email !== email && email) setUser(await auth.updateEmail({ email, password }));
       if (user?.phone !== phone && phone) setUser(await auth.updatePhone({ phone, password }));
+      if (photo[0]) {
+        const file = photo[0];
+        const oldPhotoId = await auth.getProfilePhotoIdPref();
+        const newPhotoId = await storage.createProfilePhoto({ file });
+
+        setUser(await auth.updateProfilePhotoIdPref({ photoFileId: newPhotoId }));
+        setAvatar(storage.getProfilePhotoUrl({ photoId: newPhotoId }));
+
+        if (oldPhotoId) await storage.deleteProfilePhoto({ photoId: oldPhotoId });
+      }
 
       toast({
         title: "Profile updated",
@@ -135,6 +154,10 @@ export default function ProfileForm() {
       form.setValue("name", user?.name || "");
       form.setValue("email", user?.email || "");
       form.setValue("phone", user?.phone || "");
+
+      const photoId = user?.prefs?.photoFileId;
+      const url = photoId ? storage.getProfilePhotoUrl({ photoId }) : null;
+      setAvatar(url || String(avatars.avatars.getInitials(user?.name)) || "");
       setUser(user);
     })();
   }, []);
@@ -142,6 +165,47 @@ export default function ProfileForm() {
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="photo"
+          render={() => (
+            <FormItem className="items-center gap-4">
+              <FormLabel>Profile Photo</FormLabel>
+              <FormControl className="text-base-semibold text-gray-200">
+                <>
+                  <div className="flex items-center gap-5 pt-1">
+                    <div className="size-20 aspect-square md:size-32 rounded-full overflow-hidden outline outline-accent">
+                      {avatar ? (
+                        <Image
+                          src={avatar}
+                          alt={avatar}
+                          width={100}
+                          height={100}
+                          priority
+                          className="size-full object-contain"
+                        />
+                      ) : (
+                        <User className="size-full p-4 md:p-6" />
+                      )}
+                    </div>
+
+                    <div>
+                      <Input
+                        type="file"
+                        accept={SUPPORTED_IMAGE_FORMATS.join()}
+                        className="w-fit"
+                        placeholder="Add profile photo"
+                        {...fileRef}
+                      />
+                    </div>
+                  </div>
+                </>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="name"

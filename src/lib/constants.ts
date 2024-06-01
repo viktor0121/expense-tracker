@@ -16,9 +16,7 @@ export const trails: Trails = {
     { title: "Auth", href: "/auth" },
     { title: "Reset Password", href: "" },
   ],
-  "/dashboard": [
-    { title: "Dashboard", href: "" },
-  ],
+  "/dashboard": [{ title: "Dashboard", href: "" }],
   "/settings/profile": [
     { title: "Dashboard", href: "/dashboard" },
     { title: "Settings", href: "" },
@@ -32,3 +30,5 @@ export const trails: Trails = {
 };
 
 export const images = { heroImage };
+
+export const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
