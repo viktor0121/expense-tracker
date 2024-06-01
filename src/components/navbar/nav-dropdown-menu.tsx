@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import auth from "@/lib/appwrite/auth";
 import avatars from "@/lib/appwrite/avatars";
+import storage from "@/lib/appwrite/storage";
 
 interface NavDropdownMenuProps {
   handleSignOut: () => void;
@@ -25,8 +26,8 @@ export default function NavDropdownMenu({ handleSignOut }: NavDropdownMenuProps)
     (async function () {
       try {
         // Set the user's avatar if it exists
-        const avatar = await auth.getProfilePhotoPref();
-        if (avatar) return setAvatar(avatar);
+        const photoId = await auth.getProfilePhotoIdPref();
+        if (photoId) return setAvatar(storage.getProfilePhotoUrl({ photoId }));
 
         // If the user doesn't have an avatar, set their initials
         const user = await auth.getCurrentUser();
