@@ -16,10 +16,10 @@ import avatars from "@/lib/appwrite/avatars";
 import storage from "@/lib/appwrite/storage";
 
 interface NavDropdownMenuProps {
-  handleSignOut: () => void;
+  triggerSignOut: () => void;
 }
 
-export default function NavDropdownMenu({ handleSignOut }: NavDropdownMenuProps) {
+export default function NavDropdownMenu({ triggerSignOut }: NavDropdownMenuProps) {
   const [avatar, setAvatar] = useState<string>("");
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function NavDropdownMenu({ handleSignOut }: NavDropdownMenuProps)
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <button onClick={handleSignOut} className="w-full">
+          <button onClick={triggerSignOut} className="w-full">
             Logout
           </button>
         </DropdownMenuItem>

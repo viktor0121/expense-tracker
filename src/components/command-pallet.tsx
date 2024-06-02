@@ -31,11 +31,11 @@ interface Command {
   action: () => void;
 }
 
-interface CommadPalletProps {
-  handleSignOut: () => void;
+interface CommandPalletProps {
+  triggerSignOut: () => void;
 }
 
-export default function CommandPallet({ handleSignOut }: CommadPalletProps) {
+export default function CommandPallet({ triggerSignOut }: CommandPalletProps) {
   const [modifierKey, setModifierKey] = useState<EModifierKey>(EModifierKey.Other);
   const [isMobile, setIsMobile] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
@@ -78,9 +78,9 @@ export default function CommandPallet({ handleSignOut }: CommadPalletProps) {
   ];
   const otherCommands: Command[] = [
     {
-      title: "Logout",
+      title: "Sign Out",
       Icon: LogOut,
-      action: () => commandAction(handleSignOut),
+      action: () => commandAction(triggerSignOut),
     },
   ];
 
