@@ -3,15 +3,30 @@
 import React, { useEffect } from "react";
 import { formatDate } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
+import {
+  LucideIcon,
+  CreditCardIcon,
+  DollarSignIcon,
+  WalletIcon,
+  HandCoinsIcon,
+} from "lucide-react";
 import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import useTab from "@/hooks/useTab";
-import useDataContext from "@/context/data/useDataContext";
-import useAppwriteFetch from "@/hooks/useAppwriteFetch";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-table-card";
+import useTab from "@/hooks/useTab";
+import useAppwriteFetch from "@/hooks/useAppwriteFetch";
+import useDataContext from "@/context/data/useDataContext";
 import { EDashboardTabs } from "@/lib/enums";
 import { IExpense, IIncome } from "@/lib/types";
 import database from "@/lib/appwrite/database";
+
+interface IStat {
+  title: string;
+  value: string;
+  icon: LucideIcon;
+  description?: string;
+}
 
 enum ESavingColumnIds {
   Amount = "amount",
@@ -106,30 +121,42 @@ export default function DashboardPage() {
     },
   ];
 
+  const amounts = {
+    totalLifeTimeSavings: 45_231.89,
+    totalSavings: 12_345.67,
+    totalNeeds: 12_234.56,
+    totalWants: 1_234.56,
+  };
+  const increasePercentages = {
+    savings: 20.1,
+    needs: 10.5,
+    wants: -5,
+  };
+
   const stats: IStat[] = [
     {
-      title: "Total Revenue",
-      value: "$45,231.89",
+      title: "Total Savings",
+      value: `${currency.symbolNative}${amounts.totalLifeTimeSavings}`,
+      icon: WalletIcon,
+      description: "Total savings from all your income",
+    },
+    {
+      title: "Savings",
+      value: `${currency.symbolNative}${amounts.totalSavings}`,
       icon: DollarSignIcon,
-      description: "+20.1% from last month",
+      description: `${increasePercentages.savings}% from last 30 days`,
     },
     {
-      title: "Subscriptions",
-      value: "+2350",
-      icon: UsersIcon,
-      description: "+20.1% from last month",
-    },
-    {
-      title: "Sales",
-      value: "+12,234",
+      title: "Needs",
+      value: `${currency.symbolNative}${amounts.totalNeeds}`,
       icon: CreditCardIcon,
-      description: "+20.1% from last month",
+      description: `${increasePercentages.needs}% from last 30 days`,
     },
     {
-      title: "Active Now",
-      value: "+573",
-      icon: DollarSignIcon,
-      description: "+20.1% from last month",
+      title: "Wants",
+      value: `${currency.symbolNative}${amounts.totalWants}`,
+      icon: HandCoinsIcon,
+      description: `${increasePercentages.wants}% from last 30 days`,
     },
   ];
 
@@ -155,7 +182,20 @@ export default function DashboardPage() {
         value={EDashboardTabs.Overview}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        Overview
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat, index) => (
+            <Card key={index}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                <stat.icon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stat.value}</div>
+                <p className="text-xs text-muted-foreground">{stat.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </TabsContent>
 
       <TabsContent
