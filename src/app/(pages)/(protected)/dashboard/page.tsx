@@ -26,78 +26,112 @@ enum EExpenseColumnIds {
   Type = "type",
 }
 
-const expenseColumns: ColumnDef<IExpense>[] = [
-  {
-    id: EExpenseColumnIds.Amount,
-    accessorKey: "amount",
-    header: ({ column }) => {
-      return <SortHeader column={column} title="Amount" />;
-    },
-  },
-  {
-    id: EExpenseColumnIds.Title,
-    accessorKey: "title",
-    header: "Title",
-  },
-  {
-    id: EExpenseColumnIds.Date,
-    accessorKey: "date",
-    header: ({ column }) => {
-      return <SortHeader column={column} title="Date" />;
-    },
-    cell: ({ row, column }) => {
-      const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
-      return formatted;
-    },
-  },
-  {
-    id: EExpenseColumnIds.Category,
-    accessorKey: "category.title",
-    header: "Category",
-  },
-  {
-    id: EExpenseColumnIds.Type,
-    accessorKey: "type",
-    header: "Type",
-    cell: ({ row, column }) => {
-      return <p className="capitalize">{row.getValue(column.id)}</p>;
-    },
-  },
-];
-const savingColumns: ColumnDef<IIncome>[] = [
-  {
-    id: ESavingColumnIds.Amount,
-    accessorKey: "amount",
-    header: ({ column }) => {
-      return <SortHeader column={column} title="Amount" />;
-    },
-  },
-  {
-    id: ESavingColumnIds.Title,
-    accessorKey: "title",
-    header: "Title",
-  },
-  {
-    id: ESavingColumnIds.Date,
-    accessorKey: "date",
-    header: ({ column }) => {
-      return <SortHeader column={column} title="Date" className="ml-auto" />;
-    },
-    cell: ({ row, column }) => {
-      const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
-      return formatted;
-    },
-  },
-];
-
 export default function DashboardPage() {
-  const { savings, setSavings, expenses, setExpenses } = useDataContext();
-  const { data: expensesData } = useAppwriteFetch(() => database.getExpenses());
-  const { data: incomesData } = useAppwriteFetch(() => database.getIncomes());
   const { tab, onTabChange } = useTab<EDashboardTabs>({
     defaultTab: EDashboardTabs.Overview,
     tabs: [EDashboardTabs.Overview, EDashboardTabs.Expenses, EDashboardTabs.Savings],
   });
+  const { currency, savings, setSavings, expenses, setExpenses } = useDataContext();
+
+  const { data: expensesData } = useAppwriteFetch(() => database.getExpenses());
+  const { data: incomesData } = useAppwriteFetch(() => database.getIncomes());
+
+  const expenseColumns: ColumnDef<IExpense>[] = [
+    {
+      id: EExpenseColumnIds.Amount,
+      accessorKey: "amount",
+      header: ({ column }) => {
+        return <SortHeader column={column} title="Amount" />;
+      },
+      cell: ({ row, column }) => {
+        return `${currency.symbolNative} ${row.getValue(column.id)}`;
+      },
+    },
+    {
+      id: EExpenseColumnIds.Title,
+      accessorKey: "title",
+      header: "Title",
+    },
+    {
+      id: EExpenseColumnIds.Date,
+      accessorKey: "date",
+      header: ({ column }) => {
+        return <SortHeader column={column} title="Date" />;
+      },
+      cell: ({ row, column }) => {
+        const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
+        return formatted;
+      },
+    },
+    {
+      id: EExpenseColumnIds.Category,
+      accessorKey: "category.title",
+      header: "Category",
+    },
+    {
+      id: EExpenseColumnIds.Type,
+      accessorKey: "type",
+      header: "Type",
+      cell: ({ row, column }) => {
+        return <p className="capitalize">{row.getValue(column.id)}</p>;
+      },
+    },
+  ];
+  const savingColumns: ColumnDef<IIncome>[] = [
+    {
+      id: ESavingColumnIds.Amount,
+      accessorKey: "amount",
+      header: ({ column }) => {
+        return <SortHeader column={column} title="Amount" />;
+      },
+      cell: ({ row, column }) => {
+        return `${currency.symbolNative} ${row.getValue(column.id)}`;
+      },
+    },
+    {
+      id: ESavingColumnIds.Title,
+      accessorKey: "title",
+      header: "Title",
+    },
+    {
+      id: ESavingColumnIds.Date,
+      accessorKey: "date",
+      header: ({ column }) => {
+        return <SortHeader column={column} title="Date" className="ml-auto" />;
+      },
+      cell: ({ row, column }) => {
+        const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
+        return formatted;
+      },
+    },
+  ];
+
+  const stats: IStat[] = [
+    {
+      title: "Total Revenue",
+      value: "$45,231.89",
+      icon: DollarSignIcon,
+      description: "+20.1% from last month",
+    },
+    {
+      title: "Subscriptions",
+      value: "+2350",
+      icon: UsersIcon,
+      description: "+20.1% from last month",
+    },
+    {
+      title: "Sales",
+      value: "+12,234",
+      icon: CreditCardIcon,
+      description: "+20.1% from last month",
+    },
+    {
+      title: "Active Now",
+      value: "+573",
+      icon: DollarSignIcon,
+      description: "+20.1% from last month",
+    },
+  ];
 
   useEffect(() => {
     setExpenses(expensesData);

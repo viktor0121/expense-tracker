@@ -21,6 +21,7 @@ export interface IUserPreferences {
 }
 
 export type IUser = Models.User<IUserPreferences>;
+export type ICurrency = Models.Currency;
 
 export interface IIncome extends Models.Document {
   title: string;
