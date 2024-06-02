@@ -2,7 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CreditCard, DollarSign, LucideIcon, SunMoon, Target, Terminal, User } from "lucide-react";
+import {
+  CreditCard,
+  DollarSign,
+  LogOut,
+  LucideIcon,
+  SunMoon,
+  Target,
+  Terminal,
+  User,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   CommandDialog,
@@ -22,7 +31,11 @@ interface Command {
   action: () => void;
 }
 
-export default function CommandPallet() {
+interface CommadPalletProps {
+  handleSignOut: () => void;
+}
+
+export default function CommandPallet({ handleSignOut }: CommadPalletProps) {
   const [modifierKey, setModifierKey] = useState<EModifierKey>(EModifierKey.Other);
   const [isMobile, setIsMobile] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
@@ -63,6 +76,13 @@ export default function CommandPallet() {
       action: () => commandAction(() => router.push("/settings/appearance")),
     },
   ];
+  const otherCommands: Command[] = [
+    {
+      title: "Logout",
+      Icon: LogOut,
+      action: () => commandAction(handleSignOut),
+    },
+  ];
 
   useEffect(() => {
     setIsMobile(checkIsMobile());
@@ -80,7 +100,11 @@ export default function CommandPallet() {
 
   return (
     <>
-      <Button onClick={toggle} variant="outline" className="ml-auto gap-2 text-muted-foreground hover:text-accent-foreground ">
+      <Button
+        onClick={toggle}
+        variant="outline"
+        className="ml-auto gap-2 text-muted-foreground hover:text-accent-foreground "
+      >
         <div className="flex items-center">
           <Terminal className="h-4" />
           <span>Command</span>
@@ -113,6 +137,17 @@ export default function CommandPallet() {
 
           <CommandGroup heading="Settings">
             {settingsCommands.map((command, index) => (
+              <CommandItem key={index} onSelect={command.action}>
+                <command.Icon className="mr-2 h-4 w-4" />
+                <span>{command.title}</span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+
+          <CommandSeparator />
+
+          <CommandGroup heading="Others">
+            {otherCommands.map((command, index) => (
               <CommandItem key={index} onSelect={command.action}>
                 <command.Icon className="mr-2 h-4 w-4" />
                 <span>{command.title}</span>

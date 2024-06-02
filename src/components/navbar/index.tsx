@@ -52,9 +52,9 @@ export default function Navbar() {
 
     const result: INavItem[] = [];
     if (authStatus) {
-      result.push(items.overview)
-      result.push(items.expense)
-      result.push(items.savings)
+      result.push(items.overview);
+      result.push(items.expense);
+      result.push(items.savings);
       result.push(items.settings);
     } else {
       result.push(items.home);
@@ -74,7 +74,7 @@ export default function Navbar() {
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-14 sm:px-6">
         <NavBurgerMenu navItems={navItems} />
         <NavTrail navTrails={navTrails} />
-        <CommandPallet />
+        <CommandPallet handleSignOut={handleSignOut} />
         <NavThemeToggle />
         {authStatus ? <NavDropdownMenu handleSignOut={handleSignOut} /> : null}
       </header>
