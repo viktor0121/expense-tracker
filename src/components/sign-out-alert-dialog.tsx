@@ -13,22 +13,22 @@ import {
 } from "@/components/ui/alert-dialog";
 import { buttonVariants } from "@/components/ui/button";
 import useAuthContext from "@/context/auth/useAuthContext";
+import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import auth from "@/lib/appwrite/auth";
 
-interface SignOutAlertDialogProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface SignOutAlertDialogProps {}
 
-export default function SignOutAlertDialog({ open, setOpen }: SignOutAlertDialogProps) {
+export default function SignOutAlertDialog({}: SignOutAlertDialogProps) {
+  const { signOutDialogOpen, setSignOutDialogOpen } = useOverlaysContext();
   const { setAuthStatus } = useAuthContext();
+
   const handleSignOut = async () => {
     await auth.signOut();
     setAuthStatus(false);
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialog open={signOutDialogOpen} onOpenChange={setSignOutDialogOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>You are about to sign out</AlertDialogTitle>

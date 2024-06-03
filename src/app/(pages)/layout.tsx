@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import useLoadingContext from "@/context/loading/useLoadingContext";
+import SignOutAlertDialog from "@/components/sign-out-alert-dialog";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { isLoading } = useLoadingContext();
@@ -18,6 +19,8 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
           {isLoading ? <p>Loading...</p> : children}
         </main>
       </div>
+
+      <SignOutAlertDialog />
 
       <Toaster />
     </TooltipProvider>

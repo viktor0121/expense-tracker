@@ -13,7 +13,6 @@ import SignOutAlertDialog from "@/components/sign-out-alert-dialog";
 import { INavItem } from "@/lib/types";
 
 export default function Navbar() {
-  const [logOutOpen, setLogOutOpen] = useState<boolean>(false);
   const { authStatus, setAuthStatus } = useAuthContext();
   const { navTrails } = useNavTrailContext();
   const navItems: INavItem[] = (function () {
@@ -70,10 +69,9 @@ export default function Navbar() {
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-14 sm:px-6">
         <NavBurgerMenu navItems={navItems} />
         <NavTrail navTrails={navTrails} />
-        <CommandPallet triggerSignOut={() => setLogOutOpen(true)} />
+        <CommandPallet />
         <NavThemeToggle />
-        {authStatus ? <NavDropdownMenu triggerSignOut={() => setLogOutOpen(true)} /> : null}
-        <SignOutAlertDialog open={logOutOpen} setOpen={setLogOutOpen} />
+        {authStatus ? <NavDropdownMenu /> : null}
       </header>
     </>
   );

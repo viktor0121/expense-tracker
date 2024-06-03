@@ -26,6 +26,7 @@ import {
 import { checkIsMobile, getModifierKey } from "@/lib/utils";
 import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
 import useAuthContext from "@/context/auth/useAuthContext";
+import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 
 interface Command {
   title: string;
@@ -33,16 +34,15 @@ interface Command {
   action: () => void;
 }
 
-interface CommandPalletProps {
-  triggerSignOut: () => void;
-}
+interface CommandPalletProps {}
 
-export default function CommandPallet({ triggerSignOut }: CommandPalletProps) {
+export default function CommandPallet({}: CommandPalletProps) {
   const [modifierKey, setModifierKey] = useState<EModifierKey>(EModifierKey.Other);
   const [isMobile, setIsMobile] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
 
   const { setTheme, systemTheme, theme } = useTheme();
+  const { setSignOutDialogOpen } = useOverlaysContext();
   const { authStatus } = useAuthContext();
   const router = useRouter();
 
