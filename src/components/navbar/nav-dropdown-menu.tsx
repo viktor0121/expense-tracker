@@ -26,7 +26,7 @@ export default function NavDropdownMenu({ triggerSignOut }: NavDropdownMenuProps
     (async function () {
       try {
         // Set the user's avatar if it exists
-        const photoId = await auth.getProfilePhotoIdPref();
+        const photoId = await auth.getPreference<string>("photoFileId");
         if (photoId) return setAvatar(storage.getProfilePhotoUrl({ photoId }));
 
         // If the user doesn't have an avatar, set their initials

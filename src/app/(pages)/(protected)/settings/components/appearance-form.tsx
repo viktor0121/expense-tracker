@@ -142,8 +142,7 @@ export default function AppearanceForm() {
   useEffect(() => {
     (async function () {
       try {
-        const themePref = await auth.getThemePref();
-        console.log(themePref);
+        const themePref = await auth.getPreference<ETheme>("theme");
         if (themePref) form.setValue("theme", themePref);
         else if (theme) form.setValue("theme", theme as ETheme);
       } catch (error: any) {}

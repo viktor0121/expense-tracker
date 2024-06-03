@@ -41,7 +41,7 @@ function ProviderChildWrapper({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     (async function () {
       try {
-        const themePref = await auth.getThemePref();
+        const themePref = await auth.getPreference<ETheme>("theme");
         if (themePref) setTheme(themePref);
       } catch (error: any) {}
     })();

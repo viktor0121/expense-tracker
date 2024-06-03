@@ -1,5 +1,5 @@
 import { Account, Client, ID, Models } from "appwrite";
-import { IUser } from "@/lib/types";
+import { IUser, IUserPreferences } from "@/lib/types";
 import { ETheme } from "@/lib/enums";
 import env from "../env";
 
@@ -109,16 +109,6 @@ export class AuthService {
     }
   }
 
-  async getThemePref(): Promise<ETheme | null> {
-    try {
-      const preferences = await this.account.getPrefs();
-      return preferences.theme || null;
-    } catch (error: any) {
-      console.error("Appwrite :: getThemePref() :: ", error);
-      throw error;
-    }
-  }
-
   async updateProfilePhotoIdPref({ photoFileId }: UpdateProfilePhotoPrefParams): Promise<IUser> {
     try {
       const preferences = await this.account.getPrefs();
@@ -129,12 +119,13 @@ export class AuthService {
     }
   }
 
-  async getProfilePhotoIdPref(): Promise<string | null> {
+  async getPreference<T>(pref: keyof IUserPreferences): Promise<T | null> {
     try {
-      const preferences = await this.account.getPrefs();
-      return preferences.photoFileId || null;
+      const preferences: IUserPreferences = await this.account.getPrefs();
+      const value = (preferences as IUserPreferences)[pref];
+      return (value as T) ?? null;
     } catch (error: any) {
-      console.error("Appwrite :: getProfilePhotoPref() :: ", error);
+      console.error("Appwrite :: getPreference() :: ", error);
       throw error;
     }
   }

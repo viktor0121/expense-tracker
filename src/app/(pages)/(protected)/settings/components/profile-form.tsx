@@ -114,7 +114,7 @@ export default function ProfileForm() {
       if (user?.phone !== phone && phone) setUser(await auth.updatePhone({ phone, password }));
       if (photo[0]) {
         const file = photo[0];
-        const oldPhotoId = await auth.getProfilePhotoIdPref();
+        const oldPhotoId = await auth.getPreference<string>("photoFileId");
         const newPhotoId = await storage.createProfilePhoto({ file });
 
         setUser(await auth.updateProfilePhotoIdPref({ photoFileId: newPhotoId }));
