@@ -17,6 +17,7 @@ import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-t
 import useTab from "@/hooks/useTab";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import useDataContext from "@/context/data/useDataContext";
+import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { EDashboardTabs } from "@/lib/enums";
 import { IExpense, IIncome } from "@/lib/types";
 import database from "@/lib/appwrite/database";
@@ -46,7 +47,8 @@ export default function DashboardPage() {
     defaultTab: EDashboardTabs.Overview,
     tabs: [EDashboardTabs.Overview, EDashboardTabs.Expenses, EDashboardTabs.Savings],
   });
-  const { currency, savings, setSavings, expenses, setExpenses } = useDataContext();
+  const { savings, setSavings, expenses, setExpenses } = useDataContext();
+  const { currency } = useCurrencyContext();
 
   const { data: expensesData } = useAppwriteFetch(() => database.getExpenses());
   const { data: incomesData } = useAppwriteFetch(() => database.getIncomes());

@@ -1,10 +1,11 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import LoadingProvider from "@/context/loading/provider";
-import AuthProvider from "@/context/auth/provider";
 import NavTrailProvider from "@/context/nav-trail/provider";
+import CurrencyProvider from "@/context/currency/provider";
+import LoadingProvider from "@/context/loading/provider";
 import ThemeProvider from "@/context/theme/provider";
+import AuthProvider from "@/context/auth/provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -22,7 +23,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <LoadingProvider>
           <AuthProvider>
             <NavTrailProvider>
-              <ThemeProvider>{children}</ThemeProvider>
+              <ThemeProvider>
+                <CurrencyProvider>{children}</CurrencyProvider>
+              </ThemeProvider>
             </NavTrailProvider>
           </AuthProvider>
         </LoadingProvider>
