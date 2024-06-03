@@ -53,7 +53,7 @@ function ProviderChildWrapper({ children }: { children: React.ReactNode }) {
       try {
         if (authStatus) {
           const newTheme = theme === ETheme.Light || theme === ETheme.Dark ? theme : ETheme.System;
-          await auth.updateThemePref({ theme: newTheme });
+          await auth.updatePreference<ETheme>("theme", newTheme);
         }
       } catch (error: any) {
         if (authStatus) {

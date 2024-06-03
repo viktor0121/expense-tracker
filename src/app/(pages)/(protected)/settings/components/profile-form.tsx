@@ -117,7 +117,7 @@ export default function ProfileForm() {
         const oldPhotoId = await auth.getPreference<string>("photoFileId");
         const newPhotoId = await storage.createProfilePhoto({ file });
 
-        setUser(await auth.updateProfilePhotoIdPref({ photoFileId: newPhotoId }));
+        setUser(await auth.updatePreference<string>("photoFileId", newPhotoId));
         setAvatar(storage.getProfilePhotoUrl({ photoId: newPhotoId }));
 
         if (oldPhotoId) await storage.deleteProfilePhoto({ photoId: oldPhotoId });

@@ -23,14 +23,6 @@ interface UpdatePhoneParams {
   password: string;
 }
 
-interface UpdateThemePrefParams {
-  theme: ETheme;
-}
-
-interface UpdateProfilePhotoPrefParams {
-  photoFileId: string;
-}
-
 interface LoginParams {
   email: string;
   password: string;
@@ -99,26 +91,6 @@ export class AuthService {
     }
   }
 
-  async updateThemePref({ theme }: UpdateThemePrefParams): Promise<IUser> {
-    try {
-      const preferences = await this.account.getPrefs();
-      return await this.account.updatePrefs({ ...preferences, theme });
-    } catch (error: any) {
-      console.error("Appwrite :: updateThemePref() :: ", error);
-      throw error;
-    }
-  }
-
-  async updateProfilePhotoIdPref({ photoFileId }: UpdateProfilePhotoPrefParams): Promise<IUser> {
-    try {
-      const preferences = await this.account.getPrefs();
-      return await this.account.updatePrefs({ ...preferences, photoFileId });
-    } catch (error: any) {
-      console.error("Appwrite :: updateProfilePhotoPref() :: ", error);
-      throw error;
-    }
-  }
-
   async getPreference<T>(pref: keyof IUserPreferences): Promise<T | null> {
     try {
       const preferences: IUserPreferences = await this.account.getPrefs();
@@ -126,6 +98,16 @@ export class AuthService {
       return (value as T) ?? null;
     } catch (error: any) {
       console.error("Appwrite :: getPreference() :: ", error);
+      throw error;
+    }
+  }
+
+  async updatePreference<T>(pref: keyof IUserPreferences, value: T): Promise<IUser> {
+    try {
+      const preferences: IUserPreferences = await this.account.getPrefs();
+      return await this.account.updatePrefs({ ...preferences, [pref]: value });
+    } catch (error: any) {
+      console.error("Appwrite :: updatePreference() :: ", error);
       throw error;
     }
   }
