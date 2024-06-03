@@ -4,11 +4,11 @@ import React, { useEffect } from "react";
 import { formatDate } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
 import {
-  LucideIcon,
   CreditCardIcon,
   DollarSignIcon,
-  WalletIcon,
   HandCoinsIcon,
+  LucideIcon,
+  WalletIcon,
 } from "lucide-react";
 import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -74,8 +74,7 @@ export default function DashboardPage() {
         return <SortHeader column={column} title="Date" />;
       },
       cell: ({ row, column }) => {
-        const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
-        return formatted;
+        return formatDate(row.getValue(column.id), "dd MMM yyyy");
       },
     },
     {
@@ -115,8 +114,7 @@ export default function DashboardPage() {
         return <SortHeader column={column} title="Date" className="ml-auto" />;
       },
       cell: ({ row, column }) => {
-        const formatted = formatDate(row.getValue(column.id), "dd MMM yyyy");
-        return formatted;
+        return formatDate(row.getValue(column.id), "dd MMM yyyy");
       },
     },
   ];
@@ -163,7 +161,7 @@ export default function DashboardPage() {
   useEffect(() => {
     setExpenses(expensesData);
     setSavings(incomesData);
-  }, [expensesData, setExpenses]);
+  }, [expensesData, incomesData]);
 
   // NOTE: TabsContent Height is manually set to 100vh - 8rem for desktop and 100vh - 5rem for mobile
   return (

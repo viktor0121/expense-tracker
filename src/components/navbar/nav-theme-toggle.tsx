@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ETheme } from "@/lib/enums";
 
 export default function NavThemeToggle() {
   const { setTheme } = useTheme();
@@ -23,9 +24,9 @@ export default function NavThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme(ETheme.Light)}>Light</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme(ETheme.Dark)}>Dark</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme(ETheme.System)}>System</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
