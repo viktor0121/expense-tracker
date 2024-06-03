@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import {
   CreditCard,
   DollarSign,
@@ -21,7 +22,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { checkIsMobile, getModifierKey } from "@/lib/utils";
-import { EModifierKey } from "@/lib/enums";
+import { EModifierKey, ETheme } from "@/lib/enums";
 
 interface Command {
   title: string;
@@ -37,6 +38,8 @@ export default function CommandPallet({ triggerSignOut }: CommandPalletProps) {
   const [modifierKey, setModifierKey] = useState<EModifierKey>(EModifierKey.Other);
   const [isMobile, setIsMobile] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
+
+  const { setTheme, systemTheme, theme } = useTheme();
   const router = useRouter();
 
   const toggle = () => setOpen((open) => !open);
@@ -79,6 +82,15 @@ export default function CommandPallet({ triggerSignOut }: CommandPalletProps) {
       title: "Sign Out",
       Icon: LogOut,
       action: () => commandAction(triggerSignOut),
+    },
+    {
+      title: "Toggle Theme",
+      Icon: SunMoon,
+      action: () =>
+        commandAction(() => {
+          if (theme === ETheme.Light || systemTheme === "light") setTheme(ETheme.Dark);
+          else setTheme(ETheme.Light);
+        }),
     },
   ];
 
