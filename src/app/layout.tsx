@@ -24,11 +24,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <LoadingProvider>
           <AuthProvider>
             <OverlaysProvider>
-              <NavTrailProvider>
-                <ThemeProvider>
-                  <CurrencyProvider>{children}</CurrencyProvider>
-                </ThemeProvider>
-              </NavTrailProvider>
+              <ThemeProvider>
+                <CurrencyProvider>{children}</CurrencyProvider>
+              </ThemeProvider>
             </OverlaysProvider>
           </AuthProvider>
         </LoadingProvider>
