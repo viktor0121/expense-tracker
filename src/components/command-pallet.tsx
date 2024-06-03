@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import {
+  LucideIcon,
   CreditCard,
   DollarSign,
   LogIn,
   LogOut,
-  LucideIcon,
+  PlusIcon,
   SunMoon,
   Target,
   Terminal,
@@ -23,10 +24,10 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { checkIsMobile, getModifierKey } from "@/lib/utils";
-import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
 import useAuthContext from "@/context/auth/useAuthContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
+import { checkIsMobile, getModifierKey } from "@/lib/utils";
+import { EAddSheetTabs, EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
 
 interface Command {
   title: string;
@@ -42,7 +43,7 @@ export default function CommandPallet({}: CommandPalletProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const { setTheme, systemTheme, theme } = useTheme();
-  const { setSignOutDialogOpen } = useOverlaysContext();
+  const { setSignOutDialogOpen, setAddNewSideSheetOpen } = useOverlaysContext();
   const { authStatus } = useAuthContext();
   const router = useRouter();
 
@@ -62,6 +63,31 @@ export default function CommandPallet({}: CommandPalletProps) {
       title: "Register",
       Icon: UserPlus,
       action: () => commandAction(() => router.push(`/auth?tab=${EAuthTabs.Register}`)),
+    },
+  ];
+
+  const addNewCommands: Command[] = [
+    {
+      title: "Expense",
+      Icon: PlusIcon,
+      action: () =>
+        commandAction(() =>
+          setAddNewSideSheetOpen({
+            open: true,
+            defaultTab: EAddSheetTabs.Expense,
+          }),
+        ),
+    },
+    {
+      title: "Saving",
+      Icon: PlusIcon,
+      action: () =>
+        commandAction(() =>
+          setAddNewSideSheetOpen({
+            open: true,
+            defaultTab: EAddSheetTabs.Saving,
+          }),
+        ),
     },
   ];
 
@@ -100,7 +126,7 @@ export default function CommandPallet({}: CommandPalletProps) {
     {
       title: "Sign Out",
       Icon: LogOut,
-      action: () => commandAction(triggerSignOut),
+      action: () => commandAction(() => setSignOutDialogOpen(true)),
     },
   ];
 
@@ -167,13 +193,8 @@ export default function CommandPallet({}: CommandPalletProps) {
                   </CommandItem>
                 ))}
               </CommandGroup>
-
-              <CommandSeparator />
             </>
-          ) : null}
-
-          {/*AUTH - DASHBOARD COMMANDS*/}
-          {authStatus ? (
+          ) : (
             <>
               <CommandGroup heading="Dashboard">
                 {dashboardCommands.map((command, index) => (
@@ -185,14 +206,9 @@ export default function CommandPallet({}: CommandPalletProps) {
               </CommandGroup>
 
               <CommandSeparator />
-            </>
-          ) : null}
 
-          {/*AUTH - SETTINGS COMMANDS*/}
-          {authStatus ? (
-            <>
-              <CommandGroup heading="Settings">
-                {settingsCommands.map((command, index) => (
+              <CommandGroup heading="Add New">
+                {addNewCommands.map((command, index) => (
                   <CommandItem key={index} onSelect={command.action}>
                     <command.Icon className="mr-2 h-4 w-4" />
                     <span>{command.title}</span>
@@ -201,8 +217,19 @@ export default function CommandPallet({}: CommandPalletProps) {
               </CommandGroup>
 
               <CommandSeparator />
+
+              <CommandGroup heading="Settings">
+                {settingsCommands.map((command, index) => (
+                  <CommandItem key={index} onSelect={command.action}>
+                    <command.Icon className="mr-2 h-4 w-4" />
+                    <span>{command.title}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
             </>
-          ) : null}
+          )}
+
+          <CommandSeparator />
 
           <CommandGroup heading="Others">
             {/*AUTH - OTHER COMMANDS*/}
