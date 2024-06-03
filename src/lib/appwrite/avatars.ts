@@ -11,4 +11,5 @@ export class AvatarsService {
   }
 }
 
-export default new AvatarsService();
+const avatars = new AvatarsService();
+export default avatars;

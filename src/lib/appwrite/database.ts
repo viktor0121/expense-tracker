@@ -45,7 +45,13 @@ export class DatabaseServices {
     ];
   }
 
-  async createExpense({ title, amount, category, type, date }: CreateExpenseParams): Promise<IExpense> {
+  async createExpense({
+    title,
+    amount,
+    category,
+    type,
+    date,
+  }: CreateExpenseParams): Promise<IExpense> {
     try {
       const data = { title, amount, date, category, type };
       const permissions = await this._getRUDPermissions();
@@ -155,4 +161,5 @@ export class DatabaseServices {
   }
 }
 
-export default new DatabaseServices();
+const database = new DatabaseServices();
+export default database;
