@@ -10,20 +10,20 @@ import { EAddSheetTabs } from "@/lib/enums";
 interface AddNewSheetProps {}
 
 export default function AddNewSheet({}: AddNewSheetProps) {
-  const { addNewSideSheetOpen, setAddNewSideSheetOpen } = useOverlaysContext();
-  const closeSheet = () => setAddNewSideSheetOpen((prev) => ({ ...prev, open: false }));
+  const { addNewSideSheet, setAddNewSideSheet } = useOverlaysContext();
+  const closeSheet = () => setAddNewSideSheet((prev) => ({ ...prev, open: false }));
 
   return (
     <Sheet
-      open={addNewSideSheetOpen.open}
-      onOpenChange={(open) => setAddNewSideSheetOpen((prev) => ({ ...prev, open }))}
+      open={addNewSideSheet.open}
+      onOpenChange={(open) => setAddNewSideSheet((prev) => ({ ...prev, open }))}
     >
       <SheetContent className="slim-scrollbar overflow-auto py-5 px-1 sm:px-5 w-full sm:min-w-fit">
         <SheetHeader>
           <SheetTitle className="mb-4">Add New Record</SheetTitle>
         </SheetHeader>
 
-        <Tabs defaultValue={addNewSideSheetOpen.defaultTab} className="sm:w-[400px]">
+        <Tabs defaultValue={addNewSideSheet.defaultTab} className="sm:w-[400px]">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value={EAddSheetTabs.Expense}>Expense</TabsTrigger>
             <TabsTrigger value={EAddSheetTabs.Saving}>Saving</TabsTrigger>

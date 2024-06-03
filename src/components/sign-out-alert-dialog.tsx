@@ -19,7 +19,7 @@ import auth from "@/lib/appwrite/auth";
 interface SignOutAlertDialogProps {}
 
 export default function SignOutAlertDialog({}: SignOutAlertDialogProps) {
-  const { signOutDialogOpen, setSignOutDialogOpen } = useOverlaysContext();
+  const { signOutDialog, setSignOutDialog } = useOverlaysContext();
   const { setAuthStatus } = useAuthContext();
 
   const handleSignOut = async () => {
@@ -28,7 +28,7 @@ export default function SignOutAlertDialog({}: SignOutAlertDialogProps) {
   };
 
   return (
-    <AlertDialog open={signOutDialogOpen} onOpenChange={setSignOutDialogOpen}>
+    <AlertDialog open={signOutDialog} onOpenChange={setSignOutDialog}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>You are about to sign out</AlertDialogTitle>

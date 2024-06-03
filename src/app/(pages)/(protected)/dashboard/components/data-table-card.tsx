@@ -22,7 +22,7 @@ export default function DataTableCard<T>({
   filter,
   data,
 }: DataTableCardProps<T>) {
-  const { setAddNewSideSheetOpen } = useOverlaysContext();
+  const { setAddNewSideSheet } = useOverlaysContext();
 
   return (
     <Card className="h-full min-h-96 flex flex-col">
@@ -41,7 +41,7 @@ export default function DataTableCard<T>({
           variant="outline"
           className="space-x-1"
           onClick={() =>
-            setAddNewSideSheetOpen({
+            setAddNewSideSheet({
               open: true,
               defaultTab: title === "saving" ? EAddSheetTabs.Saving : EAddSheetTabs.Expense,
             })

@@ -20,7 +20,7 @@ interface NavDropdownMenuProps {}
 
 export default function NavDropdownMenu({}: NavDropdownMenuProps) {
   const [avatar, setAvatar] = useState<string>("");
-  const { setSignOutDialogOpen } = useOverlaysContext();
+  const { setSignOutDialog } = useOverlaysContext();
 
   useEffect(() => {
     (async function () {
@@ -61,7 +61,7 @@ export default function NavDropdownMenu({}: NavDropdownMenuProps) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <button onClick={() => setSignOutDialogOpen(true)} className="w-full">
+          <button onClick={() => setSignOutDialog(true)} className="w-full">
             Logout
           </button>
         </DropdownMenuItem>

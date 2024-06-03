@@ -43,7 +43,7 @@ export default function CommandPallet({}: CommandPalletProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const { setTheme, systemTheme, theme } = useTheme();
-  const { setSignOutDialogOpen, setAddNewSideSheetOpen } = useOverlaysContext();
+  const { setSignOutDialog, setAddNewSideSheet } = useOverlaysContext();
   const { authStatus } = useAuthContext();
   const router = useRouter();
 
@@ -72,7 +72,7 @@ export default function CommandPallet({}: CommandPalletProps) {
       Icon: PlusIcon,
       action: () =>
         commandAction(() =>
-          setAddNewSideSheetOpen({
+          setAddNewSideSheet({
             open: true,
             defaultTab: EAddSheetTabs.Expense,
           }),
@@ -83,7 +83,7 @@ export default function CommandPallet({}: CommandPalletProps) {
       Icon: PlusIcon,
       action: () =>
         commandAction(() =>
-          setAddNewSideSheetOpen({
+          setAddNewSideSheet({
             open: true,
             defaultTab: EAddSheetTabs.Saving,
           }),
@@ -126,7 +126,7 @@ export default function CommandPallet({}: CommandPalletProps) {
     {
       title: "Sign Out",
       Icon: LogOut,
-      action: () => commandAction(() => setSignOutDialogOpen(true)),
+      action: () => commandAction(() => setSignOutDialog(true)),
     },
   ];
 
