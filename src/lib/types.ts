@@ -1,7 +1,7 @@
 import React from "react";
 import { LucideProps } from "lucide-react";
 import { Models } from "appwrite";
-import { EExpenseType, ETheme } from "@/lib/enums";
+import { EAddSheetTabs, EExpenseType, ETheme } from "@/lib/enums";
 
 export interface INavTrail {
   href: string;
@@ -21,6 +21,7 @@ export interface IUserPreferences {
 }
 
 export type IUser = Models.User<IUserPreferences>;
+
 export type ICurrency = Models.Currency;
 
 export interface IIncome extends Models.Document {
@@ -39,4 +40,9 @@ export interface IExpense extends Models.Document {
   date: Date;
   type: EExpenseType;
   category: string | IExpenseCategory;
+}
+
+export interface IAddNewSheetState {
+  open: boolean;
+  defaultTab: EAddSheetTabs;
 }

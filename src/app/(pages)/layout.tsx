@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import useLoadingContext from "@/context/loading/useLoadingContext";
 import SignOutAlertDialog from "@/components/sign-out-alert-dialog";
+import AddNewSheet from "@/components/add-new-sheet";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { isLoading } = useLoadingContext();
@@ -21,6 +22,8 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
       </div>
 
       <SignOutAlertDialog />
+
+      <AddNewSheet />
 
       <Toaster />
     </TooltipProvider>
