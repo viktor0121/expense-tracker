@@ -4,12 +4,14 @@ import { useTheme } from "next-themes";
 import {
   CreditCard,
   DollarSign,
+  LogIn,
   LogOut,
   LucideIcon,
   SunMoon,
   Target,
   Terminal,
   User,
+  UserPlus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +24,8 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { checkIsMobile, getModifierKey } from "@/lib/utils";
-import { EModifierKey, ETheme } from "@/lib/enums";
+import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
+import useAuthContext from "@/context/auth/useAuthContext";
 
 interface Command {
   title: string;
@@ -40,6 +43,7 @@ export default function CommandPallet({ triggerSignOut }: CommandPalletProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const { setTheme, systemTheme, theme } = useTheme();
+  const { authStatus } = useAuthContext();
   const router = useRouter();
 
   const toggle = () => setOpen((open) => !open);
@@ -48,23 +52,37 @@ export default function CommandPallet({ triggerSignOut }: CommandPalletProps) {
     setOpen(false);
   };
 
+  const notAuthCommands: Command[] = [
+    {
+      title: "Sign In",
+      Icon: LogIn,
+      action: () => commandAction(() => router.push(`/auth?tab=${EAuthTabs.Login}`)),
+    },
+    {
+      title: "Register",
+      Icon: UserPlus,
+      action: () => commandAction(() => router.push(`/auth?tab=${EAuthTabs.Register}`)),
+    },
+  ];
+
   const dashboardCommands: Command[] = [
     {
       title: "Overview",
       Icon: Target,
-      action: () => commandAction(() => router.push("/dashboard?tab=overview")),
+      action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Overview}`)),
     },
     {
       title: "Expenses",
       Icon: CreditCard,
-      action: () => commandAction(() => router.push("/dashboard?tab=expenses")),
+      action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Expenses}`)),
     },
     {
       title: "Savings",
       Icon: DollarSign,
-      action: () => commandAction(() => router.push("/dashboard?tab=savings")),
+      action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Savings}`)),
     },
   ];
+
   const settingsCommands: Command[] = [
     {
       title: "Profile",
@@ -77,12 +95,16 @@ export default function CommandPallet({ triggerSignOut }: CommandPalletProps) {
       action: () => commandAction(() => router.push("/settings/appearance")),
     },
   ];
-  const otherCommands: Command[] = [
+
+  const otherAuthCommands: Command[] = [
     {
       title: "Sign Out",
       Icon: LogOut,
       action: () => commandAction(triggerSignOut),
     },
+  ];
+
+  const otherCommands: Command[] = [
     {
       title: "Toggle Theme",
       Icon: SunMoon,
@@ -134,29 +156,68 @@ export default function CommandPallet({ triggerSignOut }: CommandPalletProps) {
         <CommandList className="">
           <CommandEmpty>No results found.</CommandEmpty>
 
-          <CommandGroup heading="Dashboard">
-            {dashboardCommands.map((command, index) => (
-              <CommandItem key={index} onSelect={command.action}>
-                <command.Icon className="mr-2 h-4 w-4" />
-                <span>{command.title}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          {/*NOT AUTH - AUTHENTICATION COMMANDS*/}
+          {!authStatus ? (
+            <>
+              <CommandGroup heading="Auth">
+                {notAuthCommands.map((command, index) => (
+                  <CommandItem key={index} onSelect={command.action}>
+                    <command.Icon className="mr-2 h-4 w-4" />
+                    <span>{command.title}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
 
-          <CommandSeparator />
+              <CommandSeparator />
+            </>
+          ) : null}
 
-          <CommandGroup heading="Settings">
-            {settingsCommands.map((command, index) => (
-              <CommandItem key={index} onSelect={command.action}>
-                <command.Icon className="mr-2 h-4 w-4" />
-                <span>{command.title}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          {/*AUTH - DASHBOARD COMMANDS*/}
+          {authStatus ? (
+            <>
+              <CommandGroup heading="Dashboard">
+                {dashboardCommands.map((command, index) => (
+                  <CommandItem key={index} onSelect={command.action}>
+                    <command.Icon className="mr-2 h-4 w-4" />
+                    <span>{command.title}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
 
-          <CommandSeparator />
+              <CommandSeparator />
+            </>
+          ) : null}
+
+          {/*AUTH - SETTINGS COMMANDS*/}
+          {authStatus ? (
+            <>
+              <CommandGroup heading="Settings">
+                {settingsCommands.map((command, index) => (
+                  <CommandItem key={index} onSelect={command.action}>
+                    <command.Icon className="mr-2 h-4 w-4" />
+                    <span>{command.title}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+
+              <CommandSeparator />
+            </>
+          ) : null}
 
           <CommandGroup heading="Others">
+            {/*AUTH - OTHER COMMANDS*/}
+            {authStatus ? (
+              <>
+                {otherAuthCommands.map((command, index) => (
+                  <CommandItem key={index} onSelect={command.action}>
+                    <command.Icon className="mr-2 h-4 w-4" />
+                    <span>{command.title}</span>
+                  </CommandItem>
+                ))}
+              </>
+            ) : null}
+
+            {/*OTHER COMMANDS*/}
             {otherCommands.map((command, index) => (
               <CommandItem key={index} onSelect={command.action}>
                 <command.Icon className="mr-2 h-4 w-4" />
