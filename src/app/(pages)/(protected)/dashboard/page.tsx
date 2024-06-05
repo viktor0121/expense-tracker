@@ -21,6 +21,8 @@ import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { EDashboardTabs } from "@/lib/enums";
 import { IExpense, IIncome } from "@/lib/types";
 import database from "@/lib/appwrite/database";
+import ActionsDropdown from "@/app/(pages)/(protected)/dashboard/components/action-dropdown";
+import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 
 interface IStat {
   title: string;
@@ -49,6 +51,7 @@ export default function DashboardPage() {
   });
   const { savings, setSavings, expenses, setExpenses } = useDataContext();
   const { currency } = useCurrencyContext();
+  const { setDeleteRecordDialog } = useOverlaysContext();
 
   const { data: expensesData } = useAppwriteFetch(() => database.getExpenses());
   const { data: incomesData } = useAppwriteFetch(() => database.getIncomes());
@@ -68,15 +71,8 @@ export default function DashboardPage() {
       id: EExpenseColumnIds.Title,
       accessorKey: "title",
       header: "Title",
-    },
-    {
-      id: EExpenseColumnIds.Date,
-      accessorKey: "date",
-      header: ({ column }) => {
-        return <SortHeader column={column} title="Date" />;
-      },
       cell: ({ row, column }) => {
-        return formatDate(row.getValue(column.id), "dd MMM yyyy");
+        return <div className="capitalize">{row.getValue(column.id)}</div>;
       },
     },
     {
@@ -89,7 +85,35 @@ export default function DashboardPage() {
       accessorKey: "type",
       header: "Type",
       cell: ({ row, column }) => {
-        return <p className="capitalize">{row.getValue(column.id)}</p>;
+        return <div className="capitalize">{row.getValue(column.id)}</div>;
+      },
+    },
+    {
+      id: EExpenseColumnIds.Date,
+      accessorKey: "date",
+      header: ({ column }) => {
+        return <SortHeader column={column} title="Date" className="ml-auto" />;
+      },
+      cell: ({ row, column }) => {
+        return (
+          <div className="text-right">{formatDate(row.getValue(column.id), "dd MMM yyyy")}</div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        return (
+          <ActionsDropdown
+            deleteRecord={() => {
+              setDeleteRecordDialog((prev) => ({
+                open: true,
+                recordType: "expense",
+                record: row.original,
+              }));
+            }}
+          />
+        );
       },
     },
   ];
@@ -108,6 +132,9 @@ export default function DashboardPage() {
       id: ESavingColumnIds.Title,
       accessorKey: "title",
       header: "Title",
+      cell: ({ row, column }) => {
+        return <div className="capitalize">{row.getValue(column.id)}</div>;
+      },
     },
     {
       id: ESavingColumnIds.Date,
@@ -116,7 +143,25 @@ export default function DashboardPage() {
         return <SortHeader column={column} title="Date" className="ml-auto" />;
       },
       cell: ({ row, column }) => {
-        return formatDate(row.getValue(column.id), "dd MMM yyyy");
+        return (
+          <div className="text-right">{formatDate(row.getValue(column.id), "dd MMM yyyy")}</div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        return (
+          <ActionsDropdown
+            deleteRecord={() => {
+              setDeleteRecordDialog(() => ({
+                open: true,
+                recordType: "saving",
+                record: row.original,
+              }));
+            }}
+          />
+        );
       },
     },
   ];

@@ -9,6 +9,7 @@ import SignOutAlertDialog from "@/components/sign-out-alert-dialog";
 import AddNewSheet from "@/components/add-new-sheet";
 import NavTrailProvider from "@/context/nav-trail/provider";
 import { useSearchParams } from "next/navigation";
+import DeleteRecordAlertDialog from "@/components/delete-record-alert-dialog";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { isLoading } = useLoadingContext();
@@ -26,8 +27,8 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
         </div>
 
         <SignOutAlertDialog />
-
         <AddNewSheet />
+        <DeleteRecordAlertDialog />
 
         <Toaster />
       </NavTrailProvider>

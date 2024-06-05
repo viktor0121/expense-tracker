@@ -21,7 +21,7 @@ interface CreateExpenseCategoryParams {
   title: string;
 }
 
-interface DeleteExpenseCategoryParams {
+interface DeleteParams {
   id: string;
 }
 
@@ -133,7 +133,25 @@ export class DatabaseServices {
     }
   }
 
-  async deleteExpenseCategory({ id }: DeleteExpenseCategoryParams): Promise<{}> {
+  async deleteExpense({ id }: DeleteParams): Promise<{}> {
+    try {
+      return await this.databases.deleteDocument(env.awDatabaseId, env.awExpenseCollectionId, id);
+    } catch (error: any) {
+      console.error("Appwrite :: deleteExpense() :: ", error);
+      throw error;
+    }
+  }
+
+  async deleteIncome({ id }: DeleteParams): Promise<{}> {
+    try {
+      return await this.databases.deleteDocument(env.awDatabaseId, env.awIncomeCollectionId, id);
+    } catch (error: any) {
+      console.error("Appwrite :: deleteIncome() :: ", error);
+      throw error;
+    }
+  }
+
+  async deleteExpenseCategory({ id }: DeleteParams): Promise<{}> {
     try {
       return await this.databases.deleteDocument(
         env.awDatabaseId,
