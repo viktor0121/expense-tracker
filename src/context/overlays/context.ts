@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { IAddNewSheetState, IDeleteRecordDialogState } from "@/lib/types";
+import { IAddNewSheetState, IRecordDialogState } from "@/lib/types";
 import { EAddSheetTabs } from "@/lib/enums";
 
 interface OverlaysContextValues {
@@ -7,8 +7,10 @@ interface OverlaysContextValues {
   setSignOutDialog: React.Dispatch<React.SetStateAction<boolean>>;
   addNewSideSheet: IAddNewSheetState;
   setAddNewSideSheet: React.Dispatch<React.SetStateAction<IAddNewSheetState>>;
-  deleteRecordDialog: IDeleteRecordDialogState;
-  setDeleteRecordDialog: React.Dispatch<React.SetStateAction<IDeleteRecordDialogState>>;
+  deleteRecordDialog: IRecordDialogState;
+  setDeleteRecordDialog: React.Dispatch<React.SetStateAction<IRecordDialogState>>;
+  updateRecordDialog: IRecordDialogState;
+  setUpdateRecordDialog: React.Dispatch<React.SetStateAction<IRecordDialogState>>;
 }
 
 const OverlaysContext = createContext<OverlaysContextValues>({
@@ -25,6 +27,11 @@ const OverlaysContext = createContext<OverlaysContextValues>({
     open: false,
   },
   setDeleteRecordDialog: () => {},
+
+  updateRecordDialog: {
+    open: false,
+  },
+  setUpdateRecordDialog: () => {},
 });
 
 export default OverlaysContext;

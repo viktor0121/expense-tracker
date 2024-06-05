@@ -10,6 +10,7 @@ import AddNewSheet from "@/components/add-new-sheet";
 import NavTrailProvider from "@/context/nav-trail/provider";
 import { useSearchParams } from "next/navigation";
 import DeleteRecordAlertDialog from "@/components/delete-record-alert-dialog";
+import UpdateRecordDialog from "@/components/update-record-dialog";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { isLoading } = useLoadingContext();
@@ -29,6 +30,7 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
         <SignOutAlertDialog />
         <AddNewSheet />
         <DeleteRecordAlertDialog />
+        <UpdateRecordDialog />
 
         <Toaster />
       </NavTrailProvider>

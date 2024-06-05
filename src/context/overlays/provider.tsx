@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import OverlaysContext from "@/context/overlays/context";
 import { EAddSheetTabs } from "@/lib/enums";
-import { IAddNewSheetState, IDeleteRecordDialogState } from "@/lib/types";
+import { IAddNewSheetState, IRecordDialogState } from "@/lib/types";
 
 export default function OverlaysProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   const [signOutDialog, setSignOutDialog] = useState<boolean>(false);
@@ -11,7 +11,10 @@ export default function OverlaysProvider({ children }: Readonly<{ children: Reac
     open: false,
     defaultTab: EAddSheetTabs.Expense,
   });
-  const [deleteRecordDialog, setDeleteRecordDialog] = useState<IDeleteRecordDialogState>({
+  const [deleteRecordDialog, setDeleteRecordDialog] = useState<IRecordDialogState>({
+    open: false,
+  });
+  const [updateRecordDialog, setUpdateRecordDialog] = useState<IRecordDialogState>({
     open: false,
   });
 
@@ -24,6 +27,8 @@ export default function OverlaysProvider({ children }: Readonly<{ children: Reac
         setAddNewSideSheet,
         deleteRecordDialog,
         setDeleteRecordDialog,
+        updateRecordDialog,
+        setUpdateRecordDialog,
       }}
     >
       {children}

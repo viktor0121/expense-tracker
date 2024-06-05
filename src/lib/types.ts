@@ -47,7 +47,7 @@ export interface IAddNewSheetState {
   defaultTab: EAddSheetTabs;
 }
 
-export type IDeleteRecordDialogState =
+export type IRecordDialogState =
   | {
       open: boolean;
       recordType: "expense";

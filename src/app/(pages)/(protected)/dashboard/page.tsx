@@ -14,15 +14,15 @@ import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-table-card";
+import ActionsDropdown from "@/app/(pages)/(protected)/dashboard/components/action-dropdown";
 import useTab from "@/hooks/useTab";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import useDataContext from "@/context/data/useDataContext";
+import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { EDashboardTabs } from "@/lib/enums";
 import { IExpense, IIncome } from "@/lib/types";
 import database from "@/lib/appwrite/database";
-import ActionsDropdown from "@/app/(pages)/(protected)/dashboard/components/action-dropdown";
-import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 
 interface IStat {
   title: string;
@@ -51,7 +51,7 @@ export default function DashboardPage() {
   });
   const { savings, setSavings, expenses, setExpenses } = useDataContext();
   const { currency } = useCurrencyContext();
-  const { setDeleteRecordDialog } = useOverlaysContext();
+  const { setDeleteRecordDialog, setUpdateRecordDialog } = useOverlaysContext();
 
   const { data: expensesData } = useAppwriteFetch(() => database.getExpenses());
   const { data: incomesData } = useAppwriteFetch(() => database.getIncomes());
@@ -112,6 +112,13 @@ export default function DashboardPage() {
                 record: row.original,
               }));
             }}
+            updateRecord={() => {
+              setUpdateRecordDialog((prev) => ({
+                open: true,
+                recordType: "expense",
+                record: row.original,
+              }));
+            }}
           />
         );
       },
@@ -155,6 +162,13 @@ export default function DashboardPage() {
           <ActionsDropdown
             deleteRecord={() => {
               setDeleteRecordDialog(() => ({
+                open: true,
+                recordType: "saving",
+                record: row.original,
+              }));
+            }}
+            updateRecord={() => {
+              setUpdateRecordDialog((prev) => ({
                 open: true,
                 recordType: "saving",
                 record: row.original,
