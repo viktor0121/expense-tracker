@@ -46,3 +46,20 @@ export interface IAddNewSheetState {
   open: boolean;
   defaultTab: EAddSheetTabs;
 }
+
+export type IDeleteRecordDialogState =
+  | {
+      open: boolean;
+      recordType: "expense";
+      record: IExpense;
+    }
+  | {
+      open: boolean;
+      recordType: "saving";
+      record: IIncome;
+    }
+  | {
+      open: false;
+      recordType?: undefined;
+      record?: undefined;
+    };
