@@ -9,6 +9,7 @@ import ThemeProvider from "@/context/theme/provider";
 import AuthProvider from "@/context/auth/provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
+import DataProvider from "@/context/data/provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -25,7 +26,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <AuthProvider>
             <OverlaysProvider>
               <ThemeProvider>
-                <CurrencyProvider>{children}</CurrencyProvider>
+                <CurrencyProvider>
+                  <DataProvider>{children}</DataProvider>
+                </CurrencyProvider>
               </ThemeProvider>
             </OverlaysProvider>
           </AuthProvider>
