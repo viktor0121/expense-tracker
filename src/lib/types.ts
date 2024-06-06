@@ -37,7 +37,7 @@ export interface IExpenseCategory extends Models.Document {
 export interface IExpense extends Models.Document {
   title: string;
   amount: number;
-  date: Date;
+  date: Date | string;
   type: EExpenseType;
   category: string | IExpenseCategory;
 }

@@ -76,7 +76,7 @@ export default function SavingForm({ recordType, record, runAfterSubmit }: Savin
     try {
       if (recordType === "add") {
         const newIncome = await database.addUpdateIncome({
-          type: "add",
+          actionType: "add",
           title,
           amount: Number(amount),
           date,
@@ -84,7 +84,7 @@ export default function SavingForm({ recordType, record, runAfterSubmit }: Savin
         setSavings((prev) => [newIncome, ...prev]);
       } else {
         const updatedIncome = await database.addUpdateIncome({
-          type: "update",
+          actionType: "update",
           id: record.$id,
           ...(dirtyFields.title ? { title } : {}),
           ...(dirtyFields.amount ? { amount: Number(amount) } : {}),
@@ -94,6 +94,7 @@ export default function SavingForm({ recordType, record, runAfterSubmit }: Savin
           prev.map((item) => (item.$id === updatedIncome.$id ? updatedIncome : item)),
         );
       }
+
       toast({
         title: "Success!",
         description: `Your savings have been ${recordType === "add" ? "added" : "updated"} successfully.`,

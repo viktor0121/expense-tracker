@@ -33,19 +33,29 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
+import useDataContext from "@/context/data/useDataContext";
 import FormDateField from "@/components/form-date-field";
 import ButtonWithSpinner from "@/components/button-with-spinner";
 import NewCategoryDialog from "@/app/(pages)/(protected)/dashboard/components/new-category-dialog";
 import CategoryDeleteDialog from "@/app/(pages)/(protected)/dashboard/components/category-delete-dialog";
 import { cn } from "@/lib/utils";
 import { EExpenseType } from "@/lib/enums";
-import { IExpenseCategory } from "@/lib/types";
+import { IExpense, IExpenseCategory } from "@/lib/types";
 import database from "@/lib/appwrite/database";
-import useDataContext from "@/context/data/useDataContext";
 
-interface ExpenseFormProps {
+type AddUpdateTypes =
+  | {
+      recordType: "add";
+      record?: undefined;
+    }
+  | {
+      recordType: "update";
+      record: IExpense;
+    };
+
+type ExpenseFormProps = AddUpdateTypes & {
   runAfterSubmit?: () => void;
-}
+};
 
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
@@ -68,23 +78,34 @@ const formSchema = z.object({
   category: z.string().min(1, "Category is required"),
 });
 
-export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
+export default function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormProps) {
   const { toast } = useToast();
   const categoryTriggerButtonRef = useRef<HTMLButtonElement>(null);
   const [comboBoxWidth, setComboBoxWidth] = useState<Number>(-1);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      // @ts-ignore
-      amount: "",
-      // @ts-ignore
-      type: "",
-      category: "",
-    },
+    defaultValues:
+      recordType === "add"
+        ? {
+            // @ts-ignore
+            amount: "",
+            title: "",
+            category: "",
+          }
+        : {
+            // @ts-ignore
+            amount: `${record?.amount}`,
+            title: record?.title,
+            date: typeof record?.date === "string" ? new Date(record?.date) : record?.date,
+            type: record?.type,
+            category:
+              typeof record?.category === "string"
+                ? record?.category
+                : (record?.category as IExpenseCategory).$id,
+          },
   });
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting, isValid, dirtyFields, isDirty } = form.formState;
 
   const { setExpenses, expenseCategories, setExpenseCategories } = useDataContext();
   const { data: categoriesData } = useAppwriteFetch<IExpenseCategory>(() =>
@@ -93,19 +114,38 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     try {
-      const newExpense = await database.createExpense({
-        title,
-        amount: Number(amount),
-        date,
-        type,
-        category,
-      });
-      setExpenses((prev) => [...prev, newExpense]);
+      if (recordType === "add") {
+        const newExpense = await database.addUpdateExpense({
+          actionType: "add",
+          title,
+          amount: Number(amount),
+          date,
+          type,
+          category,
+        });
+        setExpenses((prev) => [newExpense, ...prev]);
+      } else {
+        const updatedExpense = await database.addUpdateExpense({
+          actionType: "update",
+          id: record.$id,
+          ...(dirtyFields.title ? { title } : {}),
+          ...(dirtyFields.amount ? { amount: Number(amount) } : {}),
+          ...(dirtyFields.date ? { date } : {}),
+          ...(dirtyFields.type ? { type } : {}),
+          ...(dirtyFields.category ? { category } : {}),
+        });
+        setExpenses((prev) =>
+          prev.map((item) => (item.$id === updatedExpense.$id ? updatedExpense : item)),
+        );
+      }
+
       toast({
         title: "Success!",
-        description: "Your expense has been added successfully.",
+        description: `Your expense has been ${recordType === "add" ? "added" : "updated"} successfully.`,
       });
+
       form.reset();
+
       // Some extra function passed from parent component
       runAfterSubmit && runAfterSubmit();
     } catch (error: any) {
@@ -246,7 +286,7 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Type</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger className="capitalize">
                     <SelectValue placeholder="Select a type" />
@@ -268,10 +308,10 @@ export default function ExpenseForm({ runAfterSubmit }: ExpenseFormProps) {
         {/*Submit Button*/}
         <ButtonWithSpinner
           isLoading={isSubmitting}
-          disabled={!isValid}
+          disabled={!isValid || !isDirty}
           type="submit"
           className="mt-2 w-full"
-          btnText="Add Record"
+          btnText={`${recordType} Record`}
         />
       </form>
     </Form>

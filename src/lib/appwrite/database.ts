@@ -3,24 +3,36 @@ import env from "@/lib/env";
 import auth from "@/lib/appwrite/auth";
 import { IExpense, IExpenseCategory, IIncome } from "@/lib/types";
 
-interface CreateExpenseParams {
-  title: string;
-  amount: number;
-  date: Date;
-  type: string;
-  category: string;
-}
+type CreateUpdateExpenseParams =
+  | {
+      actionType: "add";
+      id?: undefined;
+      title: string;
+      amount: number;
+      date: Date;
+      type: string;
+      category: string;
+    }
+  | {
+      actionType: "update";
+      id: string;
+      title?: string;
+      amount?: number;
+      date?: Date;
+      type?: string;
+      category?: string;
+    };
 
 type CreateUpdateIncomeParams =
   | {
-      type: "add";
+      actionType: "add";
       id?: undefined;
       title: string;
       amount: number;
       date: Date;
     }
   | {
-      type: "update";
+      actionType: "update";
       id: string;
       title?: string;
       amount?: number;
@@ -55,24 +67,43 @@ export class DatabaseServices {
     ];
   }
 
-  async createExpense({
+  async addUpdateExpense({
+    actionType,
+    id,
     title,
     amount,
     category,
     type,
     date,
-  }: CreateExpenseParams): Promise<IExpense> {
+  }: CreateUpdateExpenseParams): Promise<IExpense> {
     try {
-      const data = { title, amount, date, category, type };
-      const permissions = await this._getRUDPermissions();
+      if (actionType === "update") {
+        const data = {
+          ...(title ? { title } : {}),
+          ...(amount ? { amount } : {}),
+          ...(date ? { date } : {}),
+          ...(category ? { category } : {}),
+          ...(type ? { type } : {}),
+        };
 
-      return this.databases.createDocument(
-        env.awDatabaseId,
-        env.awExpenseCollectionId,
-        ID.unique(),
-        data,
-        permissions,
-      );
+        return this.databases.updateDocument(
+          env.awDatabaseId,
+          env.awExpenseCollectionId,
+          id as string,
+          data,
+        );
+      } else {
+        const data = { title, amount, date, category, type };
+        const permissions = await this._getRUDPermissions();
+
+        return this.databases.createDocument(
+          env.awDatabaseId,
+          env.awExpenseCollectionId,
+          ID.unique(),
+          data,
+          permissions,
+        );
+      }
     } catch (error: any) {
       console.error("Appwrite :: createExpense() :: ", error);
       throw error;
@@ -94,14 +125,14 @@ export class DatabaseServices {
   }
 
   async addUpdateIncome({
-    type,
+    actionType,
     id,
     title,
     amount,
     date,
   }: CreateUpdateIncomeParams): Promise<IIncome> {
     try {
-      if (type === "update") {
+      if (actionType === "update") {
         const data = {
           ...(title ? { title } : {}),
           ...(amount ? { amount } : {}),
