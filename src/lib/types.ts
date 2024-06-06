@@ -3,6 +3,7 @@ import { LucideProps } from "lucide-react";
 import { Models } from "appwrite";
 import { EAddSheetTabs, EExpenseType, ETheme } from "@/lib/enums";
 
+// APP
 export interface INavTrail {
   href: string;
   title: string;
@@ -15,6 +16,14 @@ export interface INavItem {
   posBottom?: boolean;
 }
 
+export interface IOverallStats {
+  totalSavings: Number;
+  totalIncome: Number;
+  totalNeeds: Number;
+  totalWants: Number;
+}
+
+// APPWRITE
 export interface IUserPreferences {
   theme?: ETheme;
   photoFileId?: string;
@@ -42,6 +51,7 @@ export interface IExpense extends Models.Document {
   category: string | IExpenseCategory;
 }
 
+// STATES
 export interface IAddNewSheetState {
   open: boolean;
   defaultTab: EAddSheetTabs;

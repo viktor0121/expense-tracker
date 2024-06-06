@@ -1,7 +1,8 @@
 import { Client, Databases, ID, Permission, Query, Role } from "appwrite";
 import env from "@/lib/env";
 import auth from "@/lib/appwrite/auth";
-import { IExpense, IExpenseCategory, IIncome } from "@/lib/types";
+import { IExpense, IExpenseCategory, IIncome, IOverallStats } from "@/lib/types";
+import { EExpenseType } from "@/lib/enums";
 
 type CreateUpdateExpenseParams =
   | {
@@ -67,6 +68,34 @@ export class DatabaseServices {
     ];
   }
 
+  async getExpenses(queries?: string[]): Promise<IExpense[]> {
+    try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awExpenseCollectionId,
+        [Query.orderDesc("date")].concat(queries && queries.length > 0 ? queries : []),
+      );
+      return data.documents as IExpense[];
+    } catch (error: any) {
+      console.error("Appwrite :: getExpenses() :: ", error);
+      throw error;
+    }
+  }
+
+  async getIncomes(queries?: string[]): Promise<IIncome[]> {
+    try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awIncomeCollectionId,
+        [Query.orderDesc("date")].concat(queries && queries.length > 0 ? queries : []),
+      );
+      return data.documents as IIncome[];
+    } catch (error: any) {
+      console.error("Appwrite :: getIncomes() :: ", error);
+      throw error;
+    }
+  }
+
   async addUpdateExpense({
     actionType,
     id,
@@ -110,20 +139,6 @@ export class DatabaseServices {
     }
   }
 
-  async getExpenses(queries?: string[]): Promise<IExpense[]> {
-    try {
-      const data = await this.databases.listDocuments(
-        env.awDatabaseId,
-        env.awExpenseCollectionId,
-        [Query.orderDesc("date")].concat(queries && queries.length > 0 ? queries : []),
-      );
-      return data.documents as IExpense[];
-    } catch (error: any) {
-      console.error("Appwrite :: getExpenses() :: ", error);
-      throw error;
-    }
-  }
-
   async addUpdateIncome({
     actionType,
     id,
@@ -159,20 +174,6 @@ export class DatabaseServices {
       }
     } catch (error: any) {
       console.error("Appwrite :: createIncome() :: ", error);
-      throw error;
-    }
-  }
-
-  async getIncomes(queries?: string[]): Promise<IIncome[]> {
-    try {
-      const data = await this.databases.listDocuments(
-        env.awDatabaseId,
-        env.awIncomeCollectionId,
-        [Query.orderDesc("date")].concat(queries && queries.length > 0 ? queries : []),
-      );
-      return data.documents as IIncome[];
-    } catch (error: any) {
-      console.error("Appwrite :: getIncomes() :: ", error);
       throw error;
     }
   }
@@ -236,6 +237,30 @@ export class DatabaseServices {
       return data.documents as IExpenseCategory[];
     } catch (error: any) {
       console.error("Appwrite :: getExpenseCategories() :: ", error);
+      throw error;
+    }
+  }
+
+  async getStatistics(): Promise<IOverallStats> {
+    try {
+      const expenses = await this.getExpenses([
+        Query.select(["type", "amount"]),
+        Query.limit(5000),
+      ]);
+      const incomes = await this.getIncomes([Query.select(["amount"]), Query.limit(5000)]);
+
+      const totalNeeds = expenses
+        .filter((expense) => expense.type === EExpenseType.Need)
+        .reduce((acc, expense) => acc + expense.amount, 0);
+      const totalWants = expenses
+        .filter((expense) => expense.type === EExpenseType.Want)
+        .reduce((acc, expense) => acc + expense.amount, 0);
+      const totalIncome = incomes.reduce((acc, income) => acc + income.amount, 0);
+      const totalSavings = totalIncome - totalNeeds - totalWants;
+
+      return { totalSavings, totalIncome, totalNeeds, totalWants };
+    } catch (error: any) {
+      console.error("Appwrite :: getStatistics() :: ", error);
       throw error;
     }
   }
