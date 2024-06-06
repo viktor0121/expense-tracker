@@ -6,6 +6,7 @@ import ExpenseForm from "@/app/(pages)/(protected)/dashboard/components/expense-
 import SavingForm from "@/app/(pages)/(protected)/dashboard/components/saving-form";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { EAddSheetTabs } from "@/lib/enums";
+import database from "@/lib/appwrite/database";
 
 interface AddNewSheetProps {}
 
@@ -37,7 +38,7 @@ export default function AddNewSheet({}: AddNewSheetProps) {
 
           <TabsContent value={EAddSheetTabs.Saving}>
             <SheetCardWrapper title="Add New Saving">
-              <SavingForm runAfterSubmit={closeSheet} />
+              <SavingForm type="add" runAfterSubmit={closeSheet} />
             </SheetCardWrapper>
           </TabsContent>
         </Tabs>

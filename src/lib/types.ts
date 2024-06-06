@@ -27,7 +27,7 @@ export type ICurrency = Models.Currency;
 export interface IIncome extends Models.Document {
   title: string;
   amount: number;
-  date: Date;
+  date: Date | string;
 }
 
 export interface IExpenseCategory extends Models.Document {

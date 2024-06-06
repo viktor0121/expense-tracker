@@ -17,10 +17,21 @@ import FormDateField from "@/components/form-date-field";
 import ButtonWithSpinner from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
 import useDataContext from "@/context/data/useDataContext";
+import { IIncome } from "@/lib/types";
 
-interface SavingFormProps {
+type AddUpdateTypes =
+  | {
+      recordType: "add";
+      record?: undefined;
+    }
+  | {
+      recordType: "update";
+      record: IIncome;
+    };
+
+type SavingFormProps = AddUpdateTypes & {
   runAfterSubmit?: () => void;
-}
+};
 
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
@@ -39,34 +50,57 @@ const formSchema = z.object({
     .refine((str) => parseFloat(str) < 10_00_00_000, "Amount must be at most 10,00,00,000"),
 });
 
-export default function SavingForm({ runAfterSubmit }: SavingFormProps) {
+export default function SavingForm({ recordType, record, runAfterSubmit }: SavingFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      // TODO: Handle TS Error
-      // @ts-ignore
-      amount: "",
-    },
+    defaultValues:
+      recordType === "add"
+        ? {
+            title: "",
+            // @ts-ignore
+            amount: "",
+          }
+        : {
+            title: record?.title,
+            date: typeof record?.date === "string" ? new Date(record?.date) : record?.date,
+            // @ts-ignore
+            amount: `${record?.amount}`,
+          },
   });
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting, isValid, isDirty, dirtyFields } = form.formState;
 
   const { toast } = useToast();
   const { setSavings } = useDataContext();
 
   const submit = form.handleSubmit(async ({ date, amount, title }) => {
     try {
-      const newIncome = await database.createIncome({
-        title,
-        amount: Number(amount),
-        date,
-      });
-      setSavings((prev) => [...prev, newIncome]);
+      if (recordType === "add") {
+        const newIncome = await database.addUpdateIncome({
+          type: "add",
+          title,
+          amount: Number(amount),
+          date,
+        });
+        setSavings((prev) => [newIncome, ...prev]);
+      } else {
+        const updatedIncome = await database.addUpdateIncome({
+          type: "update",
+          id: record.$id,
+          ...(dirtyFields.title ? { title } : {}),
+          ...(dirtyFields.amount ? { amount: Number(amount) } : {}),
+          ...(dirtyFields.date ? { date } : {}),
+        });
+        setSavings((prev) =>
+          prev.map((item) => (item.$id === updatedIncome.$id ? updatedIncome : item)),
+        );
+      }
       toast({
         title: "Success!",
-        description: "Your savings have been added successfully.",
+        description: `Your savings have been ${recordType === "add" ? "added" : "updated"} successfully.`,
       });
+
       form.reset();
+
       // Some extra function passed from parent component if any
       runAfterSubmit && runAfterSubmit();
     } catch (error: any) {
@@ -115,10 +149,10 @@ export default function SavingForm({ runAfterSubmit }: SavingFormProps) {
         {/*Submit Button*/}
         <ButtonWithSpinner
           isLoading={isSubmitting}
-          disabled={!isValid}
+          disabled={!isValid || !isDirty}
           type="submit"
           className="mt-2 w-full"
-          btnText="Add Record"
+          btnText={`${recordType} Record`}
         />
       </form>
     </Form>

@@ -11,11 +11,21 @@ interface CreateExpenseParams {
   category: string;
 }
 
-interface CreateIncomeParams {
-  title: string;
-  amount: number;
-  date: Date;
-}
+type CreateUpdateIncomeParams =
+  | {
+      type: "add";
+      id?: undefined;
+      title: string;
+      amount: number;
+      date: Date;
+    }
+  | {
+      type: "update";
+      id: string;
+      title?: string;
+      amount?: number;
+      date?: Date;
+    };
 
 interface CreateExpenseCategoryParams {
   title: string;
@@ -83,18 +93,39 @@ export class DatabaseServices {
     }
   }
 
-  async createIncome({ title, amount, date }: CreateIncomeParams): Promise<IIncome> {
+  async addUpdateIncome({
+    type,
+    id,
+    title,
+    amount,
+    date,
+  }: CreateUpdateIncomeParams): Promise<IIncome> {
     try {
-      const data = { title, amount, date };
-      const permissions = await this._getRUDPermissions();
+      if (type === "update") {
+        const data = {
+          ...(title ? { title } : {}),
+          ...(amount ? { amount } : {}),
+          ...(date ? { date } : {}),
+        };
 
-      return this.databases.createDocument(
-        env.awDatabaseId,
-        env.awIncomeCollectionId,
-        ID.unique(),
-        data,
-        permissions,
-      );
+        return this.databases.updateDocument(
+          env.awDatabaseId,
+          env.awIncomeCollectionId,
+          id as string,
+          data,
+        );
+      } else {
+        const data = { title, amount, date };
+        const permissions = await this._getRUDPermissions();
+
+        return this.databases.createDocument(
+          env.awDatabaseId,
+          env.awIncomeCollectionId,
+          ID.unique(),
+          data,
+          permissions,
+        );
+      }
     } catch (error: any) {
       console.error("Appwrite :: createIncome() :: ", error);
       throw error;

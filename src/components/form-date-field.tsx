@@ -40,7 +40,7 @@ export default function FormDateField({ name, label, placeholder, control }: For
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single"
-                selected={field.value}
+                selected={typeof field.value === "string" ? new Date(field.value) : field.value}
                 onSelect={field.onChange}
                 disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
                 initialFocus

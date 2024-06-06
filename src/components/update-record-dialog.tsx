@@ -15,6 +15,7 @@ import ButtonWithSpinner from "@/components/button-with-spinner";
 import useDataContext from "@/context/data/useDataContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import database from "@/lib/appwrite/database";
+import SavingForm from "@/app/(pages)/(protected)/dashboard/components/saving-form";
 
 export default function UpdateRecordDialog() {
   const { setExpenses, setSavings } = useDataContext();
@@ -76,9 +77,17 @@ export default function UpdateRecordDialog() {
             Make changes to your record here. Click update when you're done.
           </DialogDescription>
         </DialogHeader>
-        {/*TODO: Form to update goes here*/}
+        <SavingForm
+          type="update"
+          record={record}
+          runAfterSubmit={() => {
+            setUpdateRecordDialog((prev) => ({
+              open: false,
+            }));
+          }}
+        />
         <DialogFooter>
-          <ButtonWithSpinner isLoading={isSubmitting} btnText="Update" onClick={deleteBtnClick} />
+          {/*<ButtonWithSpinner isLoading={isSubmitting} btnText="Update" onClick={deleteBtnClick} />*/}
         </DialogFooter>
       </DialogContent>
     </Dialog>
