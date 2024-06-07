@@ -23,6 +23,8 @@ export interface IOverallStats {
   totalWants: Number;
 }
 
+export type ICategoryStats = Record<string, number>;
+
 // APPWRITE
 export interface IUserPreferences {
   theme?: ETheme;

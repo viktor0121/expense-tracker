@@ -10,8 +10,7 @@ import {
 } from "lucide-react";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import useDataContext from "@/context/data/useDataContext";
-import { IOverallStats } from "@/lib/types";
+import { ICategoryStats, IOverallStats } from "@/lib/types";
 
 interface IStatCard {
   title: string;
@@ -22,11 +21,11 @@ interface IStatCard {
 
 interface OverviewProps {
   overAllStats: IOverallStats;
+  categoryStats: ICategoryStats;
 }
 
-export default function Overview({ overAllStats }: OverviewProps) {
+export default function Overview({ overAllStats, categoryStats }: OverviewProps) {
   const { currency } = useCurrencyContext();
-
   const statCards: IStatCard[] = [
     {
       title: "Savings",
@@ -58,18 +57,24 @@ export default function Overview({ overAllStats }: OverviewProps) {
     <section>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat, index) => (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">{stat.description}</p>
-            </CardContent>
-          </Card>
+          <StatCard key={index} {...stat} />
         ))}
       </div>
     </section>
+  );
+}
+
+function StatCard({ title, value, icon: Icon, description }: IStatCard) {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <Icon className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{value}</div>
+        <p className="text-xs text-muted-foreground">{description}</p>
+      </CardContent>
+    </Card>
   );
 }

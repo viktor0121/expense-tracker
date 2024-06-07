@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { formatDate } from "date-fns";
+import { Query } from "appwrite";
 import { ColumnDef } from "@tanstack/react-table";
+import { toast } from "@/components/ui/use-toast";
 import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Overview from "@/app/(pages)/(protected)/dashboard/components/overview";
@@ -14,10 +16,8 @@ import useDataContext from "@/context/data/useDataContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { EDashboardTabs, EExpenseType } from "@/lib/enums";
-import { IExpense, IIncome, IOverallStats } from "@/lib/types";
+import { ICategoryStats, IExpense, IExpenseCategory, IIncome, IOverallStats } from "@/lib/types";
 import database from "@/lib/appwrite/database";
-import { Query } from "appwrite";
-import { toast } from "@/components/ui/use-toast";
 
 enum ESavingColumnIds {
   Amount = "amount",
@@ -50,6 +50,7 @@ export default function DashboardPage() {
     totalNeeds: 0,
     totalWants: 0,
   });
+  const [categoryStats, setCategoryStats] = useState<ICategoryStats>({});
 
   const expenseColumns: ColumnDef<IExpense>[] = [
     {
@@ -184,8 +185,8 @@ export default function DashboardPage() {
     (async function () {
       try {
         // Fetching all expenses and incomes to calculate the overall stats
-        const expenses: IExpense[] = await database.getExpenses([
-          Query.select(["type", "amount"]),
+        const expenses = await database.getExpenses([
+          Query.select(["type", "amount", "category.*"]),
           Query.limit(5000),
         ]);
         const incomes: IIncome[] = await database.getIncomes([
@@ -204,6 +205,15 @@ export default function DashboardPage() {
           const totalSavings = totalIncome - totalNeeds - totalWants;
 
           return { totalSavings, totalIncome, totalNeeds, totalWants };
+        });
+
+        setCategoryStats(() => {
+          return expenses.reduce((acc: ICategoryStats, expense) => {
+            const category = (expense.category as IExpenseCategory).title;
+            const amount = expense.amount;
+            acc[category] = (acc[category] || 0) + amount;
+            return acc;
+          }, {});
         });
       } catch (error: any) {
         toast({
@@ -232,7 +242,7 @@ export default function DashboardPage() {
         value={EDashboardTabs.Overview}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        <Overview overAllStats={overAllStats} />
+        <Overview overAllStats={overAllStats} categoryStats={categoryStats} />
       </TabsContent>
 
       <TabsContent
