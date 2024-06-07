@@ -13,9 +13,11 @@ import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import useDataContext from "@/context/data/useDataContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
-import { EDashboardTabs } from "@/lib/enums";
+import { EDashboardTabs, EExpenseType } from "@/lib/enums";
 import { IExpense, IIncome, IOverallStats } from "@/lib/types";
 import database from "@/lib/appwrite/database";
+import { Query } from "appwrite";
+import { toast } from "@/components/ui/use-toast";
 
 enum ESavingColumnIds {
   Amount = "amount",
@@ -35,13 +37,19 @@ export default function DashboardPage() {
     defaultTab: EDashboardTabs.Overview,
     tabs: [EDashboardTabs.Overview, EDashboardTabs.Expenses, EDashboardTabs.Savings],
   });
-
   const { currency } = useCurrencyContext();
-  const { savings, setSavings, expenses, setExpenses, setOverAllStats } = useDataContext();
+  const { savings, setSavings, expenses, setExpenses } = useDataContext();
   const { setDeleteRecordDialog, setUpdateRecordDialog } = useOverlaysContext();
 
   const { data: expensesData } = useAppwriteFetch(() => database.getExpenses());
   const { data: incomesData } = useAppwriteFetch(() => database.getIncomes());
+
+  const [overAllStats, setOverAllStats] = useState<IOverallStats>({
+    totalSavings: 0,
+    totalIncome: 0,
+    totalNeeds: 0,
+    totalWants: 0,
+  });
 
   const expenseColumns: ColumnDef<IExpense>[] = [
     {
@@ -174,8 +182,36 @@ export default function DashboardPage() {
 
   useEffect(() => {
     (async function () {
-      const data = await database.getStatistics();
-      setOverAllStats(data);
+      try {
+        // Fetching all expenses and incomes to calculate the overall stats
+        const expenses: IExpense[] = await database.getExpenses([
+          Query.select(["type", "amount"]),
+          Query.limit(5000),
+        ]);
+        const incomes: IIncome[] = await database.getIncomes([
+          Query.select(["amount"]),
+          Query.limit(5000),
+        ]);
+
+        setOverAllStats(() => {
+          const totalNeeds = expenses
+            .filter((expense) => expense.type === EExpenseType.Need)
+            .reduce((acc, expense) => acc + expense.amount, 0);
+          const totalWants = expenses
+            .filter((expense) => expense.type === EExpenseType.Want)
+            .reduce((acc, expense) => acc + expense.amount, 0);
+          const totalIncome = incomes.reduce((acc, income) => acc + income.amount, 0);
+          const totalSavings = totalIncome - totalNeeds - totalWants;
+
+          return { totalSavings, totalIncome, totalNeeds, totalWants };
+        });
+      } catch (error: any) {
+        toast({
+          title: "Error",
+          description: "Unable to get Statistics",
+          variant: "destructive",
+        });
+      }
     })();
   }, []);
 
@@ -196,7 +232,7 @@ export default function DashboardPage() {
         value={EDashboardTabs.Overview}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        <Overview />
+        <Overview overAllStats={overAllStats} />
       </TabsContent>
 
       <TabsContent

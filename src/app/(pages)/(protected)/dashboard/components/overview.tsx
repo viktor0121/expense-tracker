@@ -11,6 +11,7 @@ import {
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useDataContext from "@/context/data/useDataContext";
+import { IOverallStats } from "@/lib/types";
 
 interface IStatCard {
   title: string;
@@ -19,9 +20,12 @@ interface IStatCard {
   description?: string;
 }
 
-export default function Overview() {
+interface OverviewProps {
+  overAllStats: IOverallStats;
+}
+
+export default function Overview({ overAllStats }: OverviewProps) {
   const { currency } = useCurrencyContext();
-  const { overAllStats } = useDataContext();
 
   const statCards: IStatCard[] = [
     {

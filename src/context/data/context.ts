@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { ICurrency, IExpense, IExpenseCategory, IIncome, IOverallStats } from "@/lib/types";
+import { IExpense, IExpenseCategory, IIncome } from "@/lib/types";
 
 interface DataContextValues {
   expenses: IExpense[];
@@ -8,8 +8,6 @@ interface DataContextValues {
   setSavings: React.Dispatch<React.SetStateAction<IIncome[]>>;
   expenseCategories: IExpenseCategory[];
   setExpenseCategories: React.Dispatch<React.SetStateAction<IExpenseCategory[]>>;
-  overAllStats: IOverallStats;
-  setOverAllStats: React.Dispatch<React.SetStateAction<IOverallStats>>;
 }
 
 const DataContext = createContext<DataContextValues>({
@@ -21,14 +19,6 @@ const DataContext = createContext<DataContextValues>({
 
   expenseCategories: [],
   setExpenseCategories: () => {},
-
-  overAllStats: {
-    totalSavings: 0,
-    totalIncome: 0,
-    totalNeeds: 0,
-    totalWants: 0,
-  },
-  setOverAllStats: () => {},
 });
 
 export default DataContext;

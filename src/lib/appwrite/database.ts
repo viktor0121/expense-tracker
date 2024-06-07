@@ -240,30 +240,6 @@ export class DatabaseServices {
       throw error;
     }
   }
-
-  async getStatistics(): Promise<IOverallStats> {
-    try {
-      const expenses = await this.getExpenses([
-        Query.select(["type", "amount"]),
-        Query.limit(5000),
-      ]);
-      const incomes = await this.getIncomes([Query.select(["amount"]), Query.limit(5000)]);
-
-      const totalNeeds = expenses
-        .filter((expense) => expense.type === EExpenseType.Need)
-        .reduce((acc, expense) => acc + expense.amount, 0);
-      const totalWants = expenses
-        .filter((expense) => expense.type === EExpenseType.Want)
-        .reduce((acc, expense) => acc + expense.amount, 0);
-      const totalIncome = incomes.reduce((acc, income) => acc + income.amount, 0);
-      const totalSavings = totalIncome - totalNeeds - totalWants;
-
-      return { totalSavings, totalIncome, totalNeeds, totalWants };
-    } catch (error: any) {
-      console.error("Appwrite :: getStatistics() :: ", error);
-      throw error;
-    }
-  }
 }
 
 const database = new DatabaseServices();

@@ -8,12 +8,6 @@ export default function DataProvider({ children }: Readonly<{ children: React.Re
   const [savings, setSavings] = useState<IIncome[]>([]);
   const [expenses, setExpenses] = useState<IExpense[]>([]);
   const [expenseCategories, setExpenseCategories] = useState<IExpenseCategory[]>([]);
-  const [overAllStats, setOverAllStats] = useState<IOverallStats>({
-    totalSavings: 0,
-    totalIncome: 0,
-    totalNeeds: 0,
-    totalWants: 0,
-  });
 
   return (
     <DataContext.Provider
@@ -24,8 +18,6 @@ export default function DataProvider({ children }: Readonly<{ children: React.Re
         setExpenses,
         expenseCategories,
         setExpenseCategories,
-        overAllStats,
-        setOverAllStats,
       }}
     >
       {children}
