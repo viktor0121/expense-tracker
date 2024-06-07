@@ -36,7 +36,7 @@ export default function UpdateRecordDialog() {
         <DialogHeader>
           <DialogTitle>Update {recordType} record</DialogTitle>
           <DialogDescription>
-            Make changes to your record here. Click update when you're done.
+            Make changes to your record here. Click update when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         {recordType === "saving" ? (
