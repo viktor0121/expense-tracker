@@ -9,57 +9,19 @@ import CommandPallet from "@/components/command-pallet";
 import NavThemeToggle from "@/components/navbar/nav-theme-toggle";
 import NavDropdownMenu from "@/components/navbar/nav-dropdown-menu";
 import { INavItem } from "@/lib/types";
+import { navigations } from "@/lib/constants";
 
 export default function Navbar() {
-  const { authStatus, setAuthStatus } = useAuthContext();
-  const navItems: INavItem[] = (function () {
-    const items: { [key: string]: INavItem } = {
-      home: {
-        title: "Home",
-        Icon: Home,
-        url: "/",
-      },
-      signin: {
-        title: "SignIn",
-        Icon: LogIn,
-        url: "/auth",
-      },
-      overview: {
-        title: "Overview",
-        Icon: Target,
-        url: "/dashboard?tab=overview",
-      },
-      expense: {
-        title: "Expenses",
-        Icon: CreditCard,
-        url: "/dashboard?tab=expenses",
-      },
-      savings: {
-        title: "Savings",
-        Icon: DollarSign,
-        url: "/dashboard?tab=savings",
-      },
-      settings: {
-        title: "Settings",
-        Icon: Settings,
-        url: "/settings",
-        posBottom: true,
-      },
-    };
+  const { authStatus, isAuthLoading } = useAuthContext();
 
-    const result: INavItem[] = [];
-    if (authStatus) {
-      result.push(items.overview);
-      result.push(items.expense);
-      result.push(items.savings);
-      result.push(items.settings);
-    } else {
-      result.push(items.home);
-      result.push(items.signin);
-    }
-
-    return result;
-  })();
+  const authNavItems = [
+    navigations.overview,
+    navigations.expense,
+    navigations.savings,
+    navigations.settings,
+  ];
+  const nonAuthNavItems = [navigations.home, navigations.signin];
+  const navItems: INavItem[] = authStatus ? authNavItems : nonAuthNavItems;
 
   return (
     <>
@@ -75,10 +37,14 @@ export default function Navbar() {
         <CommandPallet />
         <NavThemeToggle />
 
-        {authStatus ? <NavDropdownMenu /> : null}
+        {isAuthLoading ? <NavDropdownFallBack /> : authStatus ? <NavDropdownMenu /> : null}
       </header>
     </>
   );
+}
+
+function NavDropdownFallBack() {
+  return <div className="animate-pulse rounded-full bg-accent h-10 w-10"></div>;
 }
 
 function NavTrailFallBack() {

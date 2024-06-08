@@ -2,22 +2,24 @@
 
 import React, { useEffect, useState } from "react";
 import AuthContext from "@/context/auth/context";
-import useLoadingContext from "@/context/loading/useLoadingContext";
 import auth from "@/lib/appwrite/auth";
 
 export default function AuthProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   const [authStatus, setAuthStatus] = useState<boolean>(false);
-  const { setIsLoading } = useLoadingContext();
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
 
   // Check if the user is logged in on page load
   useEffect(() => {
+    setIsAuthLoading(true);
     auth
       .isLoggedIn()
       .then(setAuthStatus)
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsAuthLoading(false));
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authStatus, setAuthStatus }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ authStatus, setAuthStatus, isAuthLoading, setIsAuthLoading }}>
+      {children}
+    </AuthContext.Provider>
   );
 }

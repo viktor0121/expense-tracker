@@ -3,14 +3,14 @@
 import React from "react";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
-import useLoadingContext from "@/context/loading/useLoadingContext";
 import SignOutAlertDialog from "@/components/sign-out-alert-dialog";
 import AddNewSheet from "@/components/add-new-sheet";
 import DeleteRecordAlertDialog from "@/components/delete-record-alert-dialog";
 import UpdateRecordDialog from "@/components/update-record-dialog";
+import useAuthContext from "@/context/auth/useAuthContext";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { isLoading } = useLoadingContext();
+  const { isAuthLoading } = useAuthContext();
 
   return (
     <>
@@ -18,7 +18,7 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
         <Navbar />
         <main>
           {/*TODO: Implement a loading spinner  */}
-          {isLoading ? <p>Loading...</p> : children}
+          {isAuthLoading ? <p>Loading...</p> : children}
         </main>
       </div>
 

@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import OverlaysProvider from "@/context/overlays/provider";
 import CurrencyProvider from "@/context/currency/provider";
-import LoadingProvider from "@/context/loading/provider";
 import ThemeProvider from "@/context/theme/provider";
 import AuthProvider from "@/context/auth/provider";
 import { cn } from "@/lib/utils";
@@ -22,7 +21,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>
-        <LoadingProvider>
           <AuthProvider>
             <OverlaysProvider>
               <ThemeProvider>
@@ -34,7 +32,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               </ThemeProvider>
             </OverlaysProvider>
           </AuthProvider>
-        </LoadingProvider>
       </body>
     </html>
   );
