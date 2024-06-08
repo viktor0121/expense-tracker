@@ -108,9 +108,7 @@ export default function ExpenseForm({ recordType, record, runAfterSubmit }: Expe
   const { isSubmitting, isValid, dirtyFields, isDirty } = form.formState;
 
   const { setExpenses, expenseCategories, setExpenseCategories } = useDataContext();
-  const { data: categoriesData } = useAppwriteFetch<IExpenseCategory>(() =>
-    database.getExpenseCategories(),
-  );
+  const { data: categoriesData } = useAppwriteFetch(() => database.getExpenseCategories());
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     try {
@@ -158,7 +156,7 @@ export default function ExpenseForm({ recordType, record, runAfterSubmit }: Expe
   });
 
   useEffect(() => {
-    setExpenseCategories(categoriesData);
+    setExpenseCategories(categoriesData || []);
   }, [categoriesData]);
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
 
-export default function useAppwriteFetch<T>(fn: () => Promise<T[]>) {
-  const [data, setData] = useState<T[]>([]);
+export default function useAppwriteFetch<T>(fn: () => Promise<T>) {
+  const [data, setData] = useState<T>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {

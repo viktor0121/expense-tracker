@@ -13,6 +13,7 @@ interface DataTableCardProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
   filter?: IDataTableFilter;
+  isLoading?: boolean;
 }
 
 export default function DataTableCard<T>({
@@ -21,6 +22,7 @@ export default function DataTableCard<T>({
   columns,
   filter,
   data,
+  isLoading,
 }: DataTableCardProps<T>) {
   const { setAddNewSideSheet } = useOverlaysContext();
 
@@ -54,7 +56,13 @@ export default function DataTableCard<T>({
 
       <div className="w-[inherit] h-[inherit] scrollbar-thin scrollbar-thumb-primary scrollbar-track-primary-foreground overflow-auto">
         <CardContent className="h-[inherit] w-[inherit] min-w-fit space-y-2">
-          <DataTable filter={filter} addVisibilityToggle columns={columns} data={data} />
+          <DataTable
+            filter={filter}
+            addVisibilityToggle
+            columns={columns}
+            data={data}
+            isLoading={isLoading}
+          />
         </CardContent>
       </div>
     </Card>

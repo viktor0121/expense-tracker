@@ -41,8 +41,9 @@ export default function DashboardPage() {
   const { savings, setSavings, expenses, setExpenses } = useDataContext();
   const { setDeleteRecordDialog, setUpdateRecordDialog } = useOverlaysContext();
 
-  const { data: expensesData } = useAppwriteFetch(() => database.getExpenses());
-  const { data: incomesData } = useAppwriteFetch(() => database.getIncomes());
+  const { data, isLoading } = useAppwriteFetch(async () => {
+    return await Promise.all([database.getExpenses(), database.getIncomes()]);
+  });
 
   const [overAllStats, setOverAllStats] = useState<IOverallStats>({
     totalSavings: 0,
@@ -177,9 +178,9 @@ export default function DashboardPage() {
   ];
 
   useEffect(() => {
-    setExpenses(expensesData);
-    setSavings(incomesData);
-  }, [expensesData, incomesData]);
+    setExpenses(data ? data[0] : []);
+    setSavings(data ? data[1] : []);
+  }, [data]);
 
   useEffect(() => {
     (async function () {
@@ -257,6 +258,7 @@ export default function DashboardPage() {
           title="expense"
           columns={expenseColumns}
           data={expenses}
+          isLoading={isLoading}
         />
       </TabsContent>
 
@@ -272,6 +274,7 @@ export default function DashboardPage() {
           title="saving"
           columns={savingColumns}
           data={savings}
+          isLoading={isLoading}
         />
       </TabsContent>
     </Tabs>
