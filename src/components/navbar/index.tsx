@@ -1,20 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { CreditCard, DollarSign, Home, LogIn, Settings, Target } from "lucide-react";
 import useAuthContext from "@/context/auth/useAuthContext";
-import useNavTrailContext from "@/context/nav-trail/useNavTrailContext";
 import NavBurgerMenu from "@/components/navbar/nav-burger-menu";
 import NavTrail from "@/components/navbar/nav-trail";
 import CommandPallet from "@/components/command-pallet";
 import NavThemeToggle from "@/components/navbar/nav-theme-toggle";
 import NavDropdownMenu from "@/components/navbar/nav-dropdown-menu";
-import SignOutAlertDialog from "@/components/sign-out-alert-dialog";
 import { INavItem } from "@/lib/types";
 
 export default function Navbar() {
   const { authStatus, setAuthStatus } = useAuthContext();
-  const { navTrails } = useNavTrailContext();
   const navItems: INavItem[] = (function () {
     const items: { [key: string]: INavItem } = {
       home: {
@@ -68,11 +65,30 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-14 sm:px-6">
         <NavBurgerMenu navItems={navItems} />
-        <NavTrail navTrails={navTrails} />
+
+        <div className="hidden md:flex">
+          <Suspense fallback={<NavTrailFallBack />}>
+            <NavTrail />
+          </Suspense>
+        </div>
+
         <CommandPallet />
         <NavThemeToggle />
+
         {authStatus ? <NavDropdownMenu /> : null}
       </header>
     </>
+  );
+}
+
+function NavTrailFallBack() {
+  return (
+    <div className="animate-pulse w-52 grid grid-cols-9 gap-1">
+      <div className="h-2 bg-accent rounded col-span-2"></div>
+      <div className="h-2 bg-accent rounded col-span-1"></div>
+      <div className="h-2 bg-accent rounded col-span-2"></div>
+      <div className="h-2 bg-accent rounded col-span-1"></div>
+      <div className="h-2 bg-accent rounded col-span-3"></div>
+    </div>
   );
 }

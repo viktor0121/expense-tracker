@@ -2,7 +2,6 @@ import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import OverlaysProvider from "@/context/overlays/provider";
-import NavTrailProvider from "@/context/nav-trail/provider";
 import CurrencyProvider from "@/context/currency/provider";
 import LoadingProvider from "@/context/loading/provider";
 import ThemeProvider from "@/context/theme/provider";
@@ -10,6 +9,7 @@ import AuthProvider from "@/context/auth/provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import DataProvider from "@/context/data/provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -27,7 +27,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <OverlaysProvider>
               <ThemeProvider>
                 <CurrencyProvider>
-                  <DataProvider>{children}</DataProvider>
+                  <DataProvider>
+                    <TooltipProvider>{children}</TooltipProvider>
+                  </DataProvider>
                 </CurrencyProvider>
               </ThemeProvider>
             </OverlaysProvider>

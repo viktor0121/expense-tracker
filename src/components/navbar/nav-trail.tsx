@@ -1,43 +1,51 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   Breadcrumb,
-  BreadcrumbItem,
+  BreadcrumbItem as CrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { INavTrail } from "@/lib/types";
+import { trails } from "@/lib/constants";
 
-interface NavTrailProps {
-  navTrails: INavTrail[];
-}
+export default function NavTrail() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [navTrails, setNavTrails] = useState<INavTrail[]>([]);
 
-export default function NavTrail({ navTrails }: NavTrailProps) {
+  // Set the nav trails based on the current pathname
+  useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    const tabTrail = tabParam ? [{ title: tabParam, href: "" }] : [];
+    const pathTrail = trails[pathname] || [];
+    setNavTrails([...pathTrail, ...tabTrail]);
+  }, [pathname, searchParams]);
+
   return (
-    <Breadcrumb className="hidden md:flex">
+    <Breadcrumb>
       <BreadcrumbList>
         {navTrails.map((trail, index) => (
           <React.Fragment key={index}>
-            {index !== navTrails.length - 1 ? (
+            {index === navTrails.length - 1 ? (
               <>
-                <BreadcrumbItem className="capitalize">
-                  {trail.href == "" ? (
-                    trail.title
-                  ) : (
-                    <BreadcrumbLink asChild>
-                      <Link href={trail.href}>{trail.title}</Link>
-                    </BreadcrumbLink>
-                  )}
-                </BreadcrumbItem>
-
+                <BreadCrumbItem type="active" title={trail.title} />
+              </>
+            ) : trail.href ? (
+              <>
+                <BreadCrumbItem type="link" title={trail.title} href={trail.href} />
                 <BreadcrumbSeparator />
               </>
             ) : (
-              <BreadcrumbItem className="capitalize">
-                <BreadcrumbPage>{trail.title}</BreadcrumbPage>
-              </BreadcrumbItem>
+              <>
+                <BreadCrumbItem title={trail.title} />
+                <BreadcrumbSeparator />
+              </>
             )}
           </React.Fragment>
         ))}
@@ -45,3 +53,41 @@ export default function NavTrail({ navTrails }: NavTrailProps) {
     </Breadcrumb>
   );
 }
+
+type BreadCrumbItemProps =
+  | {
+      type: "link";
+      title: string;
+      href: string;
+    }
+  | {
+      type: "active";
+      title: string;
+      href?: undefined;
+    }
+  | {
+      type?: "normal";
+      title: string;
+      href?: undefined;
+    };
+
+const BreadCrumbItem = ({ type, title, href }: BreadCrumbItemProps) => {
+  switch (type) {
+    case "link":
+      return (
+        <CrumbItem className="capitalize">
+          <BreadcrumbLink asChild>
+            <Link href={href}>{title}</Link>
+          </BreadcrumbLink>
+        </CrumbItem>
+      );
+    case "active":
+      return (
+        <CrumbItem className="capitalize">
+          <BreadcrumbPage>{title}</BreadcrumbPage>
+        </CrumbItem>
+      );
+    default:
+      return <CrumbItem className="capitalize">{title}</CrumbItem>;
+  }
+};
