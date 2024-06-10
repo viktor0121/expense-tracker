@@ -32,6 +32,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export interface IDataTableFilter {
   placeholder: string;
@@ -156,7 +157,7 @@ export function DataTable<TData, TValue>({
                         totalCells={columns.length}
                         className="whitespace-nowrap"
                       >
-                        <div className="animate-pulse h-2 bg-accent rounded col-span-1" />
+                        <Skeleton className="col-span-1 my-2 h-3" />
                       </TableCell>
                     ))}
                 </TableRow>
