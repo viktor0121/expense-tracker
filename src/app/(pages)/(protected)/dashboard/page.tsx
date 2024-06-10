@@ -7,7 +7,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { toast } from "@/components/ui/use-toast";
 import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Overview from "@/app/(pages)/(protected)/dashboard/components/overview";
+import Analytics from "@/app/(pages)/(protected)/dashboard/components/analytics";
 import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-table-card";
 import ActionsDropdown from "@/app/(pages)/(protected)/dashboard/components/action-dropdown";
 import useTab from "@/hooks/useTab";
@@ -44,14 +44,6 @@ export default function DashboardPage() {
   const { data, isLoading } = useAppwriteFetch(async () => {
     return await Promise.all([database.getExpenses(), database.getIncomes()]);
   });
-
-  const [overAllStats, setOverAllStats] = useState<IOverallStats>({
-    totalSavings: 0,
-    totalIncome: 0,
-    totalNeeds: 0,
-    totalWants: 0,
-  });
-  const [categoryStats, setCategoryStats] = useState<ICategoryStats>({});
 
   const expenseColumns: ColumnDef<IExpense>[] = [
     {
@@ -182,50 +174,6 @@ export default function DashboardPage() {
     setSavings(data ? data[1] : []);
   }, [data]);
 
-  useEffect(() => {
-    (async function () {
-      try {
-        // Fetching all expenses and incomes to calculate the overall stats
-        const expenses = await database.getExpenses([
-          Query.select(["type", "amount", "category.*"]),
-          Query.limit(5000),
-        ]);
-        const incomes: IIncome[] = await database.getIncomes([
-          Query.select(["amount"]),
-          Query.limit(5000),
-        ]);
-
-        setOverAllStats(() => {
-          const totalNeeds = expenses
-            .filter((expense) => expense.type === EExpenseType.Need)
-            .reduce((acc, expense) => acc + expense.amount, 0);
-          const totalWants = expenses
-            .filter((expense) => expense.type === EExpenseType.Want)
-            .reduce((acc, expense) => acc + expense.amount, 0);
-          const totalIncome = incomes.reduce((acc, income) => acc + income.amount, 0);
-          const totalSavings = totalIncome - totalNeeds - totalWants;
-
-          return { totalSavings, totalIncome, totalNeeds, totalWants };
-        });
-
-        setCategoryStats(() => {
-          return expenses.reduce((acc: ICategoryStats, expense) => {
-            const category = (expense.category as IExpenseCategory).title;
-            const amount = expense.amount;
-            acc[category] = (acc[category] || 0) + amount;
-            return acc;
-          }, {});
-        });
-      } catch (error: any) {
-        toast({
-          title: "Error",
-          description: "Unable to get Statistics",
-          variant: "destructive",
-        });
-      }
-    })();
-  }, []);
-
   // NOTE: TabsContent Height is manually set to 100vh - 8rem for desktop and 100vh - 5rem for mobile
   return (
     <Tabs
@@ -243,7 +191,7 @@ export default function DashboardPage() {
         value={EDashboardTabs.Overview}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
-        <Overview overAllStats={overAllStats} categoryStats={categoryStats} />
+        <Analytics />
       </TabsContent>
 
       <TabsContent
