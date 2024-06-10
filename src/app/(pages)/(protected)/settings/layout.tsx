@@ -1,6 +1,12 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import SidebarNav from "@/app/(pages)/(protected)/settings/components/sidebar-nav";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "AdisMoney - Settings",
+  description: "Change apps appearance, profile details, etc.",
+};
 
 const sidebarNavItems = [
   {

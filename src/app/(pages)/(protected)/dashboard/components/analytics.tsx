@@ -104,7 +104,7 @@ function StatCard({ title, value, icon: Icon, description, isLoading }: IStatCar
       </CardHeader>
       <CardContent className="px-4 pb-4 sm:px-5 sm:pb-5">
         {isLoading ? (
-          <Skeleton className="h-6 my-1 w-1/4" />
+          <Skeleton className="h-5 sm:h-6 mt-1 mb-1 sm:mb-2 w-1/4" />
         ) : (
           <div className="text-xl sm:text-2xl font-bold">{value}</div>
         )}
