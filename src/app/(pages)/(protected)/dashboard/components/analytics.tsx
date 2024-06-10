@@ -13,9 +13,9 @@ import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import database from "@/lib/appwrite/database";
 import { EExpenseType } from "@/lib/enums";
 import { ICategoryStats, IExpenseCategory } from "@/lib/types";
+import database from "@/lib/appwrite/database";
 
 interface IStatCard {
   title: string;
@@ -82,7 +82,7 @@ export default function Analytics({}: OverviewProps) {
 
   return (
     <section>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-2 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat, index) => (
           <StatCard key={index} isLoading={isExpenseIncomesLoading} {...stat} />
         ))}
@@ -98,17 +98,17 @@ interface IStatCardProps extends IStatCard {
 function StatCard({ title, value, icon: Icon, description, isLoading }: IStatCardProps) {
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="px-4 pt-4 sm:px-5 sm:pt-5 flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        <Icon className="size-4 text-muted-foreground" />
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-4 pb-4 sm:px-5 sm:pb-5">
         {isLoading ? (
           <Skeleton className="h-6 my-1 w-1/4" />
         ) : (
-          <div className="text-2xl font-bold">{value}</div>
+          <div className="text-xl sm:text-2xl font-bold">{value}</div>
         )}
-        <p className="text-xs text-muted-foreground">{description}</p>
+        <p className="mt-1 text-xs text-muted-foreground">{description}</p>
       </CardContent>
     </Card>
   );
