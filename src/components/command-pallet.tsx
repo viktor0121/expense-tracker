@@ -68,7 +68,7 @@ export default function CommandPallet({}: CommandPalletProps) {
 
   const addNewCommands: Command[] = [
     {
-      title: "Expense",
+      title: "Add Expense",
       Icon: PlusIcon,
       action: () =>
         commandAction(() =>
@@ -79,7 +79,7 @@ export default function CommandPallet({}: CommandPalletProps) {
         ),
     },
     {
-      title: "Saving",
+      title: "Add Saving",
       Icon: PlusIcon,
       action: () =>
         commandAction(() =>
