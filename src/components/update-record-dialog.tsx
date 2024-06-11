@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,16 +6,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import useDataContext from "@/context/data/useDataContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import SavingForm from "@/app/(pages)/(protected)/dashboard/components/saving-form";
 import ExpenseForm from "@/app/(pages)/(protected)/dashboard/components/expense-form";
 
 export default function UpdateRecordDialog() {
-  const { setExpenses, setSavings } = useDataContext();
   const { updateRecordDialog, setUpdateRecordDialog } = useOverlaysContext();
   const { recordType, record } = updateRecordDialog;
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Return null if recordType or record is not provided
   if (!recordType || !record) return null;
