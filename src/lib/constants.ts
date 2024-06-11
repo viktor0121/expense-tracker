@@ -7,7 +7,6 @@ type Trails = {
 };
 
 export const trails: Trails = {
-  // "/": [{ title: "Home", href: "/" }],
   "/auth": [
     { title: "Home", href: "/" },
     { title: "Auth", href: "" },
@@ -17,7 +16,10 @@ export const trails: Trails = {
     { title: "Auth", href: "/auth" },
     { title: "Reset Password", href: "" },
   ],
-  "/dashboard": [{ title: "Dashboard", href: "" }],
+  "/dashboard": [
+    { title: "Home", href: "/" },
+    { title: "Dashboard", href: "" },
+  ],
   "/settings/profile": [
     { title: "Dashboard", href: "/dashboard" },
     { title: "Settings", href: "" },
