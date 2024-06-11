@@ -2,9 +2,7 @@
 
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
-import useAuthContext from "@/context/auth/useAuthContext";
 import Navbar from "@/app/(pages)/components/navbar";
-import Loading from "@/app/(pages)/components/loading";
 import AddNewRecordSheet from "@/app/(pages)/components/add-new-record-sheet";
 import UpdateRecordDialog from "@/app/(pages)/components/update-record-dialog";
 import SignOutAlertDialog from "@/app/(pages)/components/sign-out-alert-dialog";
