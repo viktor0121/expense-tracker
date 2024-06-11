@@ -11,15 +11,12 @@ import SignOutAlertDialog from "@/app/(pages)/components/sign-out-alert-dialog";
 import DeleteRecordAlertDialog from "@/app/(pages)/components/delete-record-alert-dialog";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { isAuthLoading } = useAuthContext();
-
   return (
     <>
       <div className="flex flex-col min-h-screen w-full bg-muted/40">
         <Navbar />
         <main>
-          {/*TODO: Implement a loading spinner  */}
-          {isAuthLoading ? <Loading /> : children}
+          {children}
         </main>
       </div>
 
