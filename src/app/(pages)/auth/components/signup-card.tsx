@@ -24,30 +24,36 @@ interface SignUpCardProps {
 }
 
 export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
-  const formSchema = z.object({
-    firstName: z
-      .string()
-      .trim()
-      .min(1, "First Name is required")
-      .max(100, "First Name must be at most 100 characters"),
-    lastName: z
-      .string()
-      .trim()
-      .min(1, "Last Name is required")
-      .max(100, "Last Name must be at most 100 characters"),
-    email: z
-      .string()
-      .email("Invalid email address")
-      .min(1, "Email is required")
-      .max(100, "Email must be at most 100 characters"),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters long")
-      .max(100, "Password must be at most 100 characters")
-      .regex(/[a-z]/, "Password must contain a lowercase letter")
-      .regex(/[A-Z]/, "Password must contain an uppercase letter")
-      .regex(/\d/, "Password must contain a number"),
-  });
+  const formSchema = z
+    .object({
+      firstName: z
+        .string()
+        .trim()
+        .min(1, "First Name is required")
+        .max(100, "First Name must be at most 100 characters"),
+      lastName: z
+        .string()
+        .trim()
+        .min(1, "Last Name is required")
+        .max(100, "Last Name must be at most 100 characters"),
+      email: z
+        .string()
+        .email("Invalid email address")
+        .min(1, "Email is required")
+        .max(100, "Email must be at most 100 characters"),
+      password: z
+        .string()
+        .min(8, "Password must be at least 8 characters long")
+        .max(100, "Password must be at most 100 characters")
+        .regex(/[a-z]/, "Password must contain a lowercase letter")
+        .regex(/[A-Z]/, "Password must contain an uppercase letter")
+        .regex(/\d/, "Password must contain a number"),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ["confirmPassword"],
+    });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,6 +61,7 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
       lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -105,7 +112,7 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
               />
 
               <FormField
-              control={form.control}
+                control={form.control}
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
@@ -146,6 +153,21 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input autoComplete="new-password" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/*Password Confirm*/}
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
                     <Input autoComplete="new-password" type="password" {...field} />
                   </FormControl>
