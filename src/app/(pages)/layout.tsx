@@ -3,11 +3,11 @@
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import useAuthContext from "@/context/auth/useAuthContext";
-import Navbar from "@/components/navbar";
-import AddNewSheet from "@/components/add-new-sheet";
-import UpdateRecordDialog from "@/components/update-record-dialog";
-import SignOutAlertDialog from "@/components/sign-out-alert-dialog";
-import DeleteRecordAlertDialog from "@/components/delete-record-alert-dialog";
+import Navbar from "components/navbar";
+import AddNewRecordSheet from "@/app/(pages)/components/add-new-record-sheet";
+import UpdateRecordDialog from "@/app/(pages)/components/update-record-dialog";
+import SignOutAlertDialog from "@/app/(pages)/components/sign-out-alert-dialog";
+import DeleteRecordAlertDialog from "@/app/(pages)/components/delete-record-alert-dialog";
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { isAuthLoading } = useAuthContext();
@@ -23,7 +23,7 @@ export default function AppLayout({ children }: Readonly<{ children: React.React
       </div>
 
       <SignOutAlertDialog />
-      <AddNewSheet />
+      <AddNewRecordSheet />
       <DeleteRecordAlertDialog />
       <UpdateRecordDialog />
 

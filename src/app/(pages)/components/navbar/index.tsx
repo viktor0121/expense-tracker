@@ -3,11 +3,11 @@
 import React, { Suspense, useState } from "react";
 import { CreditCard, DollarSign, Home, LogIn, Settings, Target } from "lucide-react";
 import useAuthContext from "@/context/auth/useAuthContext";
-import NavBurgerMenu from "@/components/navbar/nav-burger-menu";
-import NavTrail from "@/components/navbar/nav-trail";
+import NavBurgerMenu from "@/app/(pages)/components/navbar/nav-burger-menu";
+import NavTrail from "@/app/(pages)/components/navbar/nav-trail";
 import CommandPallet from "@/components/command-pallet";
-import NavThemeToggle from "@/components/navbar/nav-theme-toggle";
-import NavDropdownMenu from "@/components/navbar/nav-dropdown-menu";
+import NavThemeToggle from "@/app/(pages)/components/navbar/nav-theme-toggle";
+import NavDropdownMenu from "@/app/(pages)/components/navbar/nav-dropdown-menu";
 import { INavItem } from "@/lib/types";
 import { navigations } from "@/lib/constants";
 

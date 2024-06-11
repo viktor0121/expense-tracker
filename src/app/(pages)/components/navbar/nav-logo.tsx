@@ -4,17 +4,15 @@ import { Package2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavLogoProps {
-  isLarge?: boolean;
   className?: string;
 }
 
-export default function NavLogo({ isLarge, className }: NavLogoProps) {
+export default function NavLogo({ className }: NavLogoProps) {
   return (
     <Link
-      href="/"
+      href="/public"
       className={cn(
-        "group flex shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base",
-        isLarge ? "h-10 w-10" : "h-9 w-9 md:h-8 md:w-8",
+        "group flex shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base h-10 w-10",
         className,
       )}
     >

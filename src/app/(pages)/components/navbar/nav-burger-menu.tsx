@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PanelLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import NavLogo from "@/components/navbar/nav-logo";
+import NavLogo from "@/app/(pages)/components/navbar/nav-logo";
 import useActivePath from "@/hooks/useActivePath";
 import { cn } from "@/lib/utils";
 import { INavItem } from "@/lib/types";
@@ -43,7 +43,7 @@ export default function NavBurgerMenu({ navItems, className }: MobileNavProps) {
         </SheetTrigger>
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="h-full flex flex-col gap-6 text-lg font-medium">
-            <NavLogo isLarge={true} />
+            <NavLogo />
 
             {navItems.map((navItem) => (
               <div

@@ -9,7 +9,7 @@ import { EAddSheetTabs } from "@/lib/enums";
 
 interface AddNewSheetProps {}
 
-export default function AddNewSheet({}: AddNewSheetProps) {
+export default function AddNewRecordSheet({}: AddNewSheetProps) {
   const { addNewSideSheet, setAddNewSideSheet } = useOverlaysContext();
   const closeSheet = () => setAddNewSideSheet((prev) => ({ ...prev, open: false }));
 
