@@ -80,7 +80,12 @@ export default function SignInCard({ goToSignUp }: SignInCardProps) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="me@example.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="me@example.com"
+                      autoComplete="username"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -95,7 +100,7 @@ export default function SignInCard({ goToSignUp }: SignInCardProps) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Input autoComplete="current-password" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

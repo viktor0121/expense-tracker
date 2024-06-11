@@ -97,7 +97,7 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
                   <FormItem>
                     <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Max" {...field} />
+                      <Input autoComplete="name" placeholder="Max" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -105,13 +105,13 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
               />
 
               <FormField
-                control={form.control}
+              control={form.control}
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Last Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Robinson" {...field} />
+                      <Input autoComplete="family-name" placeholder="Robinson" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -127,7 +127,12 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="me@example.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="me@example.com"
+                      autoComplete="username"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,7 +147,7 @@ export default function SignUpCard({ goToSignIn }: SignUpCardProps) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Input autoComplete="new-password" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
