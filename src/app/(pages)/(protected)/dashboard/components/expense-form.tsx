@@ -106,7 +106,6 @@ export default function ExpenseForm({ recordType, record, runAfterSubmit }: Expe
           },
   });
   const { isSubmitting, isValid, dirtyFields, isDirty } = form.formState;
-
   const { setExpenses, expenseCategories, setExpenseCategories } = useDataContext();
   const { data: categoriesData } = useAppwriteFetch(() => database.getExpenseCategories());
 
@@ -254,7 +253,7 @@ export default function ExpenseForm({ recordType, record, runAfterSubmit }: Expe
                               value={category.title}
                               key={category.$id}
                               className="flex-1"
-                              onSelect={() => form.setValue("category", category.$id)}
+                              onSelect={() => field.onChange(category.$id)}
                             >
                               <Check
                                 className={cn(
