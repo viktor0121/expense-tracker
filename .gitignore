@@ -41,6 +41,6 @@ next-env.d.ts
 # service worker for pwa
 /public/sw.js
 /public/sw.js.map
-/public/swe-worker-development.js
-/public/workbox-7144475a.js
-/public/workbox-7144475a.js.map
+/public/swe-*.js
+/public/workbox-*.js
+/public/workbox-*.js.map
