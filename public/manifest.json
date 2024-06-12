@@ -1,0 +1,15 @@
+{
+  "id": "1",
+  "name": "AdisMoney",
+    "short_name": "AdisMoney",
+  "description": "AdisMoney is a personal finance manager that helps you to manage your money, track your expenses and income, and keep track of your budget.",
+  "icons": [
+    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

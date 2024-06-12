@@ -1,5 +1,5 @@
 import React from "react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import OverlaysProvider from "@/context/overlays/provider";
@@ -13,8 +13,13 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
+  manifest: "/manifest.json",
   title: "AdisMoney",
   description: "AdisMoney is a personal finance app that helps you track your expenses and income.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#141417",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
