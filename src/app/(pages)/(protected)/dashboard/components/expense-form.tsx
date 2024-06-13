@@ -42,6 +42,7 @@ import { cn } from "@/lib/utils";
 import { EExpenseType } from "@/lib/enums";
 import { IExpense, IExpenseCategory } from "@/lib/types";
 import database from "@/lib/appwrite/database";
+import { PopoverClose } from "@radix-ui/react-popover";
 
 type AddUpdateTypes =
   | {
@@ -249,20 +250,22 @@ export default function ExpenseForm({ recordType, record, runAfterSubmit }: Expe
                       <CommandGroup>
                         {expenseCategories.map((category, index) => (
                           <div key={index} className="flex hover:bg-accent rounded-md group">
-                            <CommandItem
-                              value={category.title}
-                              key={category.$id}
-                              className="flex-1"
-                              onSelect={() => field.onChange(category.$id)}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 size-4",
-                                  category.$id === field.value ? "opacity-100" : "opacity-0",
-                                )}
-                              />
-                              {category.title}
-                            </CommandItem>
+                            <PopoverClose className="flex-1">
+                              <CommandItem
+                                value={category.title}
+                                key={category.$id}
+                                className="flex-1"
+                                onSelect={() => field.onChange(category.$id)}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 size-4",
+                                    category.$id === field.value ? "opacity-100" : "opacity-0",
+                                  )}
+                                />
+                                {category.title}
+                              </CommandItem>
+                            </PopoverClose>
 
                             <CategoryDeleteDialog category={category} />
                           </div>
