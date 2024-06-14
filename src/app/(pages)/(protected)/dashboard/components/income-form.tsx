@@ -17,7 +17,7 @@ import FormDateField from "@/components/form-date-field";
 import ButtonWithSpinner from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
 import useDataContext from "@/context/data/useDataContext";
-import { IIncome } from "@/lib/types";
+import { IEarnings } from "@/lib/types";
 
 type AddUpdateTypes =
   | {
@@ -26,10 +26,10 @@ type AddUpdateTypes =
     }
   | {
       recordType: "update";
-      record: IIncome;
+      record: IEarnings;
     };
 
-type SavingFormProps = AddUpdateTypes & {
+type IncomeFormProps = AddUpdateTypes & {
   runAfterSubmit?: () => void;
 };
 
@@ -50,7 +50,7 @@ const formSchema = z.object({
     .refine((str) => parseFloat(str) < 10_00_00_000, "Amount must be at most 10,00,00,000"),
 });
 
-export default function SavingForm({ recordType, record, runAfterSubmit }: SavingFormProps) {
+export default function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:
@@ -70,7 +70,7 @@ export default function SavingForm({ recordType, record, runAfterSubmit }: Savin
   const { isSubmitting, isValid, isDirty, dirtyFields } = form.formState;
 
   const { toast } = useToast();
-  const { setSavings } = useDataContext();
+  const { setEarnings } = useDataContext();
 
   const submit = form.handleSubmit(async ({ date, amount, title }) => {
     try {
@@ -81,7 +81,7 @@ export default function SavingForm({ recordType, record, runAfterSubmit }: Savin
           amount: Number(amount),
           date,
         });
-        setSavings((prev) => [newIncome, ...prev]);
+        setEarnings((prev) => [newIncome, ...prev]);
       } else {
         const updatedIncome = await database.addUpdateIncome({
           actionType: "update",
@@ -90,14 +90,14 @@ export default function SavingForm({ recordType, record, runAfterSubmit }: Savin
           ...(dirtyFields.amount ? { amount: Number(amount) } : {}),
           ...(dirtyFields.date ? { date } : {}),
         });
-        setSavings((prev) =>
+        setEarnings((prev) =>
           prev.map((item) => (item.$id === updatedIncome.$id ? updatedIncome : item)),
         );
       }
 
       toast({
         title: "Success!",
-        description: `Your savings have been ${recordType === "add" ? "added" : "updated"} successfully.`,
+        description: `Your income have been ${recordType === "add" ? "added" : "updated"} successfully.`,
       });
 
       form.reset();

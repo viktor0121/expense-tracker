@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
-import SavingForm from "@/app/(pages)/(protected)/dashboard/components/saving-form";
+import IncomeForm from "@/app/(pages)/(protected)/dashboard/components/income-form";
 import ExpenseForm from "@/app/(pages)/(protected)/dashboard/components/expense-form";
 
 export default function UpdateRecordDialog() {
@@ -35,8 +35,8 @@ export default function UpdateRecordDialog() {
             Make changes to your record here. Click update when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        {recordType === "saving" ? (
-          <SavingForm
+        {recordType === "earning" ? (
+          <IncomeForm
             recordType="update"
             record={record}
             runAfterSubmit={() => {

@@ -5,7 +5,7 @@ import FeatureCards from "@/app/(pages)/components/feature-cards";
 import BackgroundDotsContainer from "@/components/background-dots-container";
 
 export default function Page() {
-  const heroWords = ["Goals", "Expenses", "Savings"];
+  const heroWords = ["Goals", "Expenses", "Earnings"];
 
   return (
     <>

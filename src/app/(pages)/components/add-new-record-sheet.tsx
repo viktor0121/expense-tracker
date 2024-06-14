@@ -3,9 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import ExpenseForm from "@/app/(pages)/(protected)/dashboard/components/expense-form";
-import SavingForm from "@/app/(pages)/(protected)/dashboard/components/saving-form";
+import IncomeForm from "@/app/(pages)/(protected)/dashboard/components/income-form";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
-import { EAddSheetTabs } from "@/lib/enums";
+import { EAddSheetTabs, EDashboardTabs } from "@/lib/enums";
 
 interface AddNewSheetProps {}
 
@@ -25,8 +25,8 @@ export default function AddNewRecordSheet({}: AddNewSheetProps) {
 
         <Tabs defaultValue={addNewSideSheet.defaultTab} className="sm:w-[400px]">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value={EAddSheetTabs.Expense}>Expense</TabsTrigger>
-            <TabsTrigger value={EAddSheetTabs.Saving}>Saving</TabsTrigger>
+            <TabsTrigger value={EAddSheetTabs.Expense} className="capitalize">{EDashboardTabs.Expenses}</TabsTrigger>
+            <TabsTrigger value={EAddSheetTabs.Earning} className="capitalize">{EDashboardTabs.Earnings}</TabsTrigger>
           </TabsList>
 
           <TabsContent value={EAddSheetTabs.Expense}>
@@ -35,9 +35,9 @@ export default function AddNewRecordSheet({}: AddNewSheetProps) {
             </SheetCardWrapper>
           </TabsContent>
 
-          <TabsContent value={EAddSheetTabs.Saving}>
-            <SheetCardWrapper title="Add New Saving">
-              <SavingForm recordType="add" runAfterSubmit={closeSheet} />
+          <TabsContent value={EAddSheetTabs.Earning}>
+            <SheetCardWrapper title="Add New Earning">
+              <IncomeForm recordType="add" runAfterSubmit={closeSheet} />
             </SheetCardWrapper>
           </TabsContent>
         </Tabs>

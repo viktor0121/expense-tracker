@@ -79,13 +79,13 @@ export default function CommandPallet({}: CommandPalletProps) {
         ),
     },
     {
-      title: "Add Saving",
+      title: "Add Earning",
       Icon: PlusIcon,
       action: () =>
         commandAction(() =>
           setAddNewSideSheet({
             open: true,
-            defaultTab: EAddSheetTabs.Saving,
+            defaultTab: EAddSheetTabs.Earning,
           }),
         ),
     },
@@ -103,9 +103,9 @@ export default function CommandPallet({}: CommandPalletProps) {
       action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Expenses}`)),
     },
     {
-      title: "Savings",
+      title: "Earnings",
       Icon: DollarSign,
-      action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Savings}`)),
+      action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Earnings}`)),
     },
   ];
 

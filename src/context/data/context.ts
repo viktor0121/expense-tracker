@@ -1,11 +1,11 @@
 import React, { createContext } from "react";
-import { IExpense, IExpenseCategory, IIncome } from "@/lib/types";
+import { IExpense, IExpenseCategory, IEarnings } from "@/lib/types";
 
 interface DataContextValues {
   expenses: IExpense[];
   setExpenses: React.Dispatch<React.SetStateAction<IExpense[]>>;
-  savings: IIncome[];
-  setSavings: React.Dispatch<React.SetStateAction<IIncome[]>>;
+  earnings: IEarnings[];
+  setEarnings: React.Dispatch<React.SetStateAction<IEarnings[]>>;
   expenseCategories: IExpenseCategory[];
   setExpenseCategories: React.Dispatch<React.SetStateAction<IExpenseCategory[]>>;
 }
@@ -14,8 +14,8 @@ const DataContext = createContext<DataContextValues>({
   expenses: [],
   setExpenses: () => {},
 
-  savings: [],
-  setSavings: () => {},
+  earnings: [],
+  setEarnings: () => {},
 
   expenseCategories: [],
   setExpenseCategories: () => {},

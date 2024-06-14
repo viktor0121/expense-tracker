@@ -16,7 +16,7 @@ import useDataContext from "@/context/data/useDataContext";
 import database from "@/lib/appwrite/database";
 
 export default function DeleteRecordAlertDialog() {
-  const { setExpenses, setSavings } = useDataContext();
+  const { setExpenses, setEarnings } = useDataContext();
   const { deleteRecordDialog, setDeleteRecordDialog } = useOverlaysContext();
   const { recordType, record } = deleteRecordDialog;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -31,9 +31,9 @@ export default function DeleteRecordAlertDialog() {
       if (recordType === "expense") {
         await database.deleteExpense({ id: record.$id });
         setExpenses((prev) => prev.filter((item) => item.$id !== record.$id));
-      } else if (recordType === "saving") {
+      } else if (recordType === "earning") {
         await database.deleteIncome({ id: record.$id });
-        setSavings((prev) => prev.filter((item) => item.$id !== record.$id));
+        setEarnings((prev) => prev.filter((item) => item.$id !== record.$id));
       } else {
         return;
       }

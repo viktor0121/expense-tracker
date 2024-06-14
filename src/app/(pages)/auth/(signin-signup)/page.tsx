@@ -17,8 +17,8 @@ export default function AuthPage() {
   return (
     <Tabs value={tab} onValueChange={onTabChange}>
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value={EAuthTabs.Login}>Login</TabsTrigger>
-        <TabsTrigger value={EAuthTabs.Register}>Register</TabsTrigger>
+        <TabsTrigger value={EAuthTabs.Login} className="capitalize">{EAuthTabs.Login}</TabsTrigger>
+        <TabsTrigger value={EAuthTabs.Register} className="capitalize">{EAuthTabs.Register}</TabsTrigger>
       </TabsList>
       <TabsContent value={EAuthTabs.Login}>
         <SignInCard goToSignUp={() => replaceSearchParam("tab", EAuthTabs.Register)} />

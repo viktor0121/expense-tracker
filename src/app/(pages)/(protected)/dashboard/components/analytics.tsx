@@ -43,8 +43,8 @@ export default function Analytics({}: OverviewProps) {
   const totalWants: number = expenses
     .filter((expense) => expense.type === EExpenseType.Want)
     .reduce((acc, expense) => acc + expense.amount, 0);
-  const totalIncome: number = incomes.reduce((acc, income) => acc + income.amount, 0);
-  const totalSavings: number = totalIncome - totalNeeds - totalWants;
+  const totalEarnings: number = incomes.reduce((acc, income) => acc + income.amount, 0);
+  const totalSavings: number = totalEarnings - totalNeeds - totalWants;
 
   const categoryStats = expenses.reduce((acc: ICategoryStats, expense) => {
     const category = (expense.category as IExpenseCategory).title;
@@ -61,10 +61,10 @@ export default function Analytics({}: OverviewProps) {
       description: "Total savings over time",
     },
     {
-      title: "Income",
-      value: `${currency.symbolNative}${totalIncome}`,
+      title: "Earnings",
+      value: `${currency.symbolNative}${totalEarnings}`,
       icon: DollarSignIcon,
-      description: "Total income",
+      description: "Total earnings",
     },
     {
       title: "Needs",

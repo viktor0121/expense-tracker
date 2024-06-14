@@ -1,6 +1,7 @@
 import heroImage from "../assets/signin-side.png";
 import { INavItem, INavTrail } from "@/lib/types";
 import { CreditCard, DollarSign, Home, LogIn, Settings, Target } from "lucide-react";
+import { EDashboardTabs } from "@/lib/enums";
 
 type Trails = {
   [path: string]: INavTrail[];
@@ -46,17 +47,17 @@ export const navigations: { [key: string]: INavItem } = {
   overview: {
     title: "Overview",
     Icon: Target,
-    url: "/dashboard?tab=overview",
+    url: `/dashboard?tab=${EDashboardTabs.Overview}`,
   },
   expense: {
     title: "Expenses",
     Icon: CreditCard,
-    url: "/dashboard?tab=expenses",
+    url: `/dashboard?tab=${EDashboardTabs.Expenses}`,
   },
-  savings: {
-    title: "Savings",
+  earnings: {
+    title: "Earnings",
     Icon: DollarSign,
-    url: "/dashboard?tab=savings",
+    url: `/dashboard?tab=${EDashboardTabs.Earnings}`,
   },
   settings: {
     title: "Settings",

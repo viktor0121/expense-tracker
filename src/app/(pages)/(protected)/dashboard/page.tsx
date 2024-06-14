@@ -16,10 +16,10 @@ import useDataContext from "@/context/data/useDataContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { EDashboardTabs, EExpenseType } from "@/lib/enums";
-import { ICategoryStats, IExpense, IExpenseCategory, IIncome, IOverallStats } from "@/lib/types";
+import { ICategoryStats, IExpense, IExpenseCategory, IEarnings, IOverallStats } from "@/lib/types";
 import database from "@/lib/appwrite/database";
 
-enum ESavingColumnIds {
+enum EEarningsColumnIds {
   Amount = "amount",
   Title = "title",
   Date = "date",
@@ -35,10 +35,10 @@ enum EExpenseColumnIds {
 export default function DashboardPage() {
   const { tab, onTabChange } = useTab<EDashboardTabs>({
     defaultTab: EDashboardTabs.Overview,
-    tabs: [EDashboardTabs.Overview, EDashboardTabs.Expenses, EDashboardTabs.Savings],
+    tabs: [EDashboardTabs.Overview, EDashboardTabs.Expenses, EDashboardTabs.Earnings],
   });
   const { currency } = useCurrencyContext();
-  const { savings, setSavings, expenses, setExpenses } = useDataContext();
+  const { earnings, setEarnings, expenses, setExpenses } = useDataContext();
   const { setDeleteRecordDialog, setUpdateRecordDialog } = useOverlaysContext();
 
   const { data, isLoading } = useAppwriteFetch(async () => {
@@ -113,9 +113,9 @@ export default function DashboardPage() {
       },
     },
   ];
-  const savingColumns: ColumnDef<IIncome>[] = [
+  const earningsColumns: ColumnDef<IEarnings>[] = [
     {
-      id: ESavingColumnIds.Amount,
+      id: EEarningsColumnIds.Amount,
       accessorKey: "amount",
       header: ({ column }) => {
         return <SortHeader column={column} title="Amount" />;
@@ -125,7 +125,7 @@ export default function DashboardPage() {
       },
     },
     {
-      id: ESavingColumnIds.Title,
+      id: EEarningsColumnIds.Title,
       accessorKey: "title",
       header: "Title",
       cell: ({ row, column }) => {
@@ -133,7 +133,7 @@ export default function DashboardPage() {
       },
     },
     {
-      id: ESavingColumnIds.Date,
+      id: EEarningsColumnIds.Date,
       accessorKey: "date",
       header: ({ column }) => {
         return <SortHeader column={column} title="Date" className="ml-auto" />;
@@ -152,14 +152,14 @@ export default function DashboardPage() {
             deleteRecord={() => {
               setDeleteRecordDialog(() => ({
                 open: true,
-                recordType: "saving",
+                recordType: "earning",
                 record: row.original,
               }));
             }}
             updateRecord={() => {
               setUpdateRecordDialog((prev) => ({
                 open: true,
-                recordType: "saving",
+                recordType: "earning",
                 record: row.original,
               }));
             }}
@@ -171,7 +171,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     setExpenses(data ? data[0] : []);
-    setSavings(data ? data[1] : []);
+    setEarnings(data ? data[1] : []);
   }, [data]);
 
   // NOTE: TabsContent Height is manually set to 100vh - 8rem for desktop and 100vh - 5rem for mobile
@@ -182,9 +182,9 @@ export default function DashboardPage() {
       className="max-h-screen flex-col flex px-3 sm:px-6 space-y-4"
     >
       <TabsList className="w-fit">
-        <TabsTrigger value={EDashboardTabs.Overview}>Overview</TabsTrigger>
-        <TabsTrigger value={EDashboardTabs.Expenses}>Expenses</TabsTrigger>
-        <TabsTrigger value={EDashboardTabs.Savings}>Savings</TabsTrigger>
+        <TabsTrigger value={EDashboardTabs.Overview} className="capitalize">{EDashboardTabs.Overview}</TabsTrigger>
+        <TabsTrigger value={EDashboardTabs.Expenses} className="capitalize">{EDashboardTabs.Expenses}</TabsTrigger>
+        <TabsTrigger value={EDashboardTabs.Earnings} className="capitalize">{EDashboardTabs.Earnings}</TabsTrigger>
       </TabsList>
 
       <TabsContent
@@ -211,17 +211,17 @@ export default function DashboardPage() {
       </TabsContent>
 
       <TabsContent
-        value={EDashboardTabs.Savings}
+        value={EDashboardTabs.Earnings}
         className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
         <DataTableCard
           filter={{
-            placeholder: "Search Savings",
-            columnId: ESavingColumnIds.Title,
+            placeholder: "Search Earnings",
+            columnId: EEarningsColumnIds.Title,
           }}
-          title="saving"
-          columns={savingColumns}
-          data={savings}
+          title="earning"
+          columns={earningsColumns}
+          data={earnings}
           isLoading={isLoading}
         />
       </TabsContent>

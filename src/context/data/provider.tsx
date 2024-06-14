@@ -2,18 +2,18 @@
 
 import React, { useState } from "react";
 import DataContext from "@/context/data/context";
-import { IExpense, IExpenseCategory, IIncome, IOverallStats } from "@/lib/types";
+import { IExpense, IExpenseCategory, IEarnings, IOverallStats } from "@/lib/types";
 
 export default function DataProvider({ children }: Readonly<{ children: React.ReactNode }>) {
-  const [savings, setSavings] = useState<IIncome[]>([]);
+  const [earnings, setEarnings] = useState<IEarnings[]>([]);
   const [expenses, setExpenses] = useState<IExpense[]>([]);
   const [expenseCategories, setExpenseCategories] = useState<IExpenseCategory[]>([]);
 
   return (
     <DataContext.Provider
       value={{
-        savings,
-        setSavings,
+        earnings,
+        setEarnings,
         expenses,
         setExpenses,
         expenseCategories,

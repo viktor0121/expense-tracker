@@ -8,7 +8,7 @@ import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { EAddSheetTabs } from "@/lib/enums";
 
 interface DataTableCardProps<T> {
-  title: "expense" | "saving";
+  title: "expense" | "earning";
   description?: string;
   columns: ColumnDef<T>[];
   data: T[];
@@ -45,7 +45,7 @@ export default function DataTableCard<T>({
           onClick={() =>
             setAddNewSideSheet({
               open: true,
-              defaultTab: title === "saving" ? EAddSheetTabs.Saving : EAddSheetTabs.Expense,
+              defaultTab: title === "earning" ? EAddSheetTabs.Earning : EAddSheetTabs.Expense,
             })
           }
         >

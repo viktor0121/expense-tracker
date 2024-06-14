@@ -17,7 +17,7 @@ export default function Navbar() {
   const authNavItems = [
     navigations.overview,
     navigations.expense,
-    navigations.savings,
+    navigations.earnings,
     navigations.settings,
   ];
   const nonAuthNavItems = [navigations.home, navigations.signin];

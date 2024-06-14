@@ -1,12 +1,12 @@
 export enum EDashboardTabs {
   Overview = "overview",
   Expenses = "expenses",
-  Savings = "savings",
+  Earnings = "earnings",
 }
 
 export enum EAddSheetTabs {
   Expense = "expense",
-  Saving = "saving",
+  Earning = "earning",
 }
 
 export enum EAuthTabs {
