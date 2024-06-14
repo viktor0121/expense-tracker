@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { formatDate } from "date-fns";
-import { Query } from "appwrite";
 import { ColumnDef } from "@tanstack/react-table";
-import { toast } from "@/components/ui/use-toast";
 import { SortHeader } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Analytics from "@/app/(pages)/(protected)/dashboard/components/analytics";
@@ -15,8 +13,8 @@ import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import useDataContext from "@/context/data/useDataContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
-import { EDashboardTabs, EExpenseType } from "@/lib/enums";
-import { ICategoryStats, IExpense, IExpenseCategory, IEarnings, IOverallStats } from "@/lib/types";
+import { EDashboardTabs } from "@/lib/enums";
+import { IExpense, IEarnings } from "@/lib/types";
 import database from "@/lib/appwrite/database";
 
 enum EEarningsColumnIds {
@@ -182,9 +180,15 @@ export default function DashboardPage() {
       className="max-h-screen flex-col flex px-3 sm:px-6 space-y-4"
     >
       <TabsList className="w-fit">
-        <TabsTrigger value={EDashboardTabs.Overview} className="capitalize">{EDashboardTabs.Overview}</TabsTrigger>
-        <TabsTrigger value={EDashboardTabs.Expenses} className="capitalize">{EDashboardTabs.Expenses}</TabsTrigger>
-        <TabsTrigger value={EDashboardTabs.Earnings} className="capitalize">{EDashboardTabs.Earnings}</TabsTrigger>
+        <TabsTrigger value={EDashboardTabs.Overview} className="capitalize">
+          {EDashboardTabs.Overview}
+        </TabsTrigger>
+        <TabsTrigger value={EDashboardTabs.Expenses} className="capitalize">
+          {EDashboardTabs.Expenses}
+        </TabsTrigger>
+        <TabsTrigger value={EDashboardTabs.Earnings} className="capitalize">
+          {EDashboardTabs.Earnings}
+        </TabsTrigger>
       </TabsList>
 
       <TabsContent

@@ -9,12 +9,14 @@ import {
   LucideIcon,
   WalletIcon,
 } from "lucide-react";
+import KeyValuePieChart from "@/app/(pages)/(protected)/dashboard/components/charts/key-value-pie-chart";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { EExpenseType } from "@/lib/enums";
-import { ICategoryStats, IExpenseCategory } from "@/lib/types";
+import { IExpenseCategory } from "@/lib/types";
 import database from "@/lib/appwrite/database";
 
 interface IStatCard {
@@ -46,12 +48,16 @@ export default function Analytics({}: OverviewProps) {
   const totalEarnings: number = incomes.reduce((acc, income) => acc + income.amount, 0);
   const totalSavings: number = totalEarnings - totalNeeds - totalWants;
 
-  const categoryStats = expenses.reduce((acc: ICategoryStats, expense) => {
+  const categoryStats = expenses.reduce((acc: Record<string, number>, expense) => {
     const category = (expense.category as IExpenseCategory).title;
     const amount = expense.amount;
     acc[category] = (acc[category] || 0) + amount;
     return acc;
   }, {});
+  const expenseStats = {
+    need: totalNeeds,
+    want: totalWants,
+  };
 
   const statCards: IStatCard[] = [
     {
@@ -81,13 +87,73 @@ export default function Analytics({}: OverviewProps) {
   ];
 
   return (
-    <section>
-      <div className="grid gap-2 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {statCards.map((stat, index) => (
-          <StatCard key={index} isLoading={isExpenseIncomesLoading} {...stat} />
-        ))}
-      </div>
-    </section>
+    <>
+      <section className="grid gap-3 sm:gap-5">
+        <div className="grid gap-2 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {statCards.map((stat, index) => (
+            <StatCard key={index} isLoading={isExpenseIncomesLoading} {...stat} />
+          ))}
+        </div>
+      </section>
+
+      <section className="grid grid-cols-12 gap-2 sm:gap-4">
+        <div className="col-span-12 sm:col-span-6 md:col-span-7 xl:col-span-8"> </div>
+
+        <Tabs
+          defaultValue={"category"}
+          className="overflow-auto col-span-12 sm:col-span-6 md:col-span-5 xl:col-span-4"
+        >
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value={"category"} className="capitalize">
+              Category
+            </TabsTrigger>
+            <TabsTrigger value={"expense"} className="capitalize">
+              Expense
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value={"category"}>
+            <PieChartCard
+              data={categoryStats}
+              isLoading={isExpenseIncomesLoading}
+              name="Category Stats"
+            />
+          </TabsContent>
+          <TabsContent value={"expense"}>
+            <PieChartCard
+              data={expenseStats}
+              isLoading={isExpenseIncomesLoading}
+              name="Expense Stats"
+            />
+          </TabsContent>
+        </Tabs>
+      </section>
+    </>
+  );
+}
+
+interface PieChartCardProps {
+  data: Record<string, number>;
+  name: string;
+  isLoading: boolean;
+}
+
+function PieChartCard({ data, name, isLoading }: PieChartCardProps) {
+  return (
+    <Card className="size-full overflow-auto">
+      <CardContent>
+        {isLoading ? (
+          <div className="h-[300px] grid place-items-center">
+            <Skeleton className="rounded-full size-[250px] mx-auto" />
+          </div>
+        ) : (
+          <KeyValuePieChart data={data} />
+        )}
+      </CardContent>
+      <CardFooter className="pt-0 grid place-items-center">
+        <CardTitle className="text-lg font-semibold">{name}</CardTitle>
+      </CardFooter>
+    </Card>
   );
 }
 
