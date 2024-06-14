@@ -64,7 +64,7 @@ export default function Analytics({}: OverviewProps) {
       title: "Savings",
       value: `${currency.symbolNative}${totalSavings}`,
       icon: WalletIcon,
-      description: "Total savings over time",
+      description: "Total savings ",
     },
     {
       title: "Earnings",
@@ -76,20 +76,20 @@ export default function Analytics({}: OverviewProps) {
       title: "Needs",
       value: `${currency.symbolNative}${totalNeeds}`,
       icon: CreditCardIcon,
-      description: "Total amount spend on needs",
+      description: "Expense on needs",
     },
     {
       title: "Wants",
       value: `${currency.symbolNative}${totalWants}`,
       icon: HandCoinsIcon,
-      description: "Total amount spend on wants",
+      description: "Expense on wants",
     },
   ];
 
   return (
     <>
       <section className="grid gap-3 sm:gap-5">
-        <div className="grid gap-2 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-2 sm:gap-4 grid-cols-2 md:grid-cols-4">
           {statCards.map((stat, index) => (
             <StatCard key={index} isLoading={isExpenseIncomesLoading} {...stat} />
           ))}
