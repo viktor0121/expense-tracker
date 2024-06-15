@@ -1,5 +1,6 @@
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Cell, Pie, PieChart, PieLabel, ResponsiveContainer, Tooltip } from "recharts";
 import { cn } from "@/lib/utils";
+import useCurrencyContext from "@/context/currency/useCurrencyContext";
 
 interface KeyValuePieChart {
   data: Record<string, number>;
@@ -7,27 +8,52 @@ interface KeyValuePieChart {
 }
 
 export default function CategoryPie({ containerClasses, data: rawData }: KeyValuePieChart) {
-  const data = Object.entries(rawData).map(([key, value]) => ({
-    key,
-    value,
-  }));
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+  const RADIAN = Math.PI / 180;
+  const data = Object.entries(rawData).map(([key, value]) => ({ key, value }));
+
+  const { currency } = useCurrencyContext();
 
   return (
-    <ResponsiveContainer className={cn(containerClasses)} minHeight={300}>
+    <ResponsiveContainer
+      className={cn(containerClasses, "aspect-square")}
+      minHeight={300}
+      maxHeight={400}
+    >
       <PieChart>
         <Pie
           data={data}
           dataKey="value"
           nameKey="key"
           innerRadius="30%"
-          label={(item) => item.value}
+          cx="50%"
+          cy="50%"
+          labelLine={false}
+          label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+            const x = cx + radius * Math.cos(-midAngle * RADIAN);
+            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+            return (
+              <text
+                x={x}
+                y={y}
+                fill="hsl(var(--primary-foreground))"
+                textAnchor={x > cx ? "start" : "end"}
+                dominantBaseline="central"
+              >
+                {`${(percent * 100).toFixed(0)}%`}
+              </text>
+            );
+          }}
           strokeWidth={2}
         >
           {data.map((_, index) => (
             <Cell
               key={index}
               stroke={"hsl(var(--secondary))"}
-              className=" fill-primary hover:fill-primary/90 outline-none hover:outline-none focus:outline-none active:outline-none"
+              fill={COLORS[index % COLORS.length]}
+              className="outline-none hover:outline-none focus:outline-none active:outline-none"
             />
           ))}
         </Pie>
@@ -35,7 +61,8 @@ export default function CategoryPie({ containerClasses, data: rawData }: KeyValu
           content={({ active, payload }) =>
             active && payload && payload.length ? (
               <p className="capitalize z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2">
-                {payload[0].name}
+                {payload[0].name}: {currency.symbolNative}
+                {payload[0].value}
               </p>
             ) : null
           }
