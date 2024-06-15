@@ -3,14 +3,16 @@ import { cn } from "@/lib/utils";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 
 interface KeyValuePieChart {
-  data: Record<string, number>;
+  data: {
+    name: string;
+    value: number;
+  }[];
   containerClasses?: string;
 }
 
-export default function CategoryPie({ containerClasses, data: rawData }: KeyValuePieChart) {
+export default function CategoryPie({ containerClasses, data}: KeyValuePieChart) {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
   const RADIAN = Math.PI / 180;
-  const data = Object.entries(rawData).map(([key, value]) => ({ key, value }));
 
   const { currency } = useCurrencyContext();
 
@@ -24,7 +26,7 @@ export default function CategoryPie({ containerClasses, data: rawData }: KeyValu
         <Pie
           data={data}
           dataKey="value"
-          nameKey="key"
+          nameKey="name"
           innerRadius="30%"
           cx="50%"
           cy="50%"

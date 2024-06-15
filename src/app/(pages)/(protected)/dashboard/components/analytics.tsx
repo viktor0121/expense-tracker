@@ -58,6 +58,27 @@ export default function Analytics({}: OverviewProps) {
     need: totalNeeds,
     want: totalWants,
   };
+  const expenseStat = [
+    {
+      name: "need",
+      value: totalNeeds,
+    },
+    {
+      name: "want",
+      value: totalWants,
+    },
+  ];
+  const categoryStats = Object.values(
+    expenses.reduce((acc: Record<string, { name: string; value: number }>, expense) => {
+      const category: string = (expense.category as IExpenseCategory).title;
+      const amount: number = expense.amount;
+
+      if (!acc[category]) acc[category] = { name: category, value: 0 };
+      acc[category].value += amount;
+
+      return acc;
+    }, {}),
+  );
 
   const statCards: IStatCard[] = [
     {
