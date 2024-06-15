@@ -186,13 +186,14 @@ export default function Analytics({}: OverviewProps) {
       </section>
 
       <section className="grid grid-cols-12 gap-2 sm:gap-4">
+        <h2 className="col-span-12 text-xl font-bold mt-4">Statistics</h2>
         <Tabs
           defaultValue={LeftChartTabs.Expense}
-          className="overflow-auto col-span-12 lg:col-span-8 h-full flex flex-col"
+          className="col-span-12 lg:col-span-8 h-full flex flex-col"
         >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value={LeftChartTabs.Expense} className="capitalize">
-              Expense
+              {LeftChartTabs.Expense}
             </TabsTrigger>
           </TabsList>
 
@@ -209,19 +210,19 @@ export default function Analytics({}: OverviewProps) {
 
         <Tabs
           defaultValue={RightChartTabs.Category}
-          className="overflow-auto col-span-12 lg:col-span-4 h-full"
+          className="col-span-12 lg:col-span-4 h-full"
         >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value={RightChartTabs.Category} className="capitalize">
-              Category
+              {RightChartTabs.Category}
             </TabsTrigger>
             <TabsTrigger value={RightChartTabs.Expense} className="capitalize">
-              Expense
+              {RightChartTabs.Expense}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value={RightChartTabs.Category}>
-            <CharCard name="Category Stats">
+            <CharCard>
               {isExpenseIncomesLoading ? (
                 <div className="h-[300px] grid place-items-center">
                   <Skeleton className="rounded-full size-[250px] mx-auto" />
@@ -232,7 +233,7 @@ export default function Analytics({}: OverviewProps) {
             </CharCard>
           </TabsContent>
           <TabsContent value={RightChartTabs.Expense}>
-            <CharCard name="Expense Stats">
+            <CharCard>
               {isExpenseIncomesLoading ? (
                 <div className="h-[300px] grid place-items-center">
                   <Skeleton className="rounded-full size-[250px] mx-auto" />
@@ -249,7 +250,6 @@ export default function Analytics({}: OverviewProps) {
 }
 
 interface ChartCardProps {
-  name?: string;
   children: React.ReactNode;
 }
 
@@ -257,16 +257,10 @@ interface StatCardProps extends IStatCard {
   isLoading: boolean;
 }
 
-function CharCard({ name, children }: ChartCardProps) {
+function CharCard({ children }: ChartCardProps) {
   return (
-    <Card className="size-full overflow-auto h-full">
+    <Card className="size-full overflow-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-muted h-full">
       <CardContent className="pt-6 h-full">{children}</CardContent>
-
-      {name ? (
-        <CardFooter className="pt-0 grid place-items-center">
-          <CardTitle className="text-lg font-semibold">{name}</CardTitle>
-        </CardFooter>
-      ) : null}
     </Card>
   );
 }
