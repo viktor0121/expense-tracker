@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Query } from "appwrite";
+import { format } from "date-fns";
 import {
   CreditCardIcon,
   DollarSignIcon,
@@ -9,17 +10,17 @@ import {
   LucideIcon,
   WalletIcon,
 } from "lucide-react";
+import XYComparisonBarChart from "@/app/(pages)/(protected)/dashboard/components/charts/x-y-comparison-bar-chart";
 import KeyValuePieChart from "@/app/(pages)/(protected)/dashboard/components/charts/key-value-pie-chart";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
-import { EExpenseType } from "@/lib/enums";
 import { IEarnings, IExpense, IExpenseCategory } from "@/lib/types";
+import { EExpenseType } from "@/lib/enums";
+import { MONTHS_MMM } from "@/lib/constants";
 import database from "@/lib/appwrite/database";
-import XYComparisonBarChart from "@/app/(pages)/(protected)/dashboard/components/charts/x-y-comparison-bar-chart";
-import { format } from "date-fns";
 
 enum RightChartTabs {
   Category = "category",
@@ -66,6 +67,25 @@ interface IStatCard {
 }
 
 interface OverviewProps {}
+
+const fillExpenseMonthlyStats = (monthlyStat: IExpenseMonthlyStat[]): IExpenseMonthlyStat[] => {
+  return MONTHS_MMM.reduce((acc, month) => {
+    const existingStat = acc.find((stat) => stat.name === month);
+
+    return [
+      ...acc.filter((stat) => stat.name !== month),
+      existingStat
+        ? existingStat
+        : {
+            name: month,
+            values: {
+              x: { name: "Need", value: 0 },
+              y: { name: "Want", value: 0 },
+            },
+          },
+    ];
+  }, monthlyStat);
+};
 
 export default function Analytics({}: OverviewProps) {
   const { currency } = useCurrencyContext();
@@ -202,7 +222,7 @@ export default function Analytics({}: OverviewProps) {
               {isExpenseIncomesLoading ? (
                 <Skeleton className="size-16" />
               ) : (
-                <XYComparisonBarChart data={expensesMonthlyStats} />
+                <XYComparisonBarChart data={fillExpenseMonthlyStats(expensesMonthlyStats)} />
               )}
             </CharCard>
           </TabsContent>
