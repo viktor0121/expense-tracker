@@ -31,7 +31,7 @@ enum LeftChartTabs {
   Expense = "expense",
 }
 
-type IFetchedExpense = Pick<IExpense, "type" | " amount" | "date" | "category">;
+type IFetchedExpense = Pick<IExpense, "type" | "amount" | "date" | "category">;
 
 type IFetchedEarning = Pick<IEarning, "amount">;
 
@@ -121,52 +121,58 @@ export default function Analytics({}: OverviewProps) {
       value: totalWants,
     },
   ];
-  const categoryStats: ICategoryStat[] = expenses.reduce((acc, expense) => {
-    const category: string = (expense.category as IExpenseCategory).title;
-    const existingStat = acc.find((stat) => stat.name === category);
+  const categoryStats: ICategoryStat[] = expenses.reduce(
+    (acc: ICategoryStat[], expense: IFetchedExpense) => {
+      const category: string = (expense.category as IExpenseCategory).title;
+      const existingStat = acc.find((stat) => stat.name === category);
 
-    return [
-      ...acc.filter((stat) => stat.name !== category),
-      existingStat
-        ? { ...existingStat, value: existingStat.value + expense.amount }
-        : { name: category, value: expense.amount },
-    ];
-  }, []);
-  const expensesMonthlyStats: IExpenseMonthlyStat[] = expenses.reduce((acc, expense) => {
-    const month = format(expense.date, "MMM");
-    const existingStat = acc.find((stat) => stat.name === month);
+      return [
+        ...acc.filter((stat) => stat.name !== category),
+        existingStat
+          ? { ...existingStat, value: existingStat.value + expense.amount }
+          : { name: category, value: expense.amount },
+      ] as ICategoryStat[];
+    },
+    [] as ICategoryStat[],
+  );
+  const expensesMonthlyStats: IExpenseMonthlyStat[] = expenses.reduce(
+    (acc: IExpenseMonthlyStat[], expense: IFetchedExpense) => {
+      const month = format(expense.date, "MMM");
+      const existingStat = acc.find((stat) => stat.name === month);
 
-    return [
-      ...acc.filter((stat) => stat.name !== month),
-      existingStat
-        ? {
-            ...existingStat,
-            values: {
-              x: {
-                ...existingStat.values.x,
-                value:
-                  expense.type === "need"
-                    ? existingStat.values.x.value + expense.amount
-                    : existingStat.values.x.value,
+      return [
+        ...acc.filter((stat) => stat.name !== month),
+        existingStat
+          ? {
+              ...existingStat,
+              values: {
+                x: {
+                  ...existingStat.values.x,
+                  value:
+                    expense.type === "need"
+                      ? existingStat.values.x.value + expense.amount
+                      : existingStat.values.x.value,
+                },
+                y: {
+                  ...existingStat.values.y,
+                  value:
+                    expense.type === "want"
+                      ? existingStat.values.y.value + expense.amount
+                      : existingStat.values.y.value,
+                },
               },
-              y: {
-                ...existingStat.values.y,
-                value:
-                  expense.type === "want"
-                    ? existingStat.values.y.value + expense.amount
-                    : existingStat.values.y.value,
+            }
+          : {
+              name: month,
+              values: {
+                x: { name: "Need", value: expense.type === "need" ? expense.amount : 0 },
+                y: { name: "Want", value: expense.type === "want" ? expense.amount : 0 },
               },
             },
-          }
-        : {
-            name: month,
-            values: {
-              x: { name: "Need", value: expense.type === "need" ? expense.amount : 0 },
-              y: { name: "Want", value: expense.type === "want" ? expense.amount : 0 },
-            },
-          },
-    ];
-  }, []);
+      ] as IExpenseMonthlyStat[];
+    },
+    [] as IExpenseMonthlyStat[],
+  );
 
   const statCards: IStatCard[] = [
     {
@@ -228,10 +234,7 @@ export default function Analytics({}: OverviewProps) {
           </TabsContent>
         </Tabs>
 
-        <Tabs
-          defaultValue={RightChartTabs.Category}
-          className="col-span-12 lg:col-span-4 h-full"
-        >
+        <Tabs defaultValue={RightChartTabs.Category} className="col-span-12 lg:col-span-4 h-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value={RightChartTabs.Category} className="capitalize">
               {RightChartTabs.Category}
