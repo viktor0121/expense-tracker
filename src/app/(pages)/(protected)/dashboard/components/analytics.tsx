@@ -67,93 +67,6 @@ interface IStatCard {
 
 interface OverviewProps {}
 
-const initialExpenseMonthlyStats: IExpenseMonthlyStat[] = [
-  {
-    name: "Jan",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Feb",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Mar",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Apr",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "May",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Jun",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Jul",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Aug",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Sep",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Oct",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Nov",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-  {
-    name: "Dec",
-    values: {
-      x: { name: "Need", value: 0 },
-      y: { name: "Want", value: 0 },
-    },
-  },
-];
-
 export default function Analytics({}: OverviewProps) {
   const { currency } = useCurrencyContext();
   const { data, isLoading: isExpenseIncomesLoading } = useAppwriteFetch(async () => {
@@ -199,45 +112,40 @@ export default function Analytics({}: OverviewProps) {
       return acc;
     }, {}),
   );
-  const expensesMonthlyStats = expenses.reduce((acc: IExpenseMonthlyStat[], expense) => {
-    const month = format(expense.date, "MMM"); // Use date-fns for month name
-    const existingStatIndex = acc.findIndex((stat) => stat.name === month);
+  const expensesMonthlyStats = expenses.reduce((acc, expense) => {
+    const month = format(expense.date, "MMM");
+    const existingStat = acc.find((stat) => stat.name === month);
 
-    if (existingStatIndex !== -1) {
-      const updatedStat = {
-        ...acc[existingStatIndex], // Create a copy of the existing stat
-        values: {
-          ...acc[existingStatIndex].values, // Create a copy of the values object
-          x: {
-            ...acc[existingStatIndex].values.x, // Copy x object
-            value:
-              expense.type === "need"
-                ? acc[existingStatIndex].values.x.value + expense.amount
-                : acc[existingStatIndex].values.x.value, // Update x.value
+    return [
+      ...acc.filter((stat) => stat.name !== month),
+      existingStat
+        ? {
+            ...existingStat,
+            values: {
+              x: {
+                ...existingStat.values.x,
+                value:
+                  expense.type === "need"
+                    ? existingStat.values.x.value + expense.amount
+                    : existingStat.values.x.value,
+              },
+              y: {
+                ...existingStat.values.y,
+                value:
+                  expense.type === "want"
+                    ? existingStat.values.y.value + expense.amount
+                    : existingStat.values.y.value,
+              },
+            },
+          }
+        : {
+            name: month,
+            values: {
+              x: { name: "Need", value: expense.type === "need" ? expense.amount : 0 },
+              y: { name: "Want", value: expense.type === "want" ? expense.amount : 0 },
+            },
           },
-          y: {
-            ...acc[existingStatIndex].values.y, // Copy y object
-            value:
-              expense.type === "want"
-                ? acc[existingStatIndex].values.y.value + expense.amount
-                : acc[existingStatIndex].values.y.value, // Update y.value
-          },
-        },
-      };
-
-      return [...acc.slice(0, existingStatIndex), updatedStat, ...acc.slice(existingStatIndex + 1)];
-    } else {
-      return [
-        ...acc,
-        {
-          name: month,
-          values: {
-            x: { name: "Need", value: expense.type === "need" ? expense.amount : 0 },
-            y: { name: "Want", value: expense.type === "want" ? expense.amount : 0 },
-          },
-        },
-      ];
-    }
+    ];
   }, []);
 
   const statCards: IStatCard[] = [
