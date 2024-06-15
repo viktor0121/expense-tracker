@@ -55,7 +55,7 @@ export default function CategoryPie({ containerClasses, data}: KeyValuePieChart)
               key={index}
               stroke={"hsl(var(--secondary))"}
               fill={COLORS[index % COLORS.length]}
-              className="outline-none hover:outline-none focus:outline-none active:outline-none"
+              className="hover:opacity-80 outline-none hover:outline-none focus:outline-none active:outline-none"
             />
           ))}
         </Pie>
