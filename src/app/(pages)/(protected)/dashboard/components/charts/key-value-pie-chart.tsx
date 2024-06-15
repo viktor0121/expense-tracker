@@ -2,6 +2,8 @@ import { Cell, Pie, PieChart, PieLabel, ResponsiveContainer, Tooltip } from "rec
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { cn } from "@/lib/utils";
 import { CHART_COLORS } from "@/lib/constants";
+import { Skeleton } from "@/components/ui/skeleton";
+import React from "react";
 
 interface KeyValuePieChart {
   data: {
@@ -9,9 +11,10 @@ interface KeyValuePieChart {
     value: number;
   }[];
   containerClasses?: string;
+  isLoading?: boolean;
 }
 
-export default function CategoryPie({ containerClasses, data }: KeyValuePieChart) {
+export default function CategoryPie({ containerClasses, isLoading, data }: KeyValuePieChart) {
   const RADIAN = Math.PI / 180;
   const { currency } = useCurrencyContext();
 
@@ -21,55 +24,61 @@ export default function CategoryPie({ containerClasses, data }: KeyValuePieChart
       minHeight={300}
       maxHeight={400}
     >
-      <PieChart>
-        <Pie
-          data={data}
-          dataKey="value"
-          nameKey="name"
-          innerRadius="30%"
-          cx="50%"
-          cy="50%"
-          labelLine={false}
-          label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-            const x = cx + radius * Math.cos(-midAngle * RADIAN);
-            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+      {isLoading ? (
+        <div className="h-full aspect-square mx-auto grid place-items-center">
+          <Skeleton className="rounded-full size-[80%] aspect-square mx-auto" />
+        </div>
+      ) : (
+        <PieChart>
+          <Pie
+            data={data}
+            dataKey="value"
+            nameKey="name"
+            innerRadius="30%"
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+              const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+              const x = cx + radius * Math.cos(-midAngle * RADIAN);
+              const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-            return (
-              <text
-                x={x}
-                y={y}
-                fill="hsl(var(--primary-foreground))"
-                textAnchor={x > cx ? "start" : "end"}
-                dominantBaseline="central"
-              >
-                {`${(percent * 100).toFixed(0)}%`}
-              </text>
-            );
-          }}
-          strokeWidth={2}
-        >
-          {data.map((_, index) => (
-            <Cell
-              key={index}
-              stroke={"hsl(var(--secondary))"}
-              fill={CHART_COLORS[index % CHART_COLORS.length]}
-              className="hover:opacity-80 outline-none hover:outline-none focus:outline-none active:outline-none"
-            />
-          ))}
-        </Pie>
+              return (
+                <text
+                  x={x}
+                  y={y}
+                  fill="hsl(var(--primary-foreground))"
+                  textAnchor={x > cx ? "start" : "end"}
+                  dominantBaseline="central"
+                >
+                  {`${(percent * 100).toFixed(0)}%`}
+                </text>
+              );
+            }}
+            strokeWidth={2}
+          >
+            {data.map((_, index) => (
+              <Cell
+                key={index}
+                stroke={"hsl(var(--secondary))"}
+                fill={CHART_COLORS[index % CHART_COLORS.length]}
+                className="hover:opacity-80 outline-none hover:outline-none focus:outline-none active:outline-none"
+              />
+            ))}
+          </Pie>
 
-        <Tooltip
-          content={({ active, payload }) =>
-            active && payload && payload.length ? (
-              <p className="capitalize z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2">
-                {payload[0].name}: {currency.symbolNative}
-                {payload[0].value}
-              </p>
-            ) : null
-          }
-        />
-      </PieChart>
+          <Tooltip
+            content={({ active, payload }) =>
+              active && payload && payload.length ? (
+                <p className="capitalize z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2">
+                  {payload[0].name}: {currency.symbolNative}
+                  {payload[0].value}
+                </p>
+              ) : null
+            }
+          />
+        </PieChart>
+      )}
     </ResponsiveContainer>
   );
 }

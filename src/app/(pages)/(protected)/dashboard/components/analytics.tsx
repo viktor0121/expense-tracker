@@ -23,12 +23,12 @@ import { MONTHS_MMM } from "@/lib/constants";
 import database from "@/lib/appwrite/database";
 
 enum RightChartTabs {
-  Category = "category",
-  Expense = "expense",
+  Category = "category stats",
+  Expense = "expense stats",
 }
 
 enum LeftChartTabs {
-  Expense = "expense",
+  Expense = "monthly expense",
 }
 
 type IFetchedExpense = Pick<IExpense, "type" | "amount" | "date" | "category">;
@@ -213,11 +213,12 @@ export default function Analytics({}: OverviewProps) {
 
       <section className="grid grid-cols-12 gap-2 sm:gap-4">
         <h2 className="col-span-12 text-xl font-bold mt-4">Statistics</h2>
+
         <Tabs
           defaultValue={LeftChartTabs.Expense}
           className="col-span-12 lg:col-span-8 h-full flex flex-col"
         >
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-1">
             <TabsTrigger value={LeftChartTabs.Expense} className="capitalize">
               {LeftChartTabs.Expense}
             </TabsTrigger>
@@ -225,16 +226,18 @@ export default function Analytics({}: OverviewProps) {
 
           <TabsContent value={LeftChartTabs.Expense} className="flex-1">
             <ChartCard>
-              {isExpenseIncomesLoading ? (
-                <Skeleton className="size-16" />
-              ) : (
-                <XYComparisonBarChart data={fillExpenseMonthlyStats(expensesMonthlyStats)} />
-              )}
+              <XYComparisonBarChart
+                data={fillExpenseMonthlyStats(expensesMonthlyStats)}
+                isLoading={isExpenseIncomesLoading}
+              />
             </ChartCard>
           </TabsContent>
         </Tabs>
 
-        <Tabs defaultValue={RightChartTabs.Category} className="col-span-12 lg:col-span-4 h-full">
+        <Tabs
+          defaultValue={RightChartTabs.Category}
+          className="mt-1 lg:mt-0 col-span-12 lg:col-span-4 h-full"
+        >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value={RightChartTabs.Category} className="capitalize">
               {RightChartTabs.Category}
@@ -246,24 +249,12 @@ export default function Analytics({}: OverviewProps) {
 
           <TabsContent value={RightChartTabs.Category}>
             <ChartCard>
-              {isExpenseIncomesLoading ? (
-                <div className="h-[300px] grid place-items-center">
-                  <Skeleton className="rounded-full size-[250px] mx-auto" />
-                </div>
-              ) : (
-                <KeyValuePieChart data={categoryStats} />
-              )}
+              <KeyValuePieChart data={categoryStats} isLoading={isExpenseIncomesLoading} />
             </ChartCard>
           </TabsContent>
           <TabsContent value={RightChartTabs.Expense}>
             <ChartCard>
-              {isExpenseIncomesLoading ? (
-                <div className="h-[300px] grid place-items-center">
-                  <Skeleton className="rounded-full size-[250px] mx-auto" />
-                </div>
-              ) : (
-                <KeyValuePieChart data={expenseStats} />
-              )}
+              <KeyValuePieChart data={expenseStats} isLoading={isExpenseIncomesLoading} />
             </ChartCard>
           </TabsContent>
         </Tabs>
