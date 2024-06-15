@@ -101,18 +101,18 @@ export default function Analytics({}: OverviewProps) {
       value: totalWants,
     },
   ];
-  const categoryStats: ICategoryStat[] = Object.values(
-    expenses.reduce((acc: Record<string, { name: string; value: number }>, expense) => {
-      const category: string = (expense.category as IExpenseCategory).title;
-      const amount: number = expense.amount;
+  const categoryStats: ICategoryStat[] = expenses.reduce((acc, expense) => {
+    const category: string = (expense.category as IExpenseCategory).title;
+    const existingStat = acc.find((stat) => stat.name === category);
 
-      if (!acc[category]) acc[category] = { name: category, value: 0 };
-      acc[category].value += amount;
-
-      return acc;
-    }, {}),
-  );
-  const expensesMonthlyStats = expenses.reduce((acc, expense) => {
+    return [
+      ...acc.filter((stat) => stat.name !== category),
+      existingStat
+        ? { ...existingStat, value: existingStat.value + expense.amount }
+        : { name: category, value: expense.amount },
+    ];
+  }, []);
+  const expensesMonthlyStats: IExpenseMonthlyStat[] = expenses.reduce((acc, expense) => {
     const month = format(expense.date, "MMM");
     const existingStat = acc.find((stat) => stat.name === month);
 
