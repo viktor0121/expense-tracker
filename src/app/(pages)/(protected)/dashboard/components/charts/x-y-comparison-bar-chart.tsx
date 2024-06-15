@@ -30,10 +30,10 @@ export default function XYComparisonBarChart({ data, containerClasses }: BarChar
     <ResponsiveContainer
       className={cn(containerClasses, "overflow-auto")}
       minHeight={300}
-      minWidth={900}
+      width={data.length * 100}
     >
       <BarChart data={data}>
-        {/*<CartesianGrid strokeDasharray="3 3" />*/}
+        <CartesianGrid stroke="hsl(var(--primary))" strokeOpacity={0.2} />
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip
