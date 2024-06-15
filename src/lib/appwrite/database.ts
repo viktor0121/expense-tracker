@@ -1,7 +1,7 @@
 import { Client, Databases, ID, Permission, Query, Role } from "appwrite";
 import env from "@/lib/env";
 import auth from "@/lib/appwrite/auth";
-import { IExpense, IExpenseCategory, IEarnings, IOverallStats } from "@/lib/types";
+import { IExpense, IExpenseCategory, IEarning, IOverallStats } from "@/lib/types";
 import { EExpenseType } from "@/lib/enums";
 
 type CreateUpdateExpenseParams =
@@ -82,14 +82,14 @@ export class DatabaseServices {
     }
   }
 
-  async getIncomes(queries?: string[]): Promise<IEarnings[]> {
+  async getIncomes(queries?: string[]): Promise<IEarning[]> {
     try {
       const data = await this.databases.listDocuments(
         env.awDatabaseId,
         env.awIncomeCollectionId,
         [Query.orderDesc("date")].concat(queries && queries.length > 0 ? queries : []),
       );
-      return data.documents as IEarnings[];
+      return data.documents as IEarning[];
     } catch (error: any) {
       console.error("Appwrite :: getIncomes() :: ", error);
       throw error;
@@ -145,7 +145,7 @@ export class DatabaseServices {
     title,
     amount,
     date,
-  }: CreateUpdateIncomeParams): Promise<IEarnings> {
+  }: CreateUpdateIncomeParams): Promise<IEarning> {
     try {
       if (actionType === "update") {
         const data = {

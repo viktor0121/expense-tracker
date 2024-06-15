@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
-import { IEarnings, IExpense, IExpenseCategory } from "@/lib/types";
+import { IEarning, IExpense, IExpenseCategory } from "@/lib/types";
 import { EExpenseType } from "@/lib/enums";
 import { MONTHS_MMM } from "@/lib/constants";
 import database from "@/lib/appwrite/database";
@@ -33,7 +33,7 @@ enum LeftChartTabs {
 
 type IFetchedExpense = Pick<IExpense, "type" | " amount" | "date" | "category">;
 
-type IFetchedEarning = Pick<IEarnings, "amount">;
+type IFetchedEarning = Pick<IEarning, "amount">;
 
 interface IExpenseStat {
   name: "Need" | "Want";
@@ -218,13 +218,13 @@ export default function Analytics({}: OverviewProps) {
           </TabsList>
 
           <TabsContent value={LeftChartTabs.Expense} className="flex-1">
-            <CharCard>
+            <ChartCard>
               {isExpenseIncomesLoading ? (
                 <Skeleton className="size-16" />
               ) : (
                 <XYComparisonBarChart data={fillExpenseMonthlyStats(expensesMonthlyStats)} />
               )}
-            </CharCard>
+            </ChartCard>
           </TabsContent>
         </Tabs>
 
@@ -242,7 +242,7 @@ export default function Analytics({}: OverviewProps) {
           </TabsList>
 
           <TabsContent value={RightChartTabs.Category}>
-            <CharCard>
+            <ChartCard>
               {isExpenseIncomesLoading ? (
                 <div className="h-[300px] grid place-items-center">
                   <Skeleton className="rounded-full size-[250px] mx-auto" />
@@ -250,10 +250,10 @@ export default function Analytics({}: OverviewProps) {
               ) : (
                 <KeyValuePieChart data={categoryStats} />
               )}
-            </CharCard>
+            </ChartCard>
           </TabsContent>
           <TabsContent value={RightChartTabs.Expense}>
-            <CharCard>
+            <ChartCard>
               {isExpenseIncomesLoading ? (
                 <div className="h-[300px] grid place-items-center">
                   <Skeleton className="rounded-full size-[250px] mx-auto" />
@@ -261,7 +261,7 @@ export default function Analytics({}: OverviewProps) {
               ) : (
                 <KeyValuePieChart data={expenseStats} />
               )}
-            </CharCard>
+            </ChartCard>
           </TabsContent>
         </Tabs>
       </section>
@@ -277,7 +277,7 @@ interface StatCardProps extends IStatCard {
   isLoading: boolean;
 }
 
-function CharCard({ children }: ChartCardProps) {
+function ChartCard({ children }: ChartCardProps) {
   return (
     <Card className="size-full overflow-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-muted h-full">
       <CardContent className="pt-6 h-full">{children}</CardContent>

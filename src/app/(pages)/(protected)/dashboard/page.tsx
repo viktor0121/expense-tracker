@@ -14,7 +14,7 @@ import useDataContext from "@/context/data/useDataContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { EDashboardTabs } from "@/lib/enums";
-import { IExpense, IEarnings } from "@/lib/types";
+import { IExpense, IEarning } from "@/lib/types";
 import database from "@/lib/appwrite/database";
 
 enum EEarningsColumnIds {
@@ -111,7 +111,7 @@ export default function DashboardPage() {
       },
     },
   ];
-  const earningsColumns: ColumnDef<IEarnings>[] = [
+  const earningsColumns: ColumnDef<IEarning>[] = [
     {
       id: EEarningsColumnIds.Amount,
       accessorKey: "amount",

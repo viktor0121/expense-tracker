@@ -17,7 +17,7 @@ import FormDateField from "@/components/form-date-field";
 import ButtonWithSpinner from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
 import useDataContext from "@/context/data/useDataContext";
-import { IEarnings } from "@/lib/types";
+import { IEarning } from "@/lib/types";
 
 type AddUpdateTypes =
   | {
@@ -26,7 +26,7 @@ type AddUpdateTypes =
     }
   | {
       recordType: "update";
-      record: IEarnings;
+      record: IEarning;
     };
 
 type IncomeFormProps = AddUpdateTypes & {

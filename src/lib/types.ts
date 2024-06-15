@@ -33,7 +33,7 @@ export type IUser = Models.User<IUserPreferences>;
 
 export type ICurrency = Models.Currency;
 
-export interface IEarnings extends Models.Document {
+export interface IEarning extends Models.Document {
   title: string;
   amount: number;
   date: Date | string;
@@ -66,7 +66,7 @@ export type IRecordDialogState =
   | {
       open: boolean;
       recordType: "earning";
-      record: IEarnings;
+      record: IEarning;
     }
   | {
       open: false;
