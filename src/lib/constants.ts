@@ -70,3 +70,5 @@ export const navigations: { [key: string]: INavItem } = {
 export const images = { heroImage };
 
 export const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+
+export const CHART_COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];

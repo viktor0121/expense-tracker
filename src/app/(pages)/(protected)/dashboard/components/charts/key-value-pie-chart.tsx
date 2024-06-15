@@ -1,6 +1,7 @@
 import { Cell, Pie, PieChart, PieLabel, ResponsiveContainer, Tooltip } from "recharts";
-import { cn } from "@/lib/utils";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
+import { cn } from "@/lib/utils";
+import { CHART_COLORS } from "@/lib/constants";
 
 interface KeyValuePieChart {
   data: {
@@ -10,10 +11,8 @@ interface KeyValuePieChart {
   containerClasses?: string;
 }
 
-export default function CategoryPie({ containerClasses, data}: KeyValuePieChart) {
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+export default function CategoryPie({ containerClasses, data }: KeyValuePieChart) {
   const RADIAN = Math.PI / 180;
-
   const { currency } = useCurrencyContext();
 
   return (
@@ -54,11 +53,12 @@ export default function CategoryPie({ containerClasses, data}: KeyValuePieChart)
             <Cell
               key={index}
               stroke={"hsl(var(--secondary))"}
-              fill={COLORS[index % COLORS.length]}
+              fill={CHART_COLORS[index % CHART_COLORS.length]}
               className="hover:opacity-80 outline-none hover:outline-none focus:outline-none active:outline-none"
             />
           ))}
         </Pie>
+
         <Tooltip
           content={({ active, payload }) =>
             active && payload && payload.length ? (
