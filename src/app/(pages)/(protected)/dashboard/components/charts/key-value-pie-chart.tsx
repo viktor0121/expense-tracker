@@ -1,17 +1,8 @@
 import React from "react";
-import { CircleIcon, DotIcon } from "lucide-react";
+import { CircleIcon } from "lucide-react";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { Props as LegendProps } from "recharts/types/component/DefaultLegendContent";
-import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  PieLabel,
-  ResponsiveContainer,
-  Tooltip,
-  TooltipProps,
-} from "recharts";
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { CHART_COLORS, RADIAN } from "@/lib/constants";
@@ -71,7 +62,7 @@ export default function CategoryPie({ containerClasses, isLoading, data }: KeyVa
             }
           />
 
-          <Legend />
+          <Legend content={renderCustomLegendContent} />
         </PieChart>
       )}
     </ResponsiveContainer>
@@ -110,3 +101,22 @@ function renderCustomTooltipContent({ active, payload, currencySymbol }: CustomT
   );
 }
 
+function renderCustomLegendContent({ payload }: LegendProps) {
+  return (
+    <ul className="flex justify-center gap-2 flex-wrap">
+      {payload?.map((entry, index) => (
+        <li
+          key={index}
+          style={{ color: CHART_COLORS[index % CHART_COLORS.length] }}
+          className="flex items-center gap-1"
+        >
+          <CircleIcon
+            className="size-3.5 rounded-full"
+            style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}
+          />
+          {entry.value}
+        </li>
+      ))}
+    </ul>
+  );
+}
