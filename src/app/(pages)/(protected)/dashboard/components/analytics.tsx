@@ -21,6 +21,8 @@ import { IEarning, IExpense, IExpenseCategory } from "@/lib/types";
 import { EExpenseType } from "@/lib/enums";
 import { MONTHS_MMM } from "@/lib/constants";
 import database from "@/lib/appwrite/database";
+import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
 
 enum RightChartTabs {
   Category = "category stats",
@@ -203,61 +205,29 @@ export default function Analytics({}: OverviewProps) {
 
   return (
     <>
-      <section className="grid gap-3 sm:gap-5">
-        <div className="grid gap-2 sm:gap-4 grid-cols-2 md:grid-cols-4">
-          {statCards.map((stat, index) => (
-            <StatCard key={index} isLoading={isExpenseIncomesLoading} {...stat} />
-          ))}
-        </div>
+      <section className="grid gap-2 sm:gap-3 grid-cols-2 md:grid-cols-4">
+        {statCards.map((stat, index) => (
+          <StatCard key={index} isLoading={isExpenseIncomesLoading} {...stat} />
+        ))}
       </section>
 
-      <section className="grid grid-cols-12 gap-2 sm:gap-4">
-        <h2 className="col-span-12 text-xl font-bold mt-4">Statistics</h2>
+      <section className="pt-1 grid grid-cols-12 gap-2 sm:gap-3">
+        <h2 className="col-span-12 text-xl font-bold">Statistics</h2>
 
-        <Tabs
-          defaultValue={LeftChartTabs.Expense}
-          className="col-span-12 lg:col-span-8 h-full flex flex-col"
-        >
-          <TabsList className="grid w-full grid-cols-1">
-            <TabsTrigger value={LeftChartTabs.Expense} className="capitalize">
-              {LeftChartTabs.Expense}
-            </TabsTrigger>
-          </TabsList>
+        <ChartCard title="Category Statistics" containerClasses="col-span-12 md:col-span-6">
+          <KeyValuePieChart data={categoryStats} isLoading={isExpenseIncomesLoading} />
+        </ChartCard>
 
-          <TabsContent value={LeftChartTabs.Expense} className="flex-1">
-            <ChartCard>
-              <XYComparisonBarChart
-                data={fillExpenseMonthlyStats(expensesMonthlyStats)}
-                isLoading={isExpenseIncomesLoading}
-              />
-            </ChartCard>
-          </TabsContent>
-        </Tabs>
+        <ChartCard title="Expense Statistics" containerClasses="col-span-12 md:col-span-6">
+          <KeyValuePieChart data={expenseStats} isLoading={isExpenseIncomesLoading} />
+        </ChartCard>
 
-        <Tabs
-          defaultValue={RightChartTabs.Category}
-          className="mt-1 lg:mt-0 col-span-12 lg:col-span-4 h-full"
-        >
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value={RightChartTabs.Category} className="capitalize">
-              {RightChartTabs.Category}
-            </TabsTrigger>
-            <TabsTrigger value={RightChartTabs.Expense} className="capitalize">
-              {RightChartTabs.Expense}
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value={RightChartTabs.Category}>
-            <ChartCard>
-              <KeyValuePieChart data={categoryStats} isLoading={isExpenseIncomesLoading} />
-            </ChartCard>
-          </TabsContent>
-          <TabsContent value={RightChartTabs.Expense}>
-            <ChartCard>
-              <KeyValuePieChart data={expenseStats} isLoading={isExpenseIncomesLoading} />
-            </ChartCard>
-          </TabsContent>
-        </Tabs>
+        <ChartCard title="Monthly Expense Statistics" containerClasses="col-span-12">
+          <XYComparisonBarChart
+            data={fillExpenseMonthlyStats(expensesMonthlyStats)}
+            isLoading={isExpenseIncomesLoading}
+          />
+        </ChartCard>
       </section>
     </>
   );
@@ -265,16 +235,33 @@ export default function Analytics({}: OverviewProps) {
 
 interface ChartCardProps {
   children: React.ReactNode;
+  title?: string;
+  containerClasses?: string;
 }
 
 interface StatCardProps extends IStatCard {
   isLoading: boolean;
 }
 
-function ChartCard({ children }: ChartCardProps) {
+function ChartCard({ title, children, containerClasses }: ChartCardProps) {
   return (
-    <Card className="size-full overflow-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-muted h-full">
-      <CardContent className="pt-6 h-full">{children}</CardContent>
+    <Card
+      className={cn(
+        "size-full overflow-x-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-muted h-fit",
+        containerClasses,
+      )}
+    >
+      {title ? (
+        <>
+          <CardHeader className="bg-secondary mx-auto py-2">
+            <CardTitle className="text-base text-center text-secondary-foreground">
+              {title}
+            </CardTitle>
+          </CardHeader>
+          <Separator />
+        </>
+      ) : null}
+      <CardContent className={cn("h-full", title ? "pt-3" : "pt-6")}>{children}</CardContent>
     </Card>
   );
 }

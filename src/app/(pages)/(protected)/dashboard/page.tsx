@@ -177,7 +177,7 @@ export default function DashboardPage() {
     <Tabs
       value={tab}
       onValueChange={onTabChange}
-      className="max-h-screen flex-col flex px-3 sm:px-6 space-y-4"
+      className="min-h-screen flex-col flex px-3 sm:px-6 space-y-4"
     >
       <TabsList className="w-fit">
         <TabsTrigger value={EDashboardTabs.Overview} className="capitalize">
@@ -193,14 +193,14 @@ export default function DashboardPage() {
 
       <TabsContent
         value={EDashboardTabs.Overview}
-        className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
+        className="min-h-[calc(100vh-8rem)] sm:min-h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
         <Analytics />
       </TabsContent>
 
       <TabsContent
         value={EDashboardTabs.Expenses}
-        className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
+        className="min-h-[calc(100vh-8rem)] sm:min-h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
         <DataTableCard
           filter={{
@@ -216,7 +216,7 @@ export default function DashboardPage() {
 
       <TabsContent
         value={EDashboardTabs.Earnings}
-        className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
+        className="min-h-[calc(100vh-8rem)] sm:min-h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
         <DataTableCard
           filter={{

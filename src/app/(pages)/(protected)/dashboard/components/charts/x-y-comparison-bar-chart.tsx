@@ -32,9 +32,9 @@ export default function XYComparisonBarChart({ data, isLoading, containerClasses
   return (
     <ResponsiveContainer
       className={cn(containerClasses, "overflow-auto")}
-      minHeight={300}
+      minHeight={400}
       maxHeight={400}
-      width={data.length * 100}
+      minWidth={data.length * 70}
     >
       {isLoading ? (
         <div className="h-full ">

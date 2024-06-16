@@ -24,14 +24,18 @@ export default function CategoryPie({ containerClasses, isLoading, data }: KeyVa
     <ResponsiveContainer
       className={cn(containerClasses, "aspect-square")}
       minHeight={300}
-      maxHeight={400}
+      maxHeight={350}
     >
-      {isLoading ? (
-        <div className="h-full aspect-square mx-auto grid place-items-center">
-          <Skeleton className="rounded-full size-[80%] aspect-square mx-auto" />
+      {isLoading  ? (
+        <div className="h-full aspect-square mx-auto flex flex-col gap-8 justify-end items-center">
+          <Skeleton className="rounded-full size-[75%] aspect-square mx-auto" />
+          <div className="mx-auto w-48 h-6 flex justify-between gap-2">
+            <Skeleton className="w-1/2" />
+            <Skeleton className="w-1/2" />
+          </div>
         </div>
       ) : (
-        <PieChart>
+        <PieChart >
           <Pie
             data={data}
             dataKey="value"
