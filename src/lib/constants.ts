@@ -2,6 +2,7 @@ import heroImage from "../assets/signin-side.png";
 import { INavItem, INavTrail } from "@/lib/types";
 import { CreditCard, DollarSign, Home, LogIn, Settings, Target } from "lucide-react";
 import { EDashboardTabs } from "@/lib/enums";
+import { shuffleArray } from "@/lib/utils";
 
 type Trails = {
   [path: string]: INavTrail[];
@@ -71,7 +72,7 @@ export const images = { heroImage };
 
 export const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
 
-export const CHART_COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+export const CHART_COLORS = shuffleArray(["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]);
 
 export const MONTHS_MMM = [
   "Jan",
