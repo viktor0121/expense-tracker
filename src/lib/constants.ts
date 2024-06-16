@@ -87,3 +87,5 @@ export const MONTHS_MMM = [
   "Nov",
   "Dec",
 ];
+
+export const RADIAN = Math.PI / 180;
