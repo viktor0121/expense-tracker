@@ -212,7 +212,7 @@ export default function Analytics({}: OverviewProps) {
       </section>
 
       <section className="pt-1 grid grid-cols-12 gap-2 sm:gap-3">
-        <h2 className="col-span-12 text-xl font-bold">Statistics</h2>
+        {/*<h2 className="col-span-12 text-xl font-bold">Statistics</h2>*/}
 
         <ChartCard title="Category Statistics" containerClasses="col-span-12 md:col-span-6">
           <KeyValuePieChart data={categoryStats} isLoading={isExpenseIncomesLoading} />

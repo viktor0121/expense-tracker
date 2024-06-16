@@ -32,8 +32,8 @@ enum EExpenseColumnIds {
 
 export default function DashboardPage() {
   const { tab, onTabChange } = useTab<EDashboardTabs>({
-    defaultTab: EDashboardTabs.Overview,
-    tabs: [EDashboardTabs.Overview, EDashboardTabs.Expenses, EDashboardTabs.Earnings],
+    defaultTab: EDashboardTabs.Analytics,
+    tabs: [EDashboardTabs.Analytics, EDashboardTabs.Expenses, EDashboardTabs.Earnings],
   });
   const { currency } = useCurrencyContext();
   const { earnings, setEarnings, expenses, setExpenses } = useDataContext();
@@ -180,8 +180,8 @@ export default function DashboardPage() {
       className="min-h-screen flex-col flex px-3 sm:px-6 space-y-4"
     >
       <TabsList className="w-fit">
-        <TabsTrigger value={EDashboardTabs.Overview} className="capitalize">
-          {EDashboardTabs.Overview}
+        <TabsTrigger value={EDashboardTabs.Analytics} className="capitalize">
+          {EDashboardTabs.Analytics}
         </TabsTrigger>
         <TabsTrigger value={EDashboardTabs.Expenses} className="capitalize">
           {EDashboardTabs.Expenses}
@@ -192,7 +192,7 @@ export default function DashboardPage() {
       </TabsList>
 
       <TabsContent
-        value={EDashboardTabs.Overview}
+        value={EDashboardTabs.Analytics}
         className="min-h-[calc(100vh-8rem)] sm:min-h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
       >
         <Analytics />

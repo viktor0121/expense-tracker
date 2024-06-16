@@ -47,7 +47,7 @@ export const navigations: { [key: string]: INavItem } = {
   overview: {
     title: "Overview",
     Icon: Target,
-    url: `/dashboard?tab=${EDashboardTabs.Overview}`,
+    url: `/dashboard?tab=${EDashboardTabs.Analytics}`,
   },
   expense: {
     title: "Expenses",

@@ -1,5 +1,5 @@
 export enum EDashboardTabs {
-  Overview = "overview",
+  Analytics = "analytics",
   Expenses = "expenses",
   Earnings = "earnings",
 }

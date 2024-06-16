@@ -95,7 +95,7 @@ export default function CommandPallet({}: CommandPalletProps) {
     {
       title: "Overview",
       Icon: Target,
-      action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Overview}`)),
+      action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Analytics}`)),
     },
     {
       title: "Expenses",
