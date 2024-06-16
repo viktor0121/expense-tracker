@@ -8,6 +8,15 @@ type Trails = {
   [path: string]: INavTrail[];
 };
 
+enum ENavKey {
+  home = "home",
+  signin = "signin",
+  analytics = "analytics",
+  expense = "expense",
+  earnings = "earnings",
+  settings = "settings",
+}
+
 export const trails: Trails = {
   "/auth": [
     { title: "Home", href: "/" },
@@ -34,33 +43,33 @@ export const trails: Trails = {
   ],
 };
 
-export const navigations: { [key: string]: INavItem } = {
-  home: {
+export const navigations: { [key in ENavKey]: INavItem } = {
+  [ENavKey.home]: {
     title: "Home",
     Icon: Home,
     url: "/",
   },
-  signin: {
+  [ENavKey.signin]: {
     title: "SignIn",
     Icon: LogIn,
     url: "/auth",
   },
-  overview: {
-    title: "Overview",
+  [ENavKey.analytics]: {
+    title: "Analytics",
     Icon: Target,
     url: `/dashboard?tab=${EDashboardTabs.Analytics}`,
   },
-  expense: {
+  [ENavKey.expense]: {
     title: "Expenses",
     Icon: CreditCard,
     url: `/dashboard?tab=${EDashboardTabs.Expenses}`,
   },
-  earnings: {
+  [ENavKey.earnings]: {
     title: "Earnings",
     Icon: DollarSign,
     url: `/dashboard?tab=${EDashboardTabs.Earnings}`,
   },
-  settings: {
+  [ENavKey.settings]: {
     title: "Settings",
     Icon: Settings,
     url: "/settings",

@@ -15,7 +15,7 @@ export default function Navbar() {
   const { authStatus, isAuthLoading } = useAuthContext();
 
   const authNavItems = [
-    navigations.overview,
+    navigations.analytics,
     navigations.expense,
     navigations.earnings,
     navigations.settings,

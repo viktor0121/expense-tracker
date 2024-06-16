@@ -68,7 +68,7 @@ interface IStatCard {
   description?: string;
 }
 
-interface OverviewProps {}
+interface AnalyticsProps {}
 
 const fillExpenseMonthlyStats = (monthlyStat: IExpenseMonthlyStat[]): IExpenseMonthlyStat[] => {
   return MONTHS_MMM.reduce((acc, month) => {
@@ -89,7 +89,7 @@ const fillExpenseMonthlyStats = (monthlyStat: IExpenseMonthlyStat[]): IExpenseMo
   }, monthlyStat);
 };
 
-export default function Analytics({}: OverviewProps) {
+export default function Analytics({}: AnalyticsProps) {
   const { currency } = useCurrencyContext();
   const { data, isLoading: isExpenseIncomesLoading } = useAppwriteFetch(async () => {
     return await Promise.all([

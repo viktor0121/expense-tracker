@@ -93,7 +93,7 @@ export default function CommandPallet({}: CommandPalletProps) {
 
   const dashboardCommands: Command[] = [
     {
-      title: "Overview",
+      title: "Analytics",
       Icon: Target,
       action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Analytics}`)),
     },

@@ -11,7 +11,7 @@ export enum EAddSheetTabs {
 
 export enum EAuthTabs {
   Register = "register",
-  Login = "login",
+  Login = "sign in",
 }
 
 export enum ETheme {
