@@ -14,7 +14,8 @@ import useDataContext from "@/context/data/useDataContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { EDashboardTabs } from "@/lib/enums";
-import { IExpense, IEarning } from "@/lib/types";
+import { IEarning, IExpense } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import database from "@/lib/appwrite/database";
 
 enum EEarningsColumnIds {
@@ -177,7 +178,12 @@ export default function DashboardPage() {
     <Tabs
       value={tab}
       onValueChange={onTabChange}
-      className="min-h-screen flex-col flex px-3 sm:px-6 space-y-4"
+      className={cn(
+        "px-3 sm:px-6 space-y-4",
+        tab === EDashboardTabs.Expenses || tab === EDashboardTabs.Earnings
+          ? "max-h-screen"
+          : "min-h-screen",
+      )}
     >
       <TabsList className="w-fit">
         <TabsTrigger value={EDashboardTabs.Analytics} className="capitalize">
@@ -198,37 +204,39 @@ export default function DashboardPage() {
         <Analytics />
       </TabsContent>
 
-      <TabsContent
-        value={EDashboardTabs.Expenses}
-        className="min-h-[calc(100vh-8rem)] sm:min-h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
-      >
-        <DataTableCard
-          filter={{
-            placeholder: "Search Expenses",
-            columnId: EExpenseColumnIds.Title,
-          }}
-          title="expense"
-          columns={expenseColumns}
-          data={expenses}
-          isLoading={isLoading}
-        />
-      </TabsContent>
+      <div>
+        <TabsContent
+          value={EDashboardTabs.Expenses}
+          className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
+        >
+          <DataTableCard
+            filter={{
+              placeholder: "Search Expenses",
+              columnId: EExpenseColumnIds.Title,
+            }}
+            title="expense"
+            columns={expenseColumns}
+            data={expenses}
+            isLoading={isLoading}
+          />
+        </TabsContent>
 
-      <TabsContent
-        value={EDashboardTabs.Earnings}
-        className="min-h-[calc(100vh-8rem)] sm:min-h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
-      >
-        <DataTableCard
-          filter={{
-            placeholder: "Search Earnings",
-            columnId: EEarningsColumnIds.Title,
-          }}
-          title="earning"
-          columns={earningsColumns}
-          data={earnings}
-          isLoading={isLoading}
-        />
-      </TabsContent>
+        <TabsContent
+          value={EDashboardTabs.Earnings}
+          className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
+        >
+          <DataTableCard
+            filter={{
+              placeholder: "Search Earnings",
+              columnId: EEarningsColumnIds.Title,
+            }}
+            title="earning"
+            columns={earningsColumns}
+            data={earnings}
+            isLoading={isLoading}
+          />
+        </TabsContent>
+      </div>
     </Tabs>
   );
 }
