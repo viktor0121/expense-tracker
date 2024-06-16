@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { formatDate } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
-import { SortHeader } from "@/components/ui/data-table";
+import { SortHeader } from "@/app/(pages)/(protected)/dashboard/components/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Analytics from "@/app/(pages)/(protected)/dashboard/components/analytics";
 import DataTableCard from "@/app/(pages)/(protected)/dashboard/components/data-table-card";

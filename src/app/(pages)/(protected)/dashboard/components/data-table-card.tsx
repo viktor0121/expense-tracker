@@ -1,7 +1,7 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DataTable, IDataTableFilter } from "@/components/ui/data-table";
+import { DataTable, IDataTableFilter } from "@/app/(pages)/(protected)/dashboard/components/data-table";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
