@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
@@ -125,7 +126,12 @@ export default function ProfileForm() {
 
       toast({
         title: "Profile updated",
-        description: "Your profile has been updated successfully.",
+        description: `Your profile has been updated successfully. ${photo[0] ? "Refresh to see changes in action" : ""}`,
+        action: photo[0] && (
+          <ToastAction altText="Refresh Now" onClick={() => window.location.reload()}>
+            Refresh Now
+          </ToastAction>
+        ),
       });
     } catch (error: any) {
       toast({
