@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import ButtonWithSpinner from "@/components/button-with-spinner";
-import PasswordConfirmDialog from "@/app/(pages)/(protected)/settings/components/password-confirm-dialog";
+import PasswordConfirmCard from "@/app/(pages)/(protected)/settings/components/password-confirm-card";
 import { IUser } from "@/lib/types";
 import { SUPPORTED_IMAGE_FORMATS } from "@/lib/constants";
 import auth from "@/lib/appwrite/auth";
@@ -95,8 +95,9 @@ export default function ProfileForm() {
 
   const router = useRouter();
   const [user, setUser] = useState<IUser | null>(null);
-  const [password, setPassword] = useState<string>("");
   const [avatar, setAvatar] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordError, setPasswordError] = useState("");
 
   const name = form.watch("name");
   const email = form.watch("email");
@@ -107,6 +108,13 @@ export default function ProfileForm() {
   const isPasswordNeeded = user?.email !== email || user?.phone !== phone;
   const formValuesChanged =
     user?.name !== name || user?.email !== email || user?.phone !== phone || photo[0];
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value == "") setPasswordError("Password is required");
+    else setPasswordError("");
+    setPassword(value);
+  };
 
   const onSubmit = form.handleSubmit(async ({ name, email, phone, photo }) => {
     try {
@@ -144,27 +152,36 @@ export default function ProfileForm() {
 
   useEffect(() => {
     (async () => {
-      const user = await auth.getCurrentUser();
+      try {
+        const user = await auth.getCurrentUser();
 
-      // If user is not found, redirect to home page
-      if (!user) {
+        // If user is not found, redirect to home page
+        if (!user) {
+          toast({
+            variant: "destructive",
+            title: `Uh oh! Something went wrong.`,
+            description: "Unable to fetch current user",
+          });
+          router.push("/");
+          return;
+        }
+
+        form.setValue("name", user?.name || "");
+        form.setValue("email", user?.email || "");
+        form.setValue("phone", user?.phone || "");
+
+        const photoId = user?.prefs?.photoFileId;
+        const url = photoId ? storage.getProfilePhotoUrl({ photoId }) : null;
+        setAvatar(url || String(avatars.avatars.getInitials(user?.name)) || "");
+        setUser(user);
+      } catch (error: any) {
         toast({
           variant: "destructive",
           title: `Uh oh! Something went wrong.`,
           description: "Unable to fetch current user",
         });
         router.push("/");
-        return;
       }
-
-      form.setValue("name", user?.name || "");
-      form.setValue("email", user?.email || "");
-      form.setValue("phone", user?.phone || "");
-
-      const photoId = user?.prefs?.photoFileId;
-      const url = photoId ? storage.getProfilePhotoUrl({ photoId }) : null;
-      setAvatar(url || String(avatars.avatars.getInitials(user?.name)) || "");
-      setUser(user);
     })();
   }, []);
 
@@ -272,27 +289,28 @@ export default function ProfileForm() {
           )}
         />
 
+        {isPasswordNeeded && !isSubmitting && formValuesChanged && isValid ? (
+          <PasswordConfirmCard
+            title="Password"
+            description="You have updated fields that require you to enter your value"
+            value={password}
+            onChange={handlePasswordChange}
+            error={passwordError}
+          />
+        ) : null}
+
         {/*Submit Button*/}
-        {isPasswordNeeded && !isSubmitting ? (
-          <PasswordConfirmDialog
-            title="Update Profile"
-            description="Please enter your password to update your profile."
-            triggerBtnText="Proceed"
-            triggerDisabled={!formValuesChanged || !isValid}
-            submitBtnText="Update Profile"
-            onSubmit={onSubmit}
-            password={password}
-            setPassword={setPassword}
-          />
-        ) : (
-          <ButtonWithSpinner
-            type="submit"
-            disabled={!formValuesChanged || !isValid}
-            isLoading={isSubmitting}
-            className="mt-2"
-            btnText="Update Profile"
-          />
-        )}
+        <ButtonWithSpinner
+          type="submit"
+          disabled={
+            !formValuesChanged ||
+            !isValid ||
+            (isPasswordNeeded ? !password || !!passwordError : false)
+          }
+          isLoading={isSubmitting}
+          className="mt-2"
+          btnText="Update Profile"
+        />
       </form>
     </Form>
   );
