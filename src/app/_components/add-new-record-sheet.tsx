@@ -6,24 +6,21 @@ import { ExpenseForm } from "./expense-form";
 import { IncomeForm } from "./income-form";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { EAddSheetTabs, EDashboardTabs } from "@/lib/enums";
+import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
 
 interface AddNewSheetProps {}
 
 export function AddNewRecordSheet({}: AddNewSheetProps) {
-  const { addNewSideSheet, setAddNewSideSheet } = useOverlaysContext();
-  const closeSheet = () => setAddNewSideSheet((prev) => ({ ...prev, open: false }));
+  const addNewRecordSheet = useAddNewRecordSheet();
 
   return (
-    <Sheet
-      open={addNewSideSheet.open}
-      onOpenChange={(open) => setAddNewSideSheet((prev) => ({ ...prev, open }))}
-    >
+    <Sheet open={addNewRecordSheet.isOpen} onOpenChange={addNewRecordSheet.close}>
       <SheetContent className="slim-scrollbar overflow-auto py-5 px-1 sm:px-5 w-full sm:min-w-fit">
         <SheetHeader>
           <SheetTitle className="mb-4">Add New Record</SheetTitle>
         </SheetHeader>
 
-        <Tabs defaultValue={addNewSideSheet.defaultTab} className="sm:w-[400px]">
+        <Tabs defaultValue={addNewRecordSheet.tab} className="sm:w-[400px]">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value={EAddSheetTabs.Expense} className="capitalize">
               {EDashboardTabs.Expenses}
@@ -35,13 +32,13 @@ export function AddNewRecordSheet({}: AddNewSheetProps) {
 
           <TabsContent value={EAddSheetTabs.Expense}>
             <SheetCardWrapper title="Add New Expense">
-              <ExpenseForm recordType="add" runAfterSubmit={closeSheet} />
+              <ExpenseForm recordType="add" runAfterSubmit={addNewRecordSheet.close} />
             </SheetCardWrapper>
           </TabsContent>
 
           <TabsContent value={EAddSheetTabs.Earning}>
             <SheetCardWrapper title="Add New Earning">
-              <IncomeForm recordType="add" runAfterSubmit={closeSheet} />
+              <IncomeForm recordType="add" runAfterSubmit={addNewRecordSheet.close} />
             </SheetCardWrapper>
           </TabsContent>
         </Tabs>

@@ -29,6 +29,7 @@ import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { checkIsMobile, getModifierKey } from "@/lib/utils";
 import { EAddSheetTabs, EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
+import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
 
 interface Command {
   title: string;
@@ -44,9 +45,9 @@ export function CommandPallet({}: CommandPalletProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const signOutDialog = useSignOutDialog();
+  const addNewRecordSheet = useAddNewRecordSheet();
 
   const { setTheme, systemTheme, theme } = useTheme();
-  const { setAddNewSideSheet } = useOverlaysContext();
   const { authStatus } = useAuthContext();
   const router = useRouter();
 
@@ -73,24 +74,12 @@ export function CommandPallet({}: CommandPalletProps) {
     {
       title: "Add Expense",
       Icon: PlusIcon,
-      action: () =>
-        commandAction(() =>
-          setAddNewSideSheet({
-            open: true,
-            defaultTab: EAddSheetTabs.Expense,
-          }),
-        ),
+      action: () => commandAction(addNewRecordSheet.openExpense),
     },
     {
       title: "Add Earning",
       Icon: PlusIcon,
-      action: () =>
-        commandAction(() =>
-          setAddNewSideSheet({
-            open: true,
-            defaultTab: EAddSheetTabs.Earning,
-          }),
-        ),
+      action: () => commandAction(addNewRecordSheet.openEarning),
     },
   ];
 

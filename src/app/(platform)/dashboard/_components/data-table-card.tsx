@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { EAddSheetTabs } from "@/lib/enums";
+import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
 
 interface DataTableCardProps<T> {
   title: "expense" | "earning";
@@ -24,7 +25,7 @@ export function DataTableCard<T>({
   data,
   isLoading,
 }: DataTableCardProps<T>) {
-  const { setAddNewSideSheet } = useOverlaysContext();
+  const addNewRecordSheet = useAddNewRecordSheet();
 
   return (
     <Card className="h-full min-h-96 flex flex-col">
@@ -42,12 +43,7 @@ export function DataTableCard<T>({
         <Button
           variant="outline"
           className="space-x-1"
-          onClick={() =>
-            setAddNewSideSheet({
-              open: true,
-              defaultTab: title === "earning" ? EAddSheetTabs.Earning : EAddSheetTabs.Expense,
-            })
-          }
+          onClick={title === "earning" ? addNewRecordSheet.openEarning : addNewRecordSheet.openExpense}
         >
           <PlusIcon className="size-5" />
           <span>Add New</span>
