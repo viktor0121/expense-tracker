@@ -3,7 +3,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { EAddSheetTabs } from "@/lib/enums";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
 import { DataTable, IDataTableFilter } from "./data-table";
 

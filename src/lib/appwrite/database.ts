@@ -1,8 +1,7 @@
 import { Client, Databases, ID, Permission, Query, Role } from "appwrite";
 import auth from "@/lib/appwrite/auth";
-import { EExpenseType } from "@/lib/enums";
 import env from "@/lib/env";
-import { IExpense, IExpenseCategory, IEarning, IOverallStats } from "@/lib/types";
+import { IExpense, IExpenseCategory, IEarning } from "@/lib/types";
 
 type CreateUpdateExpenseParams =
   | {

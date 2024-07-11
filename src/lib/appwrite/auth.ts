@@ -1,5 +1,4 @@
 import { Account, Client, ID, Models } from "appwrite";
-import { ETheme } from "@/lib/enums";
 import { IUser, IUserPreferences } from "@/lib/types";
 import env from "../env";
 

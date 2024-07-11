@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -11,7 +10,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { buttonVariants } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import auth from "@/lib/appwrite/auth";

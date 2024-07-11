@@ -24,7 +24,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { EAddSheetTabs, EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
+import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
 import { checkIsMobile, getModifierKey } from "@/lib/utils";
 import useAuthContext from "@/context/auth/useAuthContext";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
