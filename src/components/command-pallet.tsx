@@ -24,11 +24,11 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
-import { checkIsMobile, getModifierKey } from "@/lib/utils";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 import { useAuth } from "@/store/useAuth";
+import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
+import { checkIsMobile, getModifierKey } from "@/lib/utils";
 
 interface Command {
   title: string;

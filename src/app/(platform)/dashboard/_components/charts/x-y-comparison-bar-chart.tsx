@@ -1,9 +1,9 @@
 import React from "react";
 import { Bar, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, BarChart } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCurrency } from "@/store/useCurrency";
 import { CHART_COLORS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { useCurrency } from "@/store/useCurrency";
 
 interface BarChartProps {
   data: {

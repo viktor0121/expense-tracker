@@ -16,6 +16,7 @@
     "^@/components/ui/(.*)$",
     "^@/components/(.*)$",
     "^@/hooks/(.*)$",
+    "^@/store/(.*)$",
     "^@/actions/(.*)$",
     "^@/constants/(.*)$",
     "^@/config/(.*)$",

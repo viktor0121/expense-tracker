@@ -15,15 +15,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { FormDateField } from "@/components/form-date-field";
-import {useAppwriteFetch} from "@/hooks/useAppwriteFetch";
+import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
+import { useData } from "@/store/useData";
 import database from "@/lib/appwrite/database";
 import { EExpenseType } from "@/lib/enums";
 import { IExpense, IExpenseCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useData } from "@/store/useData";
-import { CategoryDeleteDialog } from "./category-delete-dialog";
 import { CategoryCreateDialog } from "./category-create-dialog";
-
+import { CategoryDeleteDialog } from "./category-delete-dialog";
 
 type AddUpdateTypes =
   | {
@@ -41,11 +40,7 @@ type ExpenseFormProps = AddUpdateTypes & {
 
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
-  title: z
-    .string()
-    .trim()
-    .min(1, "Title is required")
-    .max(250, "Title must be at most 100 characters"),
+  title: z.string().trim().min(1, "Title is required").max(250, "Title must be at most 100 characters"),
   amount: z
     .string()
     .trim()
@@ -82,9 +77,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
             date: typeof record?.date === "string" ? new Date(record?.date) : record?.date,
             type: record?.type,
             category:
-              typeof record?.category === "string"
-                ? record?.category
-                : (record?.category as IExpenseCategory).$id,
+              typeof record?.category === "string" ? record?.category : (record?.category as IExpenseCategory).$id,
           },
   });
   const { isSubmitting, isValid, dirtyFields, isDirty } = form.formState;
@@ -113,9 +106,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
           ...(dirtyFields.type ? { type } : {}),
           ...(dirtyFields.category ? { category } : {}),
         });
-        setExpenses(
-          expenses.map((item) => (item.$id === updatedExpense.$id ? updatedExpense : item)),
-        );
+        setExpenses(expenses.map((item) => (item.$id === updatedExpense.$id ? updatedExpense : item)));
       }
 
       toast({
@@ -143,8 +134,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
   useEffect(() => {
     // Set ComboBox Width
     const updateComboBoxWidth = () => {
-      if (categoryTriggerButtonRef.current)
-        setComboBoxWidth(categoryTriggerButtonRef.current.offsetWidth);
+      if (categoryTriggerButtonRef.current) setComboBoxWidth(categoryTriggerButtonRef.current.offsetWidth);
     };
     updateComboBoxWidth();
     window.addEventListener("resize", updateComboBoxWidth);
@@ -200,10 +190,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
                       ref={categoryTriggerButtonRef}
                       variant="outline"
                       role="combobox"
-                      className={cn(
-                        "justify-between capitalize",
-                        !field.value && "text-muted-foreground",
-                      )}
+                      className={cn("justify-between capitalize", !field.value && "text-muted-foreground")}
                     >
                       {field.value
                         ? expenseCategories.find((category) => category.$id === field.value)?.title
@@ -230,7 +217,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
                     <CommandList>
                       <CommandGroup>
                         {expenseCategories.map((category, index) => (
-                          <div key={index} className="flex hover:bg-accent rounded-md group">
+                          <div key={index} className="group flex rounded-md hover:bg-accent">
                             <PopoverClose className="flex-1">
                               <CommandItem
                                 value={category.title}

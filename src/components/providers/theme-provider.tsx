@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
 import { toast } from "@/components/ui/use-toast";
+import { useAuth } from "@/store/useAuth";
 import auth from "@/lib/appwrite/auth";
 import { ETheme } from "@/lib/enums";
-import { useAuth } from "@/store/useAuth";
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [mounted, setMounted] = useState(false);

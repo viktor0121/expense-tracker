@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { useData } from "@/store/useData";
 import database from "@/lib/appwrite/database";
 import { IExpenseCategory } from "@/lib/types";
-import { useData } from "@/store/useData";
 
 interface CategoryDeleteDialogProps {
   category: IExpenseCategory;

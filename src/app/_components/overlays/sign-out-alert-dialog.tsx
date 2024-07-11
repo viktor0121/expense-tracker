@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
-import auth from "@/lib/appwrite/auth";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 import { useAuth } from "@/store/useAuth";
+import auth from "@/lib/appwrite/auth";
 
 interface SignOutAlertDialogProps {}
 

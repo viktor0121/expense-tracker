@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import auth from "@/lib/appwrite/auth";
 import { useAuth } from "@/store/useAuth";
+import auth from "@/lib/appwrite/auth";
 
 export function AuthProvider() {
   const { setIsAuthLoading, setAuthStatus } = useAuth();

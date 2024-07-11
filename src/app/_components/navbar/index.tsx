@@ -2,13 +2,13 @@
 
 import React, { Suspense } from "react";
 import { CommandPallet } from "@/components/command-pallet";
+import { useAuth } from "@/store/useAuth";
 import { navigations } from "@/lib/constants";
 import { INavItem } from "@/lib/types";
 import { NavBurgerMenu } from "./nav-burger-menu";
 import { NavDropdownMenu } from "./nav-dropdown-menu";
 import { NavThemeToggle } from "./nav-theme-toggle";
 import { NavTrail } from "./nav-trail";
-import { useAuth } from "@/store/useAuth";
 
 export function Navbar() {
   const { authStatus, isAuthLoading } = useAuth();

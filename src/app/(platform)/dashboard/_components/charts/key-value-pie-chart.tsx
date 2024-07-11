@@ -4,9 +4,9 @@ import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, TooltipProps
 import { Props as LegendProps } from "recharts/types/component/DefaultLegendContent";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCurrency } from "@/store/useCurrency";
 import { CHART_COLORS, RADIAN } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { useCurrency } from "@/store/useCurrency";
 
 interface KeyValuePieChart {
   data: {

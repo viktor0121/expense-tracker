@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
+import { useCurrency } from "@/store/useCurrency";
 import database from "@/lib/appwrite/database";
 import { MONTHS_MMM } from "@/lib/constants";
 import { EExpenseType } from "@/lib/enums";
@@ -15,7 +16,6 @@ import { IEarning, IExpense, IExpenseCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { KeyValuePieChart } from "./charts/key-value-pie-chart";
 import { XYComparisonBarChart } from "./charts/x-y-comparison-bar-chart";
-import { useCurrency } from "@/store/useCurrency";
 
 enum RightChartTabs {
   Category = "category stats",

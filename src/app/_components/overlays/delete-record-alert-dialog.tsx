@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
-import database from "@/lib/appwrite/database";
 import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
 import { useData } from "@/store/useData";
+import database from "@/lib/appwrite/database";
 
 export function DeleteRecordAlertDialog() {
   const { expenses, setExpenses, earnings, setEarnings } = useData();

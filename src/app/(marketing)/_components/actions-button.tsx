@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/store/useAuth";
 import { EAuthTabs } from "@/lib/enums";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/store/useAuth";
 
 interface ActionButtonProps {
   containerClasses?: string;
