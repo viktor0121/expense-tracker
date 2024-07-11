@@ -59,17 +59,17 @@ export interface IAddNewSheetState {
 
 export type IRecordDialogState =
   | {
-      open: boolean;
+      isOpen: boolean;
       recordType: "expense";
       record: IExpense;
     }
   | {
-      open: boolean;
+      isOpen: boolean;
       recordType: "earning";
       record: IEarning;
     }
   | {
-      open: false;
+      isOpen: false;
       recordType?: undefined;
       record?: undefined;
     };

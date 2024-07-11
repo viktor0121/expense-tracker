@@ -6,9 +6,6 @@ import { EAddSheetTabs } from "@/lib/enums";
 import { IAddNewSheetState, IRecordDialogState } from "@/lib/types";
 
 export default function OverlaysProvider({ children }: Readonly<{ children: React.ReactNode }>) {
-  const [deleteRecordDialog, setDeleteRecordDialog] = useState<IRecordDialogState>({
-    open: false,
-  });
   const [updateRecordDialog, setUpdateRecordDialog] = useState<IRecordDialogState>({
     open: false,
   });
@@ -16,8 +13,6 @@ export default function OverlaysProvider({ children }: Readonly<{ children: Reac
   return (
     <OverlaysContext.Provider
       value={{
-        deleteRecordDialog,
-        setDeleteRecordDialog,
 
         updateRecordDialog,
         setUpdateRecordDialog,

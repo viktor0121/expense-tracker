@@ -9,48 +9,46 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {ButtonWithSpinner} from "@/components/button-with-spinner";
+import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { toast } from "@/components/ui/use-toast";
 import useDataContext from "@/context/data/useDataContext";
 import database from "@/lib/appwrite/database";
+import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
 
 export function DeleteRecordAlertDialog() {
   const { setExpenses, setEarnings } = useDataContext();
-  const { deleteRecordDialog, setDeleteRecordDialog } = useOverlaysContext();
-  const { recordType, record } = deleteRecordDialog;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const deleteDialog = useDeleteRecordDialog();
 
   // Return null if recordType or record is not provided
-  if (!recordType || !record) return null;
+  if (!deleteDialog.recordType || !deleteDialog.record) return null;
 
   const deleteBtnClick = async () => {
     setIsSubmitting(true);
 
     try {
-      if (recordType === "expense") {
-        await database.deleteExpense({ id: record.$id });
-        setExpenses((prev) => prev.filter((item) => item.$id !== record.$id));
-      } else if (recordType === "earning") {
-        await database.deleteIncome({ id: record.$id });
-        setEarnings((prev) => prev.filter((item) => item.$id !== record.$id));
+      if (deleteDialog.recordType === "expense") {
+        await database.deleteExpense({ id: deleteDialog.record.$id });
+        setExpenses((prev) => prev.filter((item) => item.$id !== deleteDialog.record.$id));
+      } else if (deleteDialog.recordType === "earning") {
+        await database.deleteIncome({ id: deleteDialog.record.$id });
+        setEarnings((prev) => prev.filter((item) => item.$id !== deleteDialog.record.$id));
       } else {
         return;
       }
 
       // Show success toast and close dialog
       toast({
-        title: `${recordType} deleted`,
-        description: `${record.title} deleted successfully`,
+        title: `${deleteDialog.recordType} deleted`,
+        description: `${deleteDialog.record.title} deleted successfully`,
       });
-      setDeleteRecordDialog((prev) => ({
-        open: false,
-      }));
+      deleteDialog.close();
     } catch (error: any) {
       // Show error toast
       toast({
         variant: "destructive",
-        title: `Failed to delete ${recordType}`,
+        title: `Failed to delete ${deleteDialog.recordType}`,
         description: error.message,
       });
     }
@@ -58,36 +56,31 @@ export function DeleteRecordAlertDialog() {
   };
 
   return (
-    <AlertDialog
-      open={deleteRecordDialog.open}
-      onOpenChange={(open) =>
-        setDeleteRecordDialog((prev) => {
-          const { record, recordType } = prev;
-          if (open && record && recordType) return { ...prev, open: true };
-          return { open: false };
-        })
-      }
-    >
+    <AlertDialog open={deleteDialog.isOpen} onOpenChange={deleteDialog.close}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the {recordType} record.
+            This action cannot be undone. This will permanently delete the {deleteDialog.recordType}{" "}
+            record.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="grid p-3 gap-1.5 rounded-md bg-primary-foreground tracking-wider text-sm">
           {[
             {
               key: "Title",
-              value: record.title,
+              value: deleteDialog.record.title,
             },
             {
               key: "Amount",
-              value: record.amount,
+              value: deleteDialog.record.amount,
             },
             {
               key: "Date",
-              value: formatDate(new Date(record.date).toLocaleDateString(), "dd MMM yyyy"),
+              value: formatDate(
+                new Date(deleteDialog.record.date).toLocaleDateString(),
+                "dd MMM yyyy",
+              ),
             },
           ].map(({ key, value }) => (
             <div key={key}>

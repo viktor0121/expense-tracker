@@ -17,6 +17,7 @@ import { EDashboardTabs } from "@/lib/enums";
 import { IEarning, IExpense } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import database from "@/lib/appwrite/database";
+import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
 
 enum EEarningsColumnIds {
   Amount = "amount",
@@ -38,7 +39,9 @@ export default function DashboardPage() {
   });
   const { currency } = useCurrencyContext();
   const { earnings, setEarnings, expenses, setExpenses } = useDataContext();
-  const { setDeleteRecordDialog, setUpdateRecordDialog } = useOverlaysContext();
+  const { setUpdateRecordDialog } = useOverlaysContext();
+
+  const deleteDialog = useDeleteRecordDialog();
 
   const { data, isLoading } = useAppwriteFetch(async () => {
     return await Promise.all([database.getExpenses(), database.getIncomes()]);
@@ -93,13 +96,7 @@ export default function DashboardPage() {
       cell: ({ row }) => {
         return (
           <ActionsDropdown
-            deleteRecord={() => {
-              setDeleteRecordDialog((prev) => ({
-                open: true,
-                recordType: "expense",
-                record: row.original,
-              }));
-            }}
+            deleteRecord={() => deleteDialog.openExpense(row.original)}
             updateRecord={() => {
               setUpdateRecordDialog((prev) => ({
                 open: true,
@@ -148,13 +145,7 @@ export default function DashboardPage() {
       cell: ({ row }) => {
         return (
           <ActionsDropdown
-            deleteRecord={() => {
-              setDeleteRecordDialog(() => ({
-                open: true,
-                recordType: "earning",
-                record: row.original,
-              }));
-            }}
+            deleteRecord={() => deleteDialog.openEarning(row.original)}
             updateRecord={() => {
               setUpdateRecordDialog((prev) => ({
                 open: true,
