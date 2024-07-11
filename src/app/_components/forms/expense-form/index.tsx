@@ -22,7 +22,7 @@ import { IExpense, IExpenseCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useData } from "@/store/useData";
 import { CategoryDeleteDialog } from "./category-delete-dialog";
-import { NewCategoryDialog } from "./new-category-dialog";
+import { CategoryCreateDialog } from "./category-create-dialog";
 
 
 type AddUpdateTypes =
@@ -221,7 +221,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
                 >
                   <Command>
                     <div className="relative">
-                      <NewCategoryDialog />
+                      <CategoryCreateDialog />
                       <CommandInput placeholder="Search Category" className="pr-8" />
                     </div>
 
