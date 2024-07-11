@@ -36,11 +36,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <TooltipProvider>
                 <div className="flex min-h-screen w-full flex-col bg-muted/40">
                   <Navbar />
-                  <main>{children}</main>
+                  {children}
                 </div>
 
                 <OverlaysProvider />
-
                 <Toaster />
               </TooltipProvider>
             </CurrencyProvider>

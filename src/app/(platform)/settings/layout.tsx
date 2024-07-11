@@ -31,7 +31,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
         <aside className="-mx-4 lg:w-1/5">
           <SidebarNav items={sidebarNavItems} />
         </aside>
-        <div className="flex-1 lg:max-w-2xl">{children}</div>
+        <main className="flex-1 lg:max-w-2xl">{children}</main>
       </div>
     </div>
   );

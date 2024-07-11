@@ -12,7 +12,7 @@ export default function Page() {
       <section className="grid h-[calc(100vh-3.5rem)] w-full place-items-center bg-background py-12 md:py-24 lg:py-32">
         <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" fill="white" />
 
-        <div className="container flex max-w-3xl flex-col items-center justify-center space-y-4 px-4 md:px-6">
+        <main className="container flex max-w-3xl flex-col items-center justify-center space-y-4 px-4 md:px-6">
           <h1 className="space-y-3 text-center text-5xl font-bold tracking-tighter sm:text-6xl">
             <div className="text-primary">AdisMoney</div>
             <div>
@@ -28,7 +28,7 @@ export default function Page() {
           </p>
 
           <ActionButtons containerClasses="pt-2" />
-        </div>
+        </main>
       </section>
 
       <section className="container w-full px-4 py-12 md:px-6 md:py-24">

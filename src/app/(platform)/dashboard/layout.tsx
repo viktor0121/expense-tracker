@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return children;
+  return <main>{children}</main>;
 }
