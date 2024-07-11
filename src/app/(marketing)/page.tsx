@@ -1,8 +1,8 @@
-import { Spotlight } from "@/components/spotlight";
-import { FlipWords } from "@/app/(pages)/components/flip-words";
-import { ActionButtons } from "@/app/(pages)/components/actions-button";
-import { FeatureCards } from "@/app/(pages)/components/feature-cards";
-import { BackgroundDotsContainer } from "@/components/background-dots-container";
+import { Spotlight } from "./_components/spotlight";
+import { FlipWords } from "./_components/flip-words";
+import { ActionButtons } from "./_components/actions-button";
+import { FeatureCards } from "./_components/feature-cards";
+import { BackgroundDotsContainer } from "./_components/background-dots-container";
 
 export default function Page() {
   const heroWords = ["Goals", "Expenses", "Earnings"];

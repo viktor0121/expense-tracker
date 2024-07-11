@@ -9,6 +9,9 @@ import AuthProvider from "@/context/auth/provider";
 import DataProvider from "@/context/data/provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
+import { Navbar } from "@/app/(pages)/components/navbar";
+import { Toaster } from "@/components/ui/toaster";
+import {OverlaysProvider as OverlaysComponentProvider} from "@/components/providers/overlays-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -31,7 +34,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <ThemeProvider>
               <CurrencyProvider>
                 <DataProvider>
-                  <TooltipProvider>{children}</TooltipProvider>
+                  <TooltipProvider>
+                    <div className="flex flex-col min-h-screen w-full bg-muted/40">
+                      <Navbar />
+                      <main>{children}</main>
+                    </div>
+
+                    <OverlaysComponentProvider />
+
+                    <Toaster />
+                  </TooltipProvider>
                 </DataProvider>
               </CurrencyProvider>
             </ThemeProvider>
