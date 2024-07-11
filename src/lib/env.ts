@@ -16,7 +16,7 @@ const env = {
   awDatabaseId: process.env.NEXT_PUBLIC_AW_DATABASE_ID as string,
   awExpenseCollectionId: process.env.NEXT_PUBLIC_AW_EXPENSE_COLLECTION_ID as string,
   awIncomeCollectionId: process.env.NEXT_PUBLIC_AW_INCOME_COLLECTION_ID as string,
-  awExpenseCategoryCollectionId: process.env .NEXT_PUBLIC_AW_EXPENSE_CATEGORY_COLLECTION_ID as string,
+  awExpenseCategoryCollectionId: process.env.NEXT_PUBLIC_AW_EXPENSE_CATEGORY_COLLECTION_ID as string,
   awProfilePhotoStorageId: process.env.NEXT_PUBLIC_AW_PROFILE_PHOTO_STORAGE_ID as string,
 };
 

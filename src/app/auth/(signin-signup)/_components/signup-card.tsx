@@ -1,23 +1,16 @@
 "use client";
 
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
-import useAuthContext from "@/context/auth/useAuthContext";
 import auth from "@/lib/appwrite/auth";
+import useAuthContext from "@/context/auth/useAuthContext";
 
 interface SignUpCardProps {
   goToSignIn: () => void;
@@ -31,11 +24,7 @@ export function SignUpCard({ goToSignIn }: SignUpCardProps) {
         .trim()
         .min(1, "First Name is required")
         .max(100, "First Name must be at most 100 characters"),
-      lastName: z
-        .string()
-        .trim()
-        .min(1, "Last Name is required")
-        .max(100, "Last Name must be at most 100 characters"),
+      lastName: z.string().trim().min(1, "Last Name is required").max(100, "Last Name must be at most 100 characters"),
       email: z
         .string()
         .email("Invalid email address")
@@ -134,12 +123,7 @@ export function SignUpCard({ goToSignIn }: SignUpCardProps) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="me@example.com"
-                      autoComplete="username"
-                      {...field}
-                    />
+                    <Input type="email" placeholder="me@example.com" autoComplete="username" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

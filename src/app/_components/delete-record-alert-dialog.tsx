@@ -9,8 +9,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { toast } from "@/components/ui/use-toast";
+import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
 import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
 import { useData } from "@/store/useData";
@@ -62,11 +62,10 @@ export function DeleteRecordAlertDialog() {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the {deleteDialog.recordType}{" "}
-            record.
+            This action cannot be undone. This will permanently delete the {deleteDialog.recordType} record.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="grid p-3 gap-1.5 rounded-md bg-primary-foreground tracking-wider text-sm">
+        <div className="grid gap-1.5 rounded-md bg-primary-foreground p-3 text-sm tracking-wider">
           {[
             {
               key: "Title",
@@ -78,10 +77,7 @@ export function DeleteRecordAlertDialog() {
             },
             {
               key: "Date",
-              value: formatDate(
-                new Date(deleteDialog.record.date).toLocaleDateString(),
-                "dd MMM yyyy",
-              ),
+              value: formatDate(new Date(deleteDialog.record.date).toLocaleDateString(), "dd MMM yyyy"),
             },
           ].map(({ key, value }) => (
             <div key={key}>
@@ -91,12 +87,7 @@ export function DeleteRecordAlertDialog() {
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <ButtonWithSpinner
-            isLoading={isSubmitting}
-            btnText="Delete"
-            onClick={deleteBtnClick}
-            variant="destructive"
-          />
+          <ButtonWithSpinner isLoading={isSubmitting} btnText="Delete" onClick={deleteBtnClick} variant="destructive" />
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

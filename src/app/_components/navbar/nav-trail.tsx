@@ -11,8 +11,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { INavTrail } from "@/lib/types";
 import { trails } from "@/lib/constants";
+import { INavTrail } from "@/lib/types";
 
 export function NavTrail() {
   const pathname = usePathname();

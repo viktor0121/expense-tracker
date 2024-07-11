@@ -1,33 +1,25 @@
 "use client";
 
 import React, { ChangeEvent, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
-import { User, XIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+import { User, XIcon } from "lucide-react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { ToastAction } from "@/components/ui/toast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
-import { PasswordConfirmCard } from "./password-confirm-card";
-import { IUser } from "@/lib/types";
-import { SUPPORTED_IMAGE_FORMATS } from "@/lib/constants";
 import auth from "@/lib/appwrite/auth";
 import avatars from "@/lib/appwrite/avatars";
 import storage from "@/lib/appwrite/storage";
+import { SUPPORTED_IMAGE_FORMATS } from "@/lib/constants";
+import { IUser } from "@/lib/types";
+import { PasswordConfirmCard } from "./password-confirm-card";
 
 const formSchema = z.object({
   photo: z.any().optional(),
@@ -44,10 +36,7 @@ const formSchema = z.object({
     .string()
     .optional() // Makes the field optional
     .transform((val) => val?.trim()) // Trim whitespace if a value is provided
-    .refine(
-      (val) => (val?.length && val.length > 10) || val?.length === 0,
-      "Phone number must be 10 characters long.",
-    )
+    .refine((val) => (val?.length && val.length > 10) || val?.length === 0, "Phone number must be 10 characters long.")
     .refine(
       (val) => (val?.length && val.length <= 15) || val?.length === 0,
       "Phone number must not be longer than 15 characters.",
@@ -64,14 +53,8 @@ function InputResetButton({ reset }: InputResetButtonProps) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button
-          size="sm"
-          type="button"
-          variant="ghost"
-          onClick={reset}
-          className="absolute right-2 h-6 w-6 p-0"
-        >
-          <XIcon className="w-4 h-4 text-muted-foreground" />
+        <Button size="sm" type="button" variant="ghost" onClick={reset} className="absolute right-2 h-6 w-6 p-0">
+          <XIcon className="h-4 w-4 text-muted-foreground" />
         </Button>
       </TooltipTrigger>
       <TooltipContent>
@@ -106,8 +89,7 @@ export function ProfileForm() {
   const { isValid, isSubmitting } = form.formState;
 
   const isPasswordNeeded = user?.email !== email || user?.phone !== phone;
-  const formValuesChanged =
-    user?.name !== name || user?.email !== email || user?.phone !== phone || photo[0];
+  const formValuesChanged = user?.name !== name || user?.email !== email || user?.phone !== phone || photo[0];
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -197,7 +179,7 @@ export function ProfileForm() {
               <FormControl className="text-base-semibold text-gray-200">
                 <>
                   <div className="flex items-center gap-5 pt-1">
-                    <div className="size-20 aspect-square md:size-32 rounded-full overflow-hidden outline outline-accent">
+                    <div className="aspect-square size-20 overflow-hidden rounded-full outline outline-accent md:size-32">
                       {avatar ? (
                         <Image
                           src={avatar}
@@ -281,9 +263,7 @@ export function ProfileForm() {
                   ) : null}
                 </div>
               </FormControl>
-              <FormDescription>
-                Please enter your phone number starting with your country code.
-              </FormDescription>
+              <FormDescription>Please enter your phone number starting with your country code.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -302,11 +282,7 @@ export function ProfileForm() {
         {/*Submit Button*/}
         <ButtonWithSpinner
           type="submit"
-          disabled={
-            !formValuesChanged ||
-            !isValid ||
-            (isPasswordNeeded ? !password || !!passwordError : false)
-          }
+          disabled={!formValuesChanged || !isValid || (isPasswordNeeded ? !password || !!passwordError : false)}
           isLoading={isSubmitting}
           className="mt-2"
           btnText="Update Profile"

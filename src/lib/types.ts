@@ -1,6 +1,6 @@
 import React from "react";
-import { LucideProps } from "lucide-react";
 import { Models } from "appwrite";
+import { LucideProps } from "lucide-react";
 import { EAddSheetTabs, EExpenseType, ETheme } from "@/lib/enums";
 
 // APP

@@ -8,8 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 const features = [
   {
     title: "Manage Expenses",
-    description:
-      "Easily track and categorize your expenses to gain better control over your spending.",
+    description: "Easily track and categorize your expenses to gain better control over your spending.",
     icon: Wallet,
   },
   {
@@ -19,8 +18,7 @@ const features = [
   },
   {
     title: "View Statistics",
-    description:
-      "Gain valuable insights into your financial habits with our comprehensive reporting.",
+    description: "Gain valuable insights into your financial habits with our comprehensive reporting.",
     icon: BarChart,
   },
   {
@@ -38,14 +36,14 @@ export function FeatureCards() {
       {features.map((feature, index) => (
         <div
           key={index}
-          className="relative group block p-2 h-full w-full"
+          className="group relative block h-full w-full p-2"
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <AnimatePresence>
             {hoveredIndex === index && (
               <motion.span
-                className="absolute inset-0 h-full w-full bg-accent block rounded-3xl"
+                className="absolute inset-0 block h-full w-full rounded-3xl bg-accent"
                 layoutId="hoverBackground"
                 initial={{ opacity: 0 }}
                 animate={{
@@ -60,7 +58,7 @@ export function FeatureCards() {
             )}
           </AnimatePresence>
 
-          <Card className="z-20 relative flex flex-col items-center">
+          <Card className="relative z-20 flex flex-col items-center">
             <CardHeader className="z-20">
               <feature.icon className="size-10 text-accent-foreground" />
             </CardHeader>

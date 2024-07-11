@@ -1,24 +1,19 @@
 "use client";
 
 import React, { Suspense } from "react";
+import { CommandPallet } from "@/components/command-pallet";
+import { navigations } from "@/lib/constants";
+import { INavItem } from "@/lib/types";
 import useAuthContext from "@/context/auth/useAuthContext";
 import { NavBurgerMenu } from "./nav-burger-menu";
-import { NavTrail } from "./nav-trail";
-import { CommandPallet } from "@/components/command-pallet";
-import { NavThemeToggle } from "./nav-theme-toggle";
 import { NavDropdownMenu } from "./nav-dropdown-menu";
-import { INavItem } from "@/lib/types";
-import { navigations } from "@/lib/constants";
+import { NavThemeToggle } from "./nav-theme-toggle";
+import { NavTrail } from "./nav-trail";
 
 export function Navbar() {
   const { authStatus, isAuthLoading } = useAuthContext();
 
-  const authNavItems = [
-    navigations.analytics,
-    navigations.expense,
-    navigations.earnings,
-    navigations.settings,
-  ];
+  const authNavItems = [navigations.analytics, navigations.expense, navigations.earnings, navigations.settings];
   const nonAuthNavItems = [navigations.home, navigations.signin];
   const navItems: INavItem[] = authStatus ? authNavItems : nonAuthNavItems;
 
@@ -43,17 +38,17 @@ export function Navbar() {
 }
 
 function NavDropdownFallBack() {
-  return <div className="animate-pulse rounded-full bg-accent h-10 w-10"></div>;
+  return <div className="h-10 w-10 animate-pulse rounded-full bg-accent"></div>;
 }
 
 function NavTrailFallBack() {
   return (
-    <div className="animate-pulse w-52 grid grid-cols-9 gap-1">
-      <div className="h-2 bg-accent rounded col-span-2"></div>
-      <div className="h-2 bg-accent rounded col-span-1"></div>
-      <div className="h-2 bg-accent rounded col-span-2"></div>
-      <div className="h-2 bg-accent rounded col-span-1"></div>
-      <div className="h-2 bg-accent rounded col-span-3"></div>
+    <div className="grid w-52 animate-pulse grid-cols-9 gap-1">
+      <div className="col-span-2 h-2 rounded bg-accent"></div>
+      <div className="col-span-1 h-2 rounded bg-accent"></div>
+      <div className="col-span-2 h-2 rounded bg-accent"></div>
+      <div className="col-span-1 h-2 rounded bg-accent"></div>
+      <div className="col-span-3 h-2 rounded bg-accent"></div>
     </div>
   );
 }

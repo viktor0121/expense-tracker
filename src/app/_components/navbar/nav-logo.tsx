@@ -12,7 +12,7 @@ export function NavLogo({ className }: NavLogoProps) {
     <Link
       href="/public"
       className={cn(
-        "group flex shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base h-10 w-10",
+        "group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base",
         className,
       )}
     >

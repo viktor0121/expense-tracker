@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import {
   LucideIcon,
   CreditCard,
@@ -24,11 +24,11 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import useAuthContext from "@/context/auth/useAuthContext";
-import { checkIsMobile, getModifierKey } from "@/lib/utils";
 import { EAddSheetTabs, EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
-import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
+import { checkIsMobile, getModifierKey } from "@/lib/utils";
+import useAuthContext from "@/context/auth/useAuthContext";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
+import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 
 interface Command {
   title: string;
@@ -152,7 +152,7 @@ export function CommandPallet({}: CommandPalletProps) {
       <Button
         onClick={toggle}
         variant="outline"
-        className="ml-auto gap-2 text-muted-foreground hover:text-accent-foreground "
+        className="ml-auto gap-2 text-muted-foreground hover:text-accent-foreground"
       >
         <div className="flex items-center">
           <Terminal className="h-4" />
@@ -161,7 +161,7 @@ export function CommandPallet({}: CommandPalletProps) {
 
         {!isMobile ? (
           //TODO: Check if any font size mismatch is there in mac device
-          <kbd className="pointer-events-none hidden text-xs select-none items-center gap-1 rounded border bg-muted h-5 px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+          <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] text-xs font-medium opacity-100 sm:flex">
             <span>{modifierKey}</span>
             {"K"}
           </kbd>

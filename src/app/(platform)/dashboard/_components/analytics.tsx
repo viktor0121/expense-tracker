@@ -3,26 +3,20 @@
 import React from "react";
 import { Query } from "appwrite";
 import { format } from "date-fns";
-import {
-  CreditCardIcon,
-  DollarSignIcon,
-  HandCoinsIcon,
-  LucideIcon,
-  WalletIcon,
-} from "lucide-react";
-import { XYComparisonBarChart } from "./charts/x-y-comparison-bar-chart";
-import { KeyValuePieChart } from "./charts/key-value-pie-chart";
+import { CreditCardIcon, DollarSignIcon, HandCoinsIcon, LucideIcon, WalletIcon } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Skeleton } from "@/components/ui/skeleton";
-import useCurrencyContext from "@/context/currency/useCurrencyContext";
-import useAppwriteFetch from "@/hooks/useAppwriteFetch";
-import { IEarning, IExpense, IExpenseCategory } from "@/lib/types";
-import { EExpenseType } from "@/lib/enums";
-import { MONTHS_MMM } from "@/lib/constants";
-import database from "@/lib/appwrite/database";
-import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useAppwriteFetch from "@/hooks/useAppwriteFetch";
+import database from "@/lib/appwrite/database";
+import { MONTHS_MMM } from "@/lib/constants";
+import { EExpenseType } from "@/lib/enums";
+import { IEarning, IExpense, IExpenseCategory } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import useCurrencyContext from "@/context/currency/useCurrencyContext";
+import { KeyValuePieChart } from "./charts/key-value-pie-chart";
+import { XYComparisonBarChart } from "./charts/x-y-comparison-bar-chart";
 
 enum RightChartTabs {
   Category = "category stats",
@@ -93,10 +87,7 @@ export function Analytics({}: AnalyticsProps) {
   const { currency } = useCurrencyContext();
   const { data, isLoading: isExpenseIncomesLoading } = useAppwriteFetch(async () => {
     return await Promise.all([
-      database.getExpenses([
-        Query.select(["type", "amount", "category.*", "date"]),
-        Query.limit(5000),
-      ]),
+      database.getExpenses([Query.select(["type", "amount", "category.*", "date"]), Query.limit(5000)]),
       database.getIncomes([Query.select(["amount"]), Query.limit(5000)]),
     ]);
   });
@@ -123,20 +114,17 @@ export function Analytics({}: AnalyticsProps) {
       value: totalWants,
     },
   ];
-  const categoryStats: ICategoryStat[] = expenses.reduce(
-    (acc: ICategoryStat[], expense: IFetchedExpense) => {
-      const category: string = (expense.category as IExpenseCategory).title;
-      const existingStat = acc.find((stat) => stat.name === category);
+  const categoryStats: ICategoryStat[] = expenses.reduce((acc: ICategoryStat[], expense: IFetchedExpense) => {
+    const category: string = (expense.category as IExpenseCategory).title;
+    const existingStat = acc.find((stat) => stat.name === category);
 
-      return [
-        ...acc.filter((stat) => stat.name !== category),
-        existingStat
-          ? { ...existingStat, value: existingStat.value + expense.amount }
-          : { name: category, value: expense.amount },
-      ] as ICategoryStat[];
-    },
-    [] as ICategoryStat[],
-  );
+    return [
+      ...acc.filter((stat) => stat.name !== category),
+      existingStat
+        ? { ...existingStat, value: existingStat.value + expense.amount }
+        : { name: category, value: expense.amount },
+    ] as ICategoryStat[];
+  }, [] as ICategoryStat[]);
   const expensesMonthlyStats: IExpenseMonthlyStat[] = expenses.reduce(
     (acc: IExpenseMonthlyStat[], expense: IFetchedExpense) => {
       const month = format(expense.date, "MMM");
@@ -205,13 +193,13 @@ export function Analytics({}: AnalyticsProps) {
 
   return (
     <>
-      <section className="grid gap-2 sm:gap-3 grid-cols-2 md:grid-cols-4">
+      <section className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
         {statCards.map((stat, index) => (
           <StatCard key={index} isLoading={isExpenseIncomesLoading} {...stat} />
         ))}
       </section>
 
-      <section className="pt-1 grid grid-cols-12 gap-2 sm:gap-3">
+      <section className="grid grid-cols-12 gap-2 pt-1 sm:gap-3">
         {/*<h2 className="col-span-12 text-xl font-bold">Statistics</h2>*/}
 
         <ChartCard title="Category Statistics" containerClasses="col-span-12 md:col-span-6">
@@ -247,16 +235,14 @@ function ChartCard({ title, children, containerClasses }: ChartCardProps) {
   return (
     <Card
       className={cn(
-        "size-full overflow-x-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-muted h-fit",
+        "size-full h-fit overflow-x-auto scrollbar-thin scrollbar-track-muted scrollbar-thumb-primary/50",
         containerClasses,
       )}
     >
       {title ? (
         <>
-          <CardHeader className="bg-secondary mx-auto py-2">
-            <CardTitle className="text-base text-center text-secondary-foreground">
-              {title}
-            </CardTitle>
+          <CardHeader className="mx-auto bg-secondary py-2">
+            <CardTitle className="text-center text-base text-secondary-foreground">{title}</CardTitle>
           </CardHeader>
           <Separator />
         </>
@@ -269,15 +255,15 @@ function ChartCard({ title, children, containerClasses }: ChartCardProps) {
 function StatCard({ title, value, icon: Icon, description, isLoading }: StatCardProps) {
   return (
     <Card>
-      <CardHeader className="px-4 pt-4 sm:px-5 sm:pt-5 flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 px-4 pb-1 pt-4 sm:px-5 sm:pb-2 sm:pt-5">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <Icon className="size-4 text-muted-foreground" />
       </CardHeader>
       <CardContent className="px-4 pb-4 sm:px-5 sm:pb-5">
         {isLoading ? (
-          <Skeleton className="h-5 sm:h-6 mt-1 mb-1 sm:mb-2 w-1/4" />
+          <Skeleton className="mb-1 mt-1 h-5 w-1/4 sm:mb-2 sm:h-6" />
         ) : (
-          <div className="text-xl sm:text-2xl font-bold">{value}</div>
+          <div className="text-xl font-bold sm:text-2xl">{value}</div>
         )}
         <p className="mt-1 text-xs text-muted-foreground">{description}</p>
       </CardContent>

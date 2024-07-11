@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { IExpenseCategory } from "@/lib/types";
 import database from "@/lib/appwrite/database";
+import { IExpenseCategory } from "@/lib/types";
 import { useData } from "@/store/useData";
 
 interface CategoryDeleteDialogProps {
@@ -50,15 +50,14 @@ export function CategoryDeleteDialog({ category }: CategoryDeleteDialogProps) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="hidden group-hover:block pr-2">
+      <AlertDialogTrigger className="hidden pr-2 group-hover:block">
         <Trash2 className="size-4 text-muted-foreground hover:text-destructive" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the category{" "}
-            <b>{category.title}</b>.
+            This action cannot be undone. This will permanently delete the category <b>{category.title}</b>.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

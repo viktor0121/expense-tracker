@@ -1,11 +1,11 @@
 "use client";
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useReplaceSearchParam from "@/hooks/useReplaceSearchParam";
+import useTab from "@/hooks/useTab";
+import { EAuthTabs } from "@/lib/enums";
 import { SignInCard } from "./_components/signin-card";
 import { SignUpCard } from "./_components/signup-card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EAuthTabs } from "@/lib/enums";
-import useTab from "@/hooks/useTab";
-import useReplaceSearchParam from "@/hooks/useReplaceSearchParam";
 
 export default function AuthPage() {
   const replaceSearchParam = useReplaceSearchParam();

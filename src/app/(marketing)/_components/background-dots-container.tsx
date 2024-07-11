@@ -10,11 +10,7 @@ interface BackgroundDotsProps {
   containerClassName?: string;
 }
 
-export function BackgroundDotsContainer({
-  children,
-  className,
-  containerClassName,
-}: BackgroundDotsProps) {
+export function BackgroundDotsContainer({ children, className, containerClassName }: BackgroundDotsProps) {
   let mouseX = useMotionValue(0);
   let mouseY = useMotionValue(0);
 
@@ -27,12 +23,12 @@ export function BackgroundDotsContainer({
   }
   return (
     <div
-      className={cn("relative flex items-center justify-center w-full group", containerClassName)}
+      className={cn("group relative flex w-full items-center justify-center", containerClassName)}
       onMouseMove={handleMouseMove}
     >
-      <div className="absolute inset-0 bg-dot-thick-neutral-300 dark:bg-dot-thick-neutral-800 pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 bg-dot-thick-neutral-300 dark:bg-dot-thick-neutral-800" />
       <motion.div
-        className="pointer-events-none bg-dot-thick-indigo-500 dark:bg-dot-thick-indigo-500 absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 bg-dot-thick-indigo-500 group-hover:opacity-100 dark:bg-dot-thick-indigo-500"
         style={{
           WebkitMaskImage: useMotionTemplate`
             radial-gradient(

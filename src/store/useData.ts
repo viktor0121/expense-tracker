@@ -7,9 +7,7 @@ interface DataStore {
   earnings: IEarning[];
   setEarnings: (earnings: IEarning[]) => (earnings: IEarning[]) => void;
   expenseCategories: IExpenseCategory[];
-  setExpenseCategories: (
-    expenseCategories: IExpenseCategory[],
-  ) => (expenseCategories: IExpenseCategory[]) => void;
+  setExpenseCategories: (expenseCategories: IExpenseCategory[]) => (expenseCategories: IExpenseCategory[]) => void;
 }
 
 export const useData = create<DataStore>((set) => ({

@@ -1,20 +1,9 @@
 import React, { useState } from "react";
-import { z } from "zod";
-import { PlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "lucide-react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import {
   Dialog,
   DialogContent,
@@ -24,6 +13,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
 import { useData } from "@/store/useData";
@@ -31,11 +24,7 @@ import { useData } from "@/store/useData";
 interface NewCategoryDialogProps {}
 
 const formSchema = z.object({
-  title: z
-    .string()
-    .trim()
-    .min(1, "Title is required")
-    .max(250, "Title must be at most 100 characters"),
+  title: z.string().trim().min(1, "Title is required").max(250, "Title must be at most 100 characters"),
 });
 
 export function NewCategoryDialog({}: NewCategoryDialogProps) {
@@ -77,7 +66,7 @@ export function NewCategoryDialog({}: NewCategoryDialogProps) {
             <Button
               size="icon"
               variant="ghost"
-              className="absolute right-1 top-1/2 -translate-y-1/2 size-9 rounded-sm text-muted-foreground hover:text-white"
+              className="absolute right-1 top-1/2 size-9 -translate-y-1/2 rounded-sm text-muted-foreground hover:text-white"
             >
               <PlusIcon className="size-[18px]" />
             </Button>
@@ -113,12 +102,7 @@ export function NewCategoryDialog({}: NewCategoryDialogProps) {
         </Form>
 
         <DialogFooter>
-          <ButtonWithSpinner
-            isLoading={isSubmitting}
-            disabled={!isValid}
-            onClick={submit}
-            btnText="Add Category"
-          />
+          <ButtonWithSpinner isLoading={isSubmitting} disabled={!isValid} onClick={submit} btnText="Add Category" />
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import useAuthContext from "@/context/auth/useAuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EAuthTabs } from "@/lib/enums";
 import { cn } from "@/lib/utils";
+import useAuthContext from "@/context/auth/useAuthContext";
 
 interface ActionButtonProps {
   containerClasses?: string;
@@ -21,14 +21,14 @@ export function ActionButtons({ containerClasses }: ActionButtonProps) {
           <Skeleton className="h-10 w-52" />
         </>
       ) : authStatus ? (
-        <Link href="/dashboard" className="p-[3px] relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-cyan-500 to-indigo-500 rounded-lg" />
-          <div className="font-bold px-6 py-2 bg-background rounded-[6px] relative group transition duration-200 text-primary hover:bg-transparent">
+        <Link href="/dashboard" className="relative p-[3px]">
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-500 via-cyan-500 to-indigo-500" />
+          <div className="group relative rounded-[6px] bg-background px-6 py-2 font-bold text-primary transition duration-200 hover:bg-transparent">
             Go To Dashboard
           </div>
         </Link>
       ) : (
-        <div className="space-x-2 flex">
+        <div className="flex space-x-2">
           <Button asChild>
             <Link href={`/auth?tab=${EAuthTabs.Login}`}>Sign In</Link>
           </Button>

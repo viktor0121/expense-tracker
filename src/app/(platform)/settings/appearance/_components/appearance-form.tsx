@@ -1,25 +1,17 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { z } from "zod";
-import { useTheme } from "next-themes";
 import { useForm } from "react-hook-form";
+import { useTheme } from "next-themes";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "@/components/ui/use-toast";
+import { z } from "zod";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {ButtonWithSpinner} from "@/components/button-with-spinner";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { toast } from "@/components/ui/use-toast";
+import { ButtonWithSpinner } from "@/components/button-with-spinner";
+import auth from "@/lib/appwrite/auth";
 import { ETheme } from "@/lib/enums";
 import { cn } from "@/lib/utils";
-import auth from "@/lib/appwrite/auth";
 
 interface SkeletonProps {
   containerClasses?: string;
@@ -52,10 +44,7 @@ const formSchema = z.object({
 
 function LightSkeleton({ containerClasses, containerStyles }: SkeletonProps) {
   return (
-    <div
-      style={containerStyles}
-      className={cn("space-y-2 rounded-sm bg-slate-50 p-2", containerClasses)}
-    >
+    <div style={containerStyles} className={cn("space-y-2 rounded-sm bg-slate-50 p-2", containerClasses)}>
       <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
         <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />
         <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
@@ -74,10 +63,7 @@ function LightSkeleton({ containerClasses, containerStyles }: SkeletonProps) {
 
 function DarkSkeleton({ containerClasses, containerStyles }: SkeletonProps) {
   return (
-    <div
-      style={containerStyles}
-      className={cn("space-y-2 rounded-sm bg-slate-950 p-2", containerClasses)}
-    >
+    <div style={containerStyles} className={cn("space-y-2 rounded-sm bg-slate-950 p-2", containerClasses)}>
       <div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
         <div className="h-2 w-[80px] rounded-lg bg-slate-400" />
         <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
@@ -106,7 +92,7 @@ function ThemeFormItem({ children, value, title }: ThemeFormItemProps) {
             height: `${themeItemDimensions.height}px`,
             width: `${themeItemDimensions.width}px`,
           }}
-          className="items-center rounded-md border-2 border-muted p-1 hover:border-accent bg-popover hover:bg-accent hover:text-accent-foreground"
+          className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:border-accent hover:bg-accent hover:text-accent-foreground"
         >
           {children}
         </div>
@@ -160,11 +146,7 @@ export function AppearanceForm() {
               <FormLabel>Theme</FormLabel>
               <FormDescription>Select the theme for the dashboard.</FormDescription>
               <FormMessage />
-              <RadioGroup
-                onValueChange={field.onChange}
-                value={field.value}
-                className="grid grid-cols-3 gap-8 pt-2"
-              >
+              <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-3 gap-8 pt-2">
                 <ThemeFormItem value={ETheme.Light} title="Light">
                   <LightSkeleton />
                 </ThemeFormItem>
@@ -174,9 +156,9 @@ export function AppearanceForm() {
                 </ThemeFormItem>
 
                 <ThemeFormItem value={ETheme.System} title="System">
-                  <div className="relative overflow-clip size-full rounded-[inherit]">
-                    <div className="absolute -inset-full flex rotate-[30deg] ">
-                      <div className="relative w-1/2 - overflow-clip ">
+                  <div className="relative size-full overflow-clip rounded-[inherit]">
+                    <div className="absolute -inset-full flex rotate-[30deg]">
+                      <div className="- relative w-1/2 overflow-clip">
                         <LightSkeleton
                           containerStyles={{
                             width: `${themeItemDimensions.width}px`,

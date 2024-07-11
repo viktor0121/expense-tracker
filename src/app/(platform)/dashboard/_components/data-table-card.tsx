@@ -1,11 +1,11 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DataTable, IDataTableFilter } from "./data-table";
-import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EAddSheetTabs } from "@/lib/enums";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
+import { DataTable, IDataTableFilter } from "./data-table";
 
 interface DataTableCardProps<T> {
   title: "expense" | "earning";
@@ -16,21 +16,14 @@ interface DataTableCardProps<T> {
   isLoading?: boolean;
 }
 
-export function DataTableCard<T>({
-  title,
-  description,
-  columns,
-  filter,
-  data,
-  isLoading,
-}: DataTableCardProps<T>) {
+export function DataTableCard<T>({ title, description, columns, filter, data, isLoading }: DataTableCardProps<T>) {
   const addNewRecordSheet = useAddNewRecordSheet();
 
   return (
-    <Card className="h-full min-h-96 flex flex-col">
-      <CardHeader className="border-border border-b flex-row items-center justify-between px-6 py-4">
+    <Card className="flex h-full min-h-96 flex-col">
+      <CardHeader className="flex-row items-center justify-between border-b border-border px-6 py-4">
         {/*Title & Description*/}
-        <div className="space-y-1.5 justify-evenly">
+        <div className="justify-evenly space-y-1.5">
           <CardTitle className="capitalize">
             {title}
             {"s"}
@@ -49,15 +42,9 @@ export function DataTableCard<T>({
         </Button>
       </CardHeader>
 
-      <div className="w-[inherit] h-[inherit] scrollbar-thin scrollbar-thumb-primary scrollbar-track-primary-foreground overflow-auto">
+      <div className="h-[inherit] w-[inherit] overflow-auto scrollbar-thin scrollbar-track-primary-foreground scrollbar-thumb-primary">
         <CardContent className="h-[inherit] w-[inherit] min-w-fit space-y-2">
-          <DataTable
-            filter={filter}
-            addVisibilityToggle
-            columns={columns}
-            data={data}
-            isLoading={isLoading}
-          />
+          <DataTable filter={filter} addVisibilityToggle columns={columns} data={data} isLoading={isLoading} />
         </CardContent>
       </div>
     </Card>

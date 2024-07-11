@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import CurrencyContext from "@/context/currency/context";
 import locale from "@/lib/appwrite/locale";
 import { ICurrency } from "@/lib/types";
+import CurrencyContext from "@/context/currency/context";
 
 const initialCurrency: ICurrency = {
   symbol: "$",
@@ -39,9 +39,5 @@ export default function CurrencyProvider({ children }: Readonly<{ children: Reac
     })();
   }, []);
 
-  return (
-    <CurrencyContext.Provider value={{ currency, setCurrency }}>
-      {children}
-    </CurrencyContext.Provider>
-  );
+  return <CurrencyContext.Provider value={{ currency, setCurrency }}>{children}</CurrencyContext.Provider>;
 }

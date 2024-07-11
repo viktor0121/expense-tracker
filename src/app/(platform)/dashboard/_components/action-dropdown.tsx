@@ -1,5 +1,6 @@
 import React from "react";
 import { MoreHorizontal, PencilIcon, Trash2Icon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 
 interface ActionDropdownProps {
   deleteRecord: () => void;
@@ -32,12 +32,12 @@ export function ActionsDropdown({ deleteRecord, updateRecord }: ActionDropdownPr
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem className="text-red-500" onClick={deleteRecord}>
-              <Trash2Icon className="size-4 mr-2" />
+              <Trash2Icon className="mr-2 size-4" />
               Delete
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={updateRecord}>
-              <PencilIcon className="size-4 mr-2" />
+              <PencilIcon className="mr-2 size-4" />
               Update
             </DropdownMenuItem>
           </DropdownMenuGroup>

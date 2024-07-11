@@ -1,18 +1,9 @@
-import { cn } from "@/lib/utils";
-import {
-  Bar,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-  BarChart,
-} from "recharts";
-import useCurrencyContext from "@/context/currency/useCurrencyContext";
-import { CHART_COLORS } from "@/lib/constants";
-import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
+import { Bar, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, BarChart } from "recharts";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CHART_COLORS } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import useCurrencyContext from "@/context/currency/useCurrencyContext";
 
 interface BarChartProps {
   data: {
@@ -37,9 +28,9 @@ export function XYComparisonBarChart({ data, isLoading, containerClasses }: BarC
       minWidth={data.length * 70}
     >
       {isLoading ? (
-        <div className="h-full ">
+        <div className="h-full">
           <Skeleton className="h-[85%]" />
-          <div className="mx-auto w-40 h-6 flex justify-between gap-[10%] mt-7">
+          <div className="mx-auto mt-7 flex h-6 w-40 justify-between gap-[10%]">
             <Skeleton className="w-[45%]" />
             <Skeleton className="w-[45%]" />
           </div>
@@ -55,7 +46,7 @@ export function XYComparisonBarChart({ data, isLoading, containerClasses }: BarC
               if (!active || !payload || !payload.length) return null;
 
               return (
-                <div className="capitalize z-50 overflow-hidden rounded-md border bg-popover space-y-s2 p-3 font-semibold text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2">
+                <div className="space-y-s2 z-50 overflow-hidden rounded-md border bg-popover p-3 text-sm font-semibold capitalize text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2">
                   <p style={{ color: CHART_COLORS[0] }}>
                     {`${payload[0].name}: ${currency.symbolNative}${payload[0].value}`}
                   </p>

@@ -1,15 +1,15 @@
 import React from "react";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import CurrencyProvider from "@/context/currency/provider";
-import ThemeProvider from "@/components/providers/theme-provider";
-import AuthProvider from "@/context/auth/provider";
-import { cn } from "@/lib/utils";
-import "./globals.css";
-import { Navbar } from "./_components/navbar";
 import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { OverlaysProvider } from "@/components/providers/overlays-provider";
+import ThemeProvider from "@/components/providers/theme-provider";
+import { cn } from "@/lib/utils";
+import AuthProvider from "@/context/auth/provider";
+import CurrencyProvider from "@/context/currency/provider";
+import { Navbar } from "./_components/navbar";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <ThemeProvider>
             <CurrencyProvider>
               <TooltipProvider>
-                <div className="flex flex-col min-h-screen w-full bg-muted/40">
+                <div className="flex min-h-screen w-full flex-col bg-muted/40">
                   <Navbar />
                   <main>{children}</main>
                 </div>

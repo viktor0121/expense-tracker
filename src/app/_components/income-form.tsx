@@ -1,20 +1,13 @@
 "use client";
 
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/components/ui/use-toast";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { FormDateField } from "@/components/form-date-field";
+import { useToast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
+import { FormDateField } from "@/components/form-date-field";
 import database from "@/lib/appwrite/database";
 import { IEarning } from "@/lib/types";
 import { useData } from "@/store/useData";
@@ -35,11 +28,7 @@ type IncomeFormProps = AddUpdateTypes & {
 
 const formSchema = z.object({
   date: z.date({ required_error: "Date is required" }),
-  title: z
-    .string()
-    .trim()
-    .min(1, "Title is required")
-    .max(250, "Title must be at most 100 characters"),
+  title: z.string().trim().min(1, "Title is required").max(250, "Title must be at most 100 characters"),
   amount: z
     .string()
     .trim()
@@ -90,9 +79,7 @@ export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormPro
           ...(dirtyFields.amount ? { amount: Number(amount) } : {}),
           ...(dirtyFields.date ? { date } : {}),
         });
-        setEarnings(
-          earnings.map((item) => (item.$id === updatedIncome.$id ? updatedIncome : item)),
-        );
+        setEarnings(earnings.map((item) => (item.$id === updatedIncome.$id ? updatedIncome : item)));
       }
 
       toast({

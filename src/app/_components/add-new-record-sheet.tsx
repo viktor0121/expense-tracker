@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExpenseForm } from "./expense-form";
-import { IncomeForm } from "./income-form";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EAddSheetTabs, EDashboardTabs } from "@/lib/enums";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
+import { ExpenseForm } from "./expense-form";
+import { IncomeForm } from "./income-form";
 
 interface AddNewSheetProps {}
 
@@ -14,7 +14,7 @@ export function AddNewRecordSheet({}: AddNewSheetProps) {
 
   return (
     <Sheet open={addNewRecordSheet.isOpen} onOpenChange={addNewRecordSheet.close}>
-      <SheetContent className="slim-scrollbar overflow-auto py-5 px-1 sm:px-5 w-full sm:min-w-fit">
+      <SheetContent className="slim-scrollbar w-full overflow-auto px-1 py-5 sm:min-w-fit sm:px-5">
         <SheetHeader>
           <SheetTitle className="mb-4">Add New Record</SheetTitle>
         </SheetHeader>

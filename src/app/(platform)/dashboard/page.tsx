@@ -1,23 +1,23 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { formatDate } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
-import { SortHeader } from "./_components/data-table";
+import { formatDate } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Analytics } from "./_components/analytics";
-import { DataTableCard } from "./_components/data-table-card";
-import { ActionsDropdown } from "./_components/action-dropdown";
-import useTab from "@/hooks/useTab";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
-import useCurrencyContext from "@/context/currency/useCurrencyContext";
+import useTab from "@/hooks/useTab";
+import database from "@/lib/appwrite/database";
 import { EDashboardTabs } from "@/lib/enums";
 import { IEarning, IExpense } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import database from "@/lib/appwrite/database";
+import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
 import { useUpdateRecordDialog } from "@/store/overlays/useUpdateRecordDialog";
 import { useData } from "@/store/useData";
+import { ActionsDropdown } from "./_components/action-dropdown";
+import { Analytics } from "./_components/analytics";
+import { SortHeader } from "./_components/data-table";
+import { DataTableCard } from "./_components/data-table-card";
 
 enum EEarningsColumnIds {
   Amount = "amount",
@@ -86,9 +86,7 @@ export default function DashboardPage() {
         return <SortHeader column={column} title="Date" className="ml-auto" />;
       },
       cell: ({ row, column }) => {
-        return (
-          <div className="text-right">{formatDate(row.getValue(column.id), "dd MMM yyyy")}</div>
-        );
+        return <div className="text-right">{formatDate(row.getValue(column.id), "dd MMM yyyy")}</div>;
       },
     },
     {
@@ -129,9 +127,7 @@ export default function DashboardPage() {
         return <SortHeader column={column} title="Date" className="ml-auto" />;
       },
       cell: ({ row, column }) => {
-        return (
-          <div className="text-right">{formatDate(row.getValue(column.id), "dd MMM yyyy")}</div>
-        );
+        return <div className="text-right">{formatDate(row.getValue(column.id), "dd MMM yyyy")}</div>;
       },
     },
     {
@@ -158,10 +154,8 @@ export default function DashboardPage() {
       value={tab}
       onValueChange={onTabChange}
       className={cn(
-        "px-3 sm:px-6 space-y-4",
-        tab === EDashboardTabs.Expenses || tab === EDashboardTabs.Earnings
-          ? "max-h-screen"
-          : "min-h-screen",
+        "space-y-4 px-3 sm:px-6",
+        tab === EDashboardTabs.Expenses || tab === EDashboardTabs.Earnings ? "max-h-screen" : "min-h-screen",
       )}
     >
       <TabsList className="w-fit">
@@ -178,7 +172,7 @@ export default function DashboardPage() {
 
       <TabsContent
         value={EDashboardTabs.Analytics}
-        className="min-h-[calc(100vh-8rem)] sm:min-h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
+        className="min-h-[calc(100vh-8rem)] space-y-4 pb-3 sm:min-h-[calc(100vh-5rem)] sm:pb-6"
       >
         <Analytics />
       </TabsContent>
@@ -186,7 +180,7 @@ export default function DashboardPage() {
       <div>
         <TabsContent
           value={EDashboardTabs.Expenses}
-          className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
+          className="h-[calc(100vh-8rem)] space-y-4 pb-3 sm:h-[calc(100vh-5rem)] sm:pb-6"
         >
           <DataTableCard
             filter={{
@@ -202,7 +196,7 @@ export default function DashboardPage() {
 
         <TabsContent
           value={EDashboardTabs.Earnings}
-          className="h-[calc(100vh-8rem)] sm:h-[calc(100vh-5rem)] pb-3 sm:pb-6 space-y-4"
+          className="h-[calc(100vh-8rem)] space-y-4 pb-3 sm:h-[calc(100vh-5rem)] sm:pb-6"
         >
           <DataTableCard
             filter={{

@@ -1,8 +1,8 @@
 import { Client, Databases, ID, Permission, Query, Role } from "appwrite";
-import env from "@/lib/env";
 import auth from "@/lib/appwrite/auth";
-import { IExpense, IExpenseCategory, IEarning, IOverallStats } from "@/lib/types";
 import { EExpenseType } from "@/lib/enums";
+import env from "@/lib/env";
+import { IExpense, IExpenseCategory, IEarning, IOverallStats } from "@/lib/types";
 
 type CreateUpdateExpenseParams =
   | {
@@ -115,12 +115,7 @@ export class DatabaseServices {
           ...(type ? { type } : {}),
         };
 
-        return this.databases.updateDocument(
-          env.awDatabaseId,
-          env.awExpenseCollectionId,
-          id as string,
-          data,
-        );
+        return this.databases.updateDocument(env.awDatabaseId, env.awExpenseCollectionId, id as string, data);
       } else {
         const data = { title, amount, date, category, type };
         const permissions = await this._getRUDPermissions();
@@ -139,13 +134,7 @@ export class DatabaseServices {
     }
   }
 
-  async addUpdateIncome({
-    actionType,
-    id,
-    title,
-    amount,
-    date,
-  }: CreateUpdateIncomeParams): Promise<IEarning> {
+  async addUpdateIncome({ actionType, id, title, amount, date }: CreateUpdateIncomeParams): Promise<IEarning> {
     try {
       if (actionType === "update") {
         const data = {
@@ -154,12 +143,7 @@ export class DatabaseServices {
           ...(date ? { date } : {}),
         };
 
-        return this.databases.updateDocument(
-          env.awDatabaseId,
-          env.awIncomeCollectionId,
-          id as string,
-          data,
-        );
+        return this.databases.updateDocument(env.awDatabaseId, env.awIncomeCollectionId, id as string, data);
       } else {
         const data = { title, amount, date };
         const permissions = await this._getRUDPermissions();
@@ -216,11 +200,7 @@ export class DatabaseServices {
 
   async deleteExpenseCategory({ id }: DeleteParams): Promise<{}> {
     try {
-      return await this.databases.deleteDocument(
-        env.awDatabaseId,
-        env.awExpenseCategoryCollectionId,
-        id,
-      );
+      return await this.databases.deleteDocument(env.awDatabaseId, env.awExpenseCategoryCollectionId, id);
     } catch (error: any) {
       console.log("Appwrite :: deleteExpenseCategory() :: ", error);
       throw error;

@@ -1,12 +1,12 @@
 import React from "react";
 import { CircleIcon } from "lucide-react";
-import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
-import { Props as LegendProps } from "recharts/types/component/DefaultLegendContent";
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
+import { Props as LegendProps } from "recharts/types/component/DefaultLegendContent";
+import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { Skeleton } from "@/components/ui/skeleton";
-import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { CHART_COLORS, RADIAN } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import useCurrencyContext from "@/context/currency/useCurrencyContext";
 
 interface KeyValuePieChart {
   data: {
@@ -21,21 +21,17 @@ export function KeyValuePieChart({ containerClasses, isLoading, data }: KeyValue
   const { currency } = useCurrencyContext();
 
   return (
-    <ResponsiveContainer
-      className={cn(containerClasses, "aspect-square")}
-      minHeight={300}
-      maxHeight={350}
-    >
-      {isLoading  ? (
-        <div className="h-full aspect-square mx-auto flex flex-col gap-8 justify-end items-center">
-          <Skeleton className="rounded-full size-[75%] aspect-square mx-auto" />
-          <div className="mx-auto w-48 h-6 flex justify-between gap-2">
+    <ResponsiveContainer className={cn(containerClasses, "aspect-square")} minHeight={300} maxHeight={350}>
+      {isLoading ? (
+        <div className="mx-auto flex aspect-square h-full flex-col items-center justify-end gap-8">
+          <Skeleton className="mx-auto aspect-square size-[75%] rounded-full" />
+          <div className="mx-auto flex h-6 w-48 justify-between gap-2">
             <Skeleton className="w-1/2" />
             <Skeleton className="w-1/2" />
           </div>
         </div>
       ) : (
-        <PieChart >
+        <PieChart>
           <Pie
             data={data}
             dataKey="value"
@@ -52,7 +48,7 @@ export function KeyValuePieChart({ containerClasses, isLoading, data }: KeyValue
                 key={index}
                 stroke={"hsl(var(--secondary))"}
                 fill={CHART_COLORS[index % CHART_COLORS.length]}
-                className="hover:opacity-80 outline-none hover:outline-none focus:outline-none active:outline-none"
+                className="outline-none hover:opacity-80 hover:outline-none focus:outline-none active:outline-none"
               />
             ))}
           </Pie>
@@ -98,7 +94,7 @@ function renderCustomPieLabel({ cx, cy, midAngle, innerRadius, outerRadius, perc
 function renderCustomTooltipContent({ active, payload, currencySymbol }: CustomTooltipProps) {
   if (!active || !payload || !payload.length) return null;
   return (
-    <p className="capitalize z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2">
+    <p className="z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm capitalize text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2">
       <span style={{ color: payload[0].payload.fill }}>{payload[0].name}:</span>{" "}
       <span>{`${currencySymbol}${payload[0].value}`}</span>
     </p>
@@ -107,7 +103,7 @@ function renderCustomTooltipContent({ active, payload, currencySymbol }: CustomT
 
 function renderCustomLegendContent({ payload }: LegendProps) {
   return (
-    <ul className="flex justify-center gap-2 flex-wrap">
+    <ul className="flex flex-wrap justify-center gap-2">
       {payload?.map((entry, index) => (
         <li
           key={index}

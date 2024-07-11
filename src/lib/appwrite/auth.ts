@@ -1,6 +1,6 @@
 import { Account, Client, ID, Models } from "appwrite";
-import { IUser, IUserPreferences } from "@/lib/types";
 import { ETheme } from "@/lib/enums";
+import { IUser, IUserPreferences } from "@/lib/types";
 import env from "../env";
 
 interface CreateAccountParams {
@@ -57,8 +57,7 @@ export class AuthService {
       return await this.account.get();
     } catch (error: any) {
       // Random guest wil not be able to access account scope
-      if (error.type !== "general_unauthorized_scope")
-        console.log("Appwrite :: getCurrentUser() :: ", error);
+      if (error.type !== "general_unauthorized_scope") console.log("Appwrite :: getCurrentUser() :: ", error);
       return null;
     }
   }

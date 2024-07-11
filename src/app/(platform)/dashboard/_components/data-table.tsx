@@ -1,9 +1,6 @@
 "use client";
 
 import React, { ChangeEvent } from "react";
-import { ArrowUpDown, SearchIcon, XIcon } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   Column,
   ColumnDef,
@@ -17,6 +14,16 @@ import {
   Updater,
   useReactTable,
 } from "@tanstack/react-table";
+import { ArrowUpDown, SearchIcon, XIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -25,14 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export interface IDataTableFilter {
   placeholder: string;
@@ -101,7 +101,7 @@ export function DataTable<TData, TValue>({
     <>
       <div>
         {filter || addVisibilityToggle ? (
-          <div className="flex flex-col min-[300px]:flex-row py-4 gap-2">
+          <div className="flex flex-col gap-2 py-4 min-[300px]:flex-row">
             {/*Table Search*/}
             {filter && filter.columnId && filter.placeholder && filterColumn ? (
               <SearchBar
@@ -113,9 +113,7 @@ export function DataTable<TData, TValue>({
 
             {/*Column Visibility*/}
             {addVisibilityToggle ? (
-              <VisibilityDropdown
-                columns={table.getAllColumns().filter((column) => column.getCanHide())}
-              />
+              <VisibilityDropdown columns={table.getAllColumns().filter((column) => column.getCanHide())} />
             ) : null}
           </div>
         ) : null}
@@ -133,9 +131,7 @@ export function DataTable<TData, TValue>({
                   totalCells={headerGroup.headers.length}
                   className="whitespace-nowrap"
                 >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
+                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableCell>
               ))}
             </TableRow>
@@ -172,11 +168,7 @@ export function DataTable<TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell, index) => (
-                  <TableCell
-                    key={cell.id}
-                    cellIndex={index}
-                    totalCells={row.getVisibleCells().length}
-                  >
+                  <TableCell key={cell.id} cellIndex={index} totalCells={row.getVisibleCells().length}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -215,20 +207,15 @@ function SearchBar({ placeholder, value, setValue, className }: SearchBarProps) 
 
   return (
     <div className="relative w-full">
-      <SearchIcon className="w-5 left-2 absolute top-0 bottom-0 my-auto text-gray-500" />
+      <SearchIcon className="absolute bottom-0 left-2 top-0 my-auto w-5 text-gray-500" />
 
-      <Input
-        placeholder={placeholder}
-        value={value}
-        onChange={onChangeHandle}
-        className={cn("px-9", className)}
-      />
+      <Input placeholder={placeholder} value={value} onChange={onChangeHandle} className={cn("px-9", className)} />
 
       {value && (
         <Button
           variant="ghost"
           onClick={clearBtnClickHandle}
-          className="inset-y-1 right-1 h-auto aspect-square p-0 absolute my-auto text-gray-500 hover:bg-opacity-10"
+          className="absolute inset-y-1 right-1 my-auto aspect-square h-auto p-0 text-gray-500 hover:bg-opacity-10"
         >
           <XIcon className="size-5" />
           <span className="sr-only">Clear Search</span>
@@ -238,14 +225,7 @@ function SearchBar({ placeholder, value, setValue, className }: SearchBarProps) 
   );
 }
 
-function TableCell({
-  type = "cell",
-  totalCells,
-  cellIndex,
-  className,
-  colSpan,
-  children,
-}: TableCellProps) {
+function TableCell({ type = "cell", totalCells, cellIndex, className, colSpan, children }: TableCellProps) {
   const Cell = type === "cell" ? TableCellPrimitive : TableHead;
 
   return (

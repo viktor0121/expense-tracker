@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import AuthContext from "@/context/auth/context";
 import auth from "@/lib/appwrite/auth";
+import AuthContext from "@/context/auth/context";
 
 export default function AuthProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   const [authStatus, setAuthStatus] = useState<boolean>(false);

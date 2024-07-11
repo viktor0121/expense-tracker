@@ -1,8 +1,8 @@
-import heroImage from "../assets/signin-side.png";
-import { INavItem, INavTrail } from "@/lib/types";
 import { CreditCard, DollarSign, Home, LogIn, Settings, Target } from "lucide-react";
 import { EDashboardTabs } from "@/lib/enums";
+import { INavItem, INavTrail } from "@/lib/types";
 import { shuffleArray } from "@/lib/utils";
+import heroImage from "../assets/signin-side.png";
 
 type Trails = {
   [path: string]: INavTrail[];
@@ -83,19 +83,6 @@ export const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/png", "image/webp",
 
 export const CHART_COLORS = shuffleArray(["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]);
 
-export const MONTHS_MMM = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+export const MONTHS_MMM = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export const RADIAN = Math.PI / 180;

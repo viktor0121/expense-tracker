@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { ProfileForm } from "./_components/profile-form";
 import { SectionWrapper } from "../_components/section-wrapper";
+import { ProfileForm } from "./_components/profile-form";
 
 export const metadata: Metadata = {
   title: "Profile",
