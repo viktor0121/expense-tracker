@@ -6,7 +6,7 @@ import { NameType, ValueType } from "recharts/types/component/DefaultTooltipCont
 import { Skeleton } from "@/components/ui/skeleton";
 import { CHART_COLORS, RADIAN } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import useCurrencyContext from "@/context/currency/useCurrencyContext";
+import { useCurrency } from "@/store/useCurrency";
 
 interface KeyValuePieChart {
   data: {
@@ -18,7 +18,7 @@ interface KeyValuePieChart {
 }
 
 export function KeyValuePieChart({ containerClasses, isLoading, data }: KeyValuePieChart) {
-  const { currency } = useCurrencyContext();
+  const { currency } = useCurrency();
 
   return (
     <ResponsiveContainer className={cn(containerClasses, "aspect-square")} minHeight={300} maxHeight={350}>

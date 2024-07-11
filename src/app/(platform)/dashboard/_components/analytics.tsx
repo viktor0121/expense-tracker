@@ -13,9 +13,9 @@ import { MONTHS_MMM } from "@/lib/constants";
 import { EExpenseType } from "@/lib/enums";
 import { IEarning, IExpense, IExpenseCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { KeyValuePieChart } from "./charts/key-value-pie-chart";
 import { XYComparisonBarChart } from "./charts/x-y-comparison-bar-chart";
+import { useCurrency } from "@/store/useCurrency";
 
 enum RightChartTabs {
   Category = "category stats",
@@ -83,7 +83,7 @@ const fillExpenseMonthlyStats = (monthlyStat: IExpenseMonthlyStat[]): IExpenseMo
 };
 
 export function Analytics({}: AnalyticsProps) {
-  const { currency } = useCurrencyContext();
+  const { currency } = useCurrency();
   const { data, isLoading: isExpenseIncomesLoading } = useAppwriteFetch(async () => {
     return await Promise.all([
       database.getExpenses([Query.select(["type", "amount", "category.*", "date"]), Query.limit(5000)]),

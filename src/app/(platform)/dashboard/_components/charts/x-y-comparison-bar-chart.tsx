@@ -3,7 +3,7 @@ import { Bar, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis,
 import { Skeleton } from "@/components/ui/skeleton";
 import { CHART_COLORS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import useCurrencyContext from "@/context/currency/useCurrencyContext";
+import { useCurrency } from "@/store/useCurrency";
 
 interface BarChartProps {
   data: {
@@ -18,7 +18,7 @@ interface BarChartProps {
 }
 
 export function XYComparisonBarChart({ data, isLoading, containerClasses }: BarChartProps) {
-  const { currency } = useCurrencyContext();
+  const { currency } = useCurrency();
 
   return (
     <ResponsiveContainer

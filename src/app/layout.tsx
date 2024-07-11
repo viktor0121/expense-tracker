@@ -4,10 +4,10 @@ import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/components/providers/auth-provider";
+import { CurrencyProvider } from "@/components/providers/currency-provider";
 import { OverlaysProvider } from "@/components/providers/overlays-provider";
 import ThemeProvider from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
-import CurrencyProvider from "@/context/currency/provider";
 import { Navbar } from "./_components/navbar";
 import "./globals.css";
 
@@ -31,18 +31,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>
         <ThemeProvider>
-          <CurrencyProvider>
-            <TooltipProvider>
-              <div className="flex min-h-screen w-full flex-col bg-muted/40">
-                <Navbar />
-                {children}
-              </div>
+          <TooltipProvider>
+            <div className="flex min-h-screen w-full flex-col bg-muted/40">
+              <Navbar />
+              {children}
+            </div>
 
-              <AuthProvider />
-              <OverlaysProvider />
-              <Toaster />
-            </TooltipProvider>
-          </CurrencyProvider>
+            <AuthProvider />
+            <CurrencyProvider />
+            <OverlaysProvider />
+            <Toaster />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
