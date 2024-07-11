@@ -26,9 +26,9 @@ import {
 } from "@/components/ui/command";
 import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
 import { checkIsMobile, getModifierKey } from "@/lib/utils";
-import useAuthContext from "@/context/auth/useAuthContext";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
+import { useAuth } from "@/store/useAuth";
 
 interface Command {
   title: string;
@@ -47,7 +47,7 @@ export function CommandPallet({}: CommandPalletProps) {
   const addNewRecordSheet = useAddNewRecordSheet();
 
   const { setTheme, systemTheme, theme } = useTheme();
-  const { authStatus } = useAuthContext();
+  const { authStatus } = useAuth();
   const router = useRouter();
 
   const toggle = () => setOpen((open) => !open);

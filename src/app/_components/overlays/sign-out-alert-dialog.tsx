@@ -13,14 +13,14 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import auth from "@/lib/appwrite/auth";
-import useAuthContext from "@/context/auth/useAuthContext";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
+import { useAuth } from "@/store/useAuth";
 
 interface SignOutAlertDialogProps {}
 
 export function SignOutAlertDialog({}: SignOutAlertDialogProps) {
   const [isSigningOut, setIsSigningOut] = useState(false);
-  const { setAuthStatus } = useAuthContext();
+  const { setAuthStatus } = useAuth();
   const signOutDialog = useSignOutDialog();
 
   const handleSignOut = async () => {

@@ -6,7 +6,7 @@ import { type ThemeProviderProps } from "next-themes/dist/types";
 import { toast } from "@/components/ui/use-toast";
 import auth from "@/lib/appwrite/auth";
 import { ETheme } from "@/lib/enums";
-import useAuthContext from "@/context/auth/useAuthContext";
+import { useAuth } from "@/store/useAuth";
 
 export default function ThemeProvider({ children }: ThemeProviderProps) {
   const [mounted, setMounted] = useState(false);
@@ -29,7 +29,7 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
 // A separate wrapper component to handle theme preference changes
 // This is needed because we can call useTheme() only in the child wrapped by NextThemesProvider
 function ProviderChildWrapper({ children }: { children: React.ReactNode }) {
-  const { authStatus } = useAuthContext();
+  const { authStatus } = useAuth();
   const { theme, setTheme } = useTheme();
 
   // Get theme preference from the user account if user is authenticated

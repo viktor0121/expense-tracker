@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EAuthTabs } from "@/lib/enums";
 import { cn } from "@/lib/utils";
-import useAuthContext from "@/context/auth/useAuthContext";
+import { useAuth } from "@/store/useAuth";
 
 interface ActionButtonProps {
   containerClasses?: string;
 }
 
 export function ActionButtons({ containerClasses }: ActionButtonProps) {
-  const { authStatus, isAuthLoading } = useAuthContext();
+  const { authStatus, isAuthLoading } = useAuth();
 
   return (
     <div className={cn("flex", containerClasses)}>

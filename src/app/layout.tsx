@@ -3,10 +3,10 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/components/providers/auth-provider";
 import { OverlaysProvider } from "@/components/providers/overlays-provider";
 import ThemeProvider from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
-import AuthProvider from "@/context/auth/provider";
 import CurrencyProvider from "@/context/currency/provider";
 import { Navbar } from "./_components/navbar";
 import "./globals.css";
@@ -30,21 +30,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>
-        <AuthProvider>
-          <ThemeProvider>
-            <CurrencyProvider>
-              <TooltipProvider>
-                <div className="flex min-h-screen w-full flex-col bg-muted/40">
-                  <Navbar />
-                  {children}
-                </div>
+        <ThemeProvider>
+          <CurrencyProvider>
+            <TooltipProvider>
+              <div className="flex min-h-screen w-full flex-col bg-muted/40">
+                <Navbar />
+                {children}
+              </div>
 
-                <OverlaysProvider />
-                <Toaster />
-              </TooltipProvider>
-            </CurrencyProvider>
-          </ThemeProvider>
-        </AuthProvider>
+              <AuthProvider />
+              <OverlaysProvider />
+              <Toaster />
+            </TooltipProvider>
+          </CurrencyProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

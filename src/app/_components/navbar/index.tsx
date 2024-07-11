@@ -4,14 +4,14 @@ import React, { Suspense } from "react";
 import { CommandPallet } from "@/components/command-pallet";
 import { navigations } from "@/lib/constants";
 import { INavItem } from "@/lib/types";
-import useAuthContext from "@/context/auth/useAuthContext";
 import { NavBurgerMenu } from "./nav-burger-menu";
 import { NavDropdownMenu } from "./nav-dropdown-menu";
 import { NavThemeToggle } from "./nav-theme-toggle";
 import { NavTrail } from "./nav-trail";
+import { useAuth } from "@/store/useAuth";
 
 export function Navbar() {
-  const { authStatus, isAuthLoading } = useAuthContext();
+  const { authStatus, isAuthLoading } = useAuth();
 
   const authNavItems = [navigations.analytics, navigations.expense, navigations.earnings, navigations.settings];
   const nonAuthNavItems = [navigations.home, navigations.signin];

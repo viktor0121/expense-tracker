@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import auth from "@/lib/appwrite/auth";
-import useAuthContext from "@/context/auth/useAuthContext";
+import { useAuth } from "@/store/useAuth";
 
 interface SignUpCardProps {
   goToSignIn: () => void;
@@ -53,7 +53,7 @@ export function SignUpCard({ goToSignIn }: SignUpCardProps) {
   });
 
   const { toast } = useToast();
-  const { setAuthStatus } = useAuthContext();
+  const { setAuthStatus } = useAuth();
   const { isSubmitting } = form.formState;
 
   const submit = form.handleSubmit(async ({ firstName, lastName, email, password }) => {

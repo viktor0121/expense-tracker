@@ -2,11 +2,11 @@
 
 import React from "react";
 import { Redirect } from "@/components/redirect";
-import useAuthContext from "@/context/auth/useAuthContext";
 import { LoadingScreen } from "./_components/loading-screen";
+import { useAuth } from "@/store/useAuth";
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
-  const { authStatus, isAuthLoading } = useAuthContext();
+  const { authStatus, isAuthLoading } = useAuth();
   return isAuthLoading ? (
     <LoadingScreen />
   ) : authStatus ? (
