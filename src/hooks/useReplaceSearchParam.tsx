@@ -1,6 +1,6 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function useReplaceSearchParam(): (name: string, value: string) => void {
+export function useReplaceSearchParam(): (name: string, value: string) => void {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();

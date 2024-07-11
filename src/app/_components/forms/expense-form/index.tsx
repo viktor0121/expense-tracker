@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { FormDateField } from "@/components/form-date-field";
-import useAppwriteFetch from "@/hooks/useAppwriteFetch";
+import {useAppwriteFetch} from "@/hooks/useAppwriteFetch";
 import database from "@/lib/appwrite/database";
 import { EExpenseType } from "@/lib/enums";
 import { IExpense, IExpenseCategory } from "@/lib/types";

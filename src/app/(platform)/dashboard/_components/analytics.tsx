@@ -7,8 +7,7 @@ import { CreditCardIcon, DollarSignIcon, HandCoinsIcon, LucideIcon, WalletIcon }
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import useAppwriteFetch from "@/hooks/useAppwriteFetch";
+import { useAppwriteFetch} from "@/hooks/useAppwriteFetch";
 import database from "@/lib/appwrite/database";
 import { MONTHS_MMM } from "@/lib/constants";
 import { EExpenseType } from "@/lib/enums";

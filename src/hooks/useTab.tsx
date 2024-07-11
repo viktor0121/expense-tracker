@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import useReplaceSearchParam from "@/hooks/useReplaceSearchParam";
+import { useReplaceSearchParam } from "@/hooks/useReplaceSearchParam";
 
-export default function useTab<ETabs>({ defaultTab, tabs }: { defaultTab: ETabs; tabs: ETabs[] }) {
+export function useTab<ETabs>({ defaultTab, tabs }: { defaultTab: ETabs; tabs: ETabs[] }) {
   const searchParams = useSearchParams();
   const replaceSearchParam = useReplaceSearchParam();
   const [tab, setTab] = useState<ETabs>(defaultTab);

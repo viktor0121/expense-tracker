@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PanelLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import useActivePath from "@/hooks/useActivePath";
+import {useActivePath} from "@/hooks/useActivePath";
 import { INavItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { NavLogo } from "./nav-logo";
