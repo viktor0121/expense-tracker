@@ -15,21 +15,22 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import useDataContext from "@/context/data/useDataContext";
 import { IExpenseCategory } from "@/lib/types";
 import database from "@/lib/appwrite/database";
+import { useData } from "@/store/useData";
 
 interface CategoryDeleteDialogProps {
   category: IExpenseCategory;
 }
 
 export function CategoryDeleteDialog({ category }: CategoryDeleteDialogProps) {
-  const { setExpenseCategories } = useDataContext();
+  const { setExpenseCategories, expenseCategories } = useData();
 
   const deleteCategory = async () => {
     try {
       await database.deleteExpenseCategory({ id: category.$id });
-      setExpenseCategories((prev) => prev.filter((item) => item.$id !== category.$id));
+      const newExpenseCategories = expenseCategories.filter((item) => item.$id !== category.$id);
+      setExpenseCategories(newExpenseCategories);
       toast({
         title: "Category Deleted",
         description: (

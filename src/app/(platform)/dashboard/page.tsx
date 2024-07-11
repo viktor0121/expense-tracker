@@ -10,7 +10,6 @@ import { DataTableCard } from "./_components/data-table-card";
 import { ActionsDropdown } from "./_components/action-dropdown";
 import useTab from "@/hooks/useTab";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
-import useDataContext from "@/context/data/useDataContext";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { EDashboardTabs } from "@/lib/enums";
 import { IEarning, IExpense } from "@/lib/types";
@@ -18,6 +17,7 @@ import { cn } from "@/lib/utils";
 import database from "@/lib/appwrite/database";
 import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
 import { useUpdateRecordDialog } from "@/store/overlays/useUpdateRecordDialog";
+import { useData } from "@/store/useData";
 
 enum EEarningsColumnIds {
   Amount = "amount",
@@ -38,7 +38,7 @@ export default function DashboardPage() {
     tabs: [EDashboardTabs.Analytics, EDashboardTabs.Expenses, EDashboardTabs.Earnings],
   });
   const { currency } = useCurrencyContext();
-  const { earnings, setEarnings, expenses, setExpenses } = useDataContext();
+  const { earnings, setEarnings, expenses, setExpenses } = useData();
 
   const deleteDialog = useDeleteRecordDialog();
   const updateDialog = useUpdateRecordDialog();

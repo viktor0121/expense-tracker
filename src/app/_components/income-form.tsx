@@ -13,11 +13,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {FormDateField} from "@/components/form-date-field";
-import {ButtonWithSpinner} from "@/components/button-with-spinner";
+import { FormDateField } from "@/components/form-date-field";
+import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
-import useDataContext from "@/context/data/useDataContext";
 import { IEarning } from "@/lib/types";
+import { useData } from "@/store/useData";
 
 type AddUpdateTypes =
   | {
@@ -70,7 +70,7 @@ export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormPro
   const { isSubmitting, isValid, isDirty, dirtyFields } = form.formState;
 
   const { toast } = useToast();
-  const { setEarnings } = useDataContext();
+  const { setEarnings, earnings } = useData();
 
   const submit = form.handleSubmit(async ({ date, amount, title }) => {
     try {
@@ -81,7 +81,7 @@ export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormPro
           amount: Number(amount),
           date,
         });
-        setEarnings((prev) => [newIncome, ...prev]);
+        setEarnings([newIncome, ...earnings]);
       } else {
         const updatedIncome = await database.addUpdateIncome({
           actionType: "update",
@@ -90,8 +90,8 @@ export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormPro
           ...(dirtyFields.amount ? { amount: Number(amount) } : {}),
           ...(dirtyFields.date ? { date } : {}),
         });
-        setEarnings((prev) =>
-          prev.map((item) => (item.$id === updatedIncome.$id ? updatedIncome : item)),
+        setEarnings(
+          earnings.map((item) => (item.$id === updatedIncome.$id ? updatedIncome : item)),
         );
       }
 

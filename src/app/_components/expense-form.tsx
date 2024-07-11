@@ -33,7 +33,6 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
-import useDataContext from "@/context/data/useDataContext";
 import { FormDateField } from "@/components/form-date-field";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { NewCategoryDialog } from "./new-category-dialog";
@@ -43,6 +42,7 @@ import { EExpenseType } from "@/lib/enums";
 import { IExpense, IExpenseCategory } from "@/lib/types";
 import database from "@/lib/appwrite/database";
 import { PopoverClose } from "@radix-ui/react-popover";
+import { useData } from "@/store/useData";
 
 type AddUpdateTypes =
   | {
@@ -107,7 +107,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
           },
   });
   const { isSubmitting, isValid, dirtyFields, isDirty } = form.formState;
-  const { setExpenses, expenseCategories, setExpenseCategories } = useDataContext();
+  const { expenses, setExpenses, expenseCategories, setExpenseCategories } = useData();
   const { data: categoriesData } = useAppwriteFetch(() => database.getExpenseCategories());
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
@@ -121,7 +121,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
           type,
           category,
         });
-        setExpenses((prev) => [newExpense, ...prev]);
+        setExpenses([newExpense, ...expenses]);
       } else {
         const updatedExpense = await database.addUpdateExpense({
           actionType: "update",
@@ -132,8 +132,8 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
           ...(dirtyFields.type ? { type } : {}),
           ...(dirtyFields.category ? { category } : {}),
         });
-        setExpenses((prev) =>
-          prev.map((item) => (item.$id === updatedExpense.$id ? updatedExpense : item)),
+        setExpenses(
+          expenses.map((item) => (item.$id === updatedExpense.$id ? updatedExpense : item)),
         );
       }
 

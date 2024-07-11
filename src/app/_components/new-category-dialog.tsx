@@ -24,9 +24,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {ButtonWithSpinner} from "@/components/button-with-spinner";
-import useDataContext from "@/context/data/useDataContext";
+import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
+import { useData } from "@/store/useData";
 
 interface NewCategoryDialogProps {}
 
@@ -48,12 +48,12 @@ export function NewCategoryDialog({}: NewCategoryDialogProps) {
   const { isSubmitting, isValid } = form.formState;
 
   const [open, setOpen] = useState<boolean>(false);
-  const { setExpenseCategories } = useDataContext();
+  const { setExpenseCategories, expenseCategories } = useData();
 
   const submit = form.handleSubmit(async ({ title }) => {
     try {
       const newCategory = await database.createExpenseCategory({ title });
-      setExpenseCategories((prev) => [...prev, newCategory]);
+      setExpenseCategories([...expenseCategories, newCategory]);
       toast({
         title: "Success!",
         description: "New category has been added successfully.",

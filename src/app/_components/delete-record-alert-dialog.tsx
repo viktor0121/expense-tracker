@@ -11,12 +11,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { toast } from "@/components/ui/use-toast";
-import useDataContext from "@/context/data/useDataContext";
 import database from "@/lib/appwrite/database";
 import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
+import { useData } from "@/store/useData";
 
 export function DeleteRecordAlertDialog() {
-  const { setExpenses, setEarnings } = useDataContext();
+  const { expenses, setExpenses, earnings, setEarnings } = useData();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const deleteDialog = useDeleteRecordDialog();
 
@@ -29,10 +29,12 @@ export function DeleteRecordAlertDialog() {
     try {
       if (deleteDialog.recordType === "expense") {
         await database.deleteExpense({ id: deleteDialog.record.$id });
-        setExpenses((prev) => prev.filter((item) => item.$id !== deleteDialog.record.$id));
+        const newExpenses = expenses.filter((item) => item.$id !== deleteDialog.record.$id);
+        setExpenses(newExpenses);
       } else if (deleteDialog.recordType === "earning") {
         await database.deleteIncome({ id: deleteDialog.record.$id });
-        setEarnings((prev) => prev.filter((item) => item.$id !== deleteDialog.record.$id));
+        const newEarnings = earnings.filter((item) => item.$id !== deleteDialog.record.$id);
+        setEarnings(newEarnings);
       } else {
         return;
       }

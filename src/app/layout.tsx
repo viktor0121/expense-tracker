@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import CurrencyProvider from "@/context/currency/provider";
 import ThemeProvider from "@/components/providers/theme-provider";
 import AuthProvider from "@/context/auth/provider";
-import DataProvider from "@/context/data/provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import { Navbar } from "./_components/navbar";
@@ -32,22 +31,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>
         <AuthProvider>
-            <ThemeProvider>
-              <CurrencyProvider>
-                <DataProvider>
-                  <TooltipProvider>
-                    <div className="flex flex-col min-h-screen w-full bg-muted/40">
-                      <Navbar />
-                      <main>{children}</main>
-                    </div>
+          <ThemeProvider>
+            <CurrencyProvider>
+              <TooltipProvider>
+                <div className="flex flex-col min-h-screen w-full bg-muted/40">
+                  <Navbar />
+                  <main>{children}</main>
+                </div>
 
-                    <OverlaysProvider />
+                <OverlaysProvider />
 
-                    <Toaster />
-                  </TooltipProvider>
-                </DataProvider>
-              </CurrencyProvider>
-            </ThemeProvider>
+                <Toaster />
+              </TooltipProvider>
+            </CurrencyProvider>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>
