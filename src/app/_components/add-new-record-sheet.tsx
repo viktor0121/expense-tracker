@@ -4,7 +4,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExpenseForm } from "./expense-form";
 import { IncomeForm } from "./income-form";
-import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { EAddSheetTabs, EDashboardTabs } from "@/lib/enums";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
 

@@ -10,7 +10,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
-import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { toast } from "@/components/ui/use-toast";
 import useDataContext from "@/context/data/useDataContext";
 import database from "@/lib/appwrite/database";

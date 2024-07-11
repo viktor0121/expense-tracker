@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { buttonVariants } from "@/components/ui/button";
 import useAuthContext from "@/context/auth/useAuthContext";
-import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import auth from "@/lib/appwrite/auth";
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";

@@ -12,7 +12,7 @@ interface AddNewRecordSheetStore {
 export const useAddNewRecordSheet = create<AddNewRecordSheetStore>((set) => ({
   isOpen: false,
   tab: EAddSheetTabs.Expense,
-  openExpense: () => set({tab: EAddSheetTabs.Expense, isOpen: true }),
-  openEarning: () => set({tab: EAddSheetTabs.Earning, isOpen: true }),
+  openExpense: () => set({ tab: EAddSheetTabs.Expense, isOpen: true }),
+  openEarning: () => set({ tab: EAddSheetTabs.Earning, isOpen: true }),
   close: () => set({ isOpen: false }),
 }));

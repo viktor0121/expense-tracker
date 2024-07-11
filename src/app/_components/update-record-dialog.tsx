@@ -6,54 +6,36 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import useOverlaysContext from "@/context/overlays/useOverlaysContext";
-import {IncomeForm} from "./income-form";
-import {ExpenseForm} from "./expense-form";
+import { IncomeForm } from "./income-form";
+import { ExpenseForm } from "./expense-form";
+import { useUpdateRecordDialog } from "@/store/overlays/useUpdateRecordDialog";
 
 export function UpdateRecordDialog() {
-  const { updateRecordDialog, setUpdateRecordDialog } = useOverlaysContext();
-  const { recordType, record } = updateRecordDialog;
+  const updateDialog = useUpdateRecordDialog();
 
   // Return null if recordType or record is not provided
-  if (!recordType || !record) return null;
+  if (!updateDialog.recordType || !updateDialog.record) return null;
 
   return (
-    <Dialog
-      open={updateRecordDialog.open}
-      onOpenChange={(open) =>
-        setUpdateRecordDialog((prev) => {
-          const { record, recordType } = prev;
-          if (open && record && recordType) return { ...prev, open: true };
-          return { open: false };
-        })
-      }
-    >
+    <Dialog open={updateDialog.isOpen} onOpenChange={updateDialog.close}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Update {recordType} record</DialogTitle>
+          <DialogTitle>Update {updateDialog.recordType} record</DialogTitle>
           <DialogDescription>
             Make changes to your record here. Click update when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        {recordType === "earning" ? (
+        {updateDialog.recordType === "earning" ? (
           <IncomeForm
             recordType="update"
-            record={record}
-            runAfterSubmit={() => {
-              setUpdateRecordDialog((prev) => ({
-                open: false,
-              }));
-            }}
+            record={updateDialog.record}
+            runAfterSubmit={updateDialog.close}
           />
         ) : (
           <ExpenseForm
             recordType="update"
-            record={record}
-            runAfterSubmit={() => {
-              setUpdateRecordDialog((prev) => ({
-                open: false,
-              }));
-            }}
+            record={updateDialog.record}
+            runAfterSubmit={updateDialog.close}
           />
         )}
       </DialogContent>

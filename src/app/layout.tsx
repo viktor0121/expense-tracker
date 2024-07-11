@@ -2,7 +2,6 @@ import React from "react";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import OverlaysProvider from "@/context/overlays/provider";
 import CurrencyProvider from "@/context/currency/provider";
 import ThemeProvider from "@/context/theme/provider";
 import AuthProvider from "@/context/auth/provider";
@@ -11,7 +10,7 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import { Navbar } from "./_components/navbar";
 import { Toaster } from "@/components/ui/toaster";
-import { OverlaysProvider as OverlaysComponentProvider } from "@/components/providers/overlays-provider";
+import { OverlaysProvider } from "@/components/providers/overlays-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -33,7 +32,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>
         <AuthProvider>
-          <OverlaysProvider>
             <ThemeProvider>
               <CurrencyProvider>
                 <DataProvider>
@@ -43,14 +41,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                       <main>{children}</main>
                     </div>
 
-                    <OverlaysComponentProvider />
+                    <OverlaysProvider />
 
                     <Toaster />
                   </TooltipProvider>
                 </DataProvider>
               </CurrencyProvider>
             </ThemeProvider>
-          </OverlaysProvider>
         </AuthProvider>
       </body>
     </html>

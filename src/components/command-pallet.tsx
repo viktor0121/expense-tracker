@@ -25,7 +25,6 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import useAuthContext from "@/context/auth/useAuthContext";
-import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { checkIsMobile, getModifierKey } from "@/lib/utils";
 import { EAddSheetTabs, EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";

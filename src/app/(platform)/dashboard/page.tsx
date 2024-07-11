@@ -11,13 +11,13 @@ import { ActionsDropdown } from "./_components/action-dropdown";
 import useTab from "@/hooks/useTab";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import useDataContext from "@/context/data/useDataContext";
-import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import useCurrencyContext from "@/context/currency/useCurrencyContext";
 import { EDashboardTabs } from "@/lib/enums";
 import { IEarning, IExpense } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import database from "@/lib/appwrite/database";
 import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
+import { useUpdateRecordDialog } from "@/store/overlays/useUpdateRecordDialog";
 
 enum EEarningsColumnIds {
   Amount = "amount",
@@ -39,9 +39,9 @@ export default function DashboardPage() {
   });
   const { currency } = useCurrencyContext();
   const { earnings, setEarnings, expenses, setExpenses } = useDataContext();
-  const { setUpdateRecordDialog } = useOverlaysContext();
 
   const deleteDialog = useDeleteRecordDialog();
+  const updateDialog = useUpdateRecordDialog();
 
   const { data, isLoading } = useAppwriteFetch(async () => {
     return await Promise.all([database.getExpenses(), database.getIncomes()]);
@@ -97,13 +97,7 @@ export default function DashboardPage() {
         return (
           <ActionsDropdown
             deleteRecord={() => deleteDialog.openExpense(row.original)}
-            updateRecord={() => {
-              setUpdateRecordDialog((prev) => ({
-                open: true,
-                recordType: "expense",
-                record: row.original,
-              }));
-            }}
+            updateRecord={() => updateDialog.openExpense(row.original)}
           />
         );
       },
@@ -146,13 +140,7 @@ export default function DashboardPage() {
         return (
           <ActionsDropdown
             deleteRecord={() => deleteDialog.openEarning(row.original)}
-            updateRecord={() => {
-              setUpdateRecordDialog((prev) => ({
-                open: true,
-                recordType: "earning",
-                record: row.original,
-              }));
-            }}
+            updateRecord={() => updateDialog.openEarning(row.original)}
           />
         );
       },

@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import auth from "@/lib/appwrite/auth";
 import avatars from "@/lib/appwrite/avatars";
 import storage from "@/lib/appwrite/storage";
-import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 
 interface NavDropdownMenuProps {}
