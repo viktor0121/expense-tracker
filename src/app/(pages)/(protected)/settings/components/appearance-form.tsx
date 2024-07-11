@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "@/components/ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import ButtonWithSpinner from "@/components/button-with-spinner";
+import {ButtonWithSpinner} from "@/components/button-with-spinner";
 import {
   Form,
   FormControl,
@@ -116,7 +116,7 @@ function ThemeFormItem({ children, value, title }: ThemeFormItemProps) {
   );
 }
 
-export default function AppearanceForm() {
+export function AppearanceForm() {
   const { theme, setTheme } = useTheme();
 
   const form = useForm<z.infer<typeof formSchema>>({

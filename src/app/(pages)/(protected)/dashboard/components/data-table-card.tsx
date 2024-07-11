@@ -16,7 +16,7 @@ interface DataTableCardProps<T> {
   isLoading?: boolean;
 }
 
-export default function DataTableCard<T>({
+export function DataTableCard<T>({
   title,
   description,
   columns,

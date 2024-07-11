@@ -10,8 +10,8 @@ import {
   LucideIcon,
   WalletIcon,
 } from "lucide-react";
-import XYComparisonBarChart from "@/app/(pages)/(protected)/dashboard/components/charts/x-y-comparison-bar-chart";
-import KeyValuePieChart from "@/app/(pages)/(protected)/dashboard/components/charts/key-value-pie-chart";
+import { XYComparisonBarChart } from "@/app/(pages)/(protected)/dashboard/components/charts/x-y-comparison-bar-chart";
+import { KeyValuePieChart } from "@/app/(pages)/(protected)/dashboard/components/charts/key-value-pie-chart";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -89,7 +89,7 @@ const fillExpenseMonthlyStats = (monthlyStat: IExpenseMonthlyStat[]): IExpenseMo
   }, monthlyStat);
 };
 
-export default function Analytics({}: AnalyticsProps) {
+export function Analytics({}: AnalyticsProps) {
   const { currency } = useCurrencyContext();
   const { data, isLoading: isExpenseIncomesLoading } = useAppwriteFetch(async () => {
     return await Promise.all([

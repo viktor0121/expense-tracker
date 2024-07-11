@@ -24,7 +24,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ButtonWithSpinner from "@/components/button-with-spinner";
+import {ButtonWithSpinner} from "@/components/button-with-spinner";
 import useDataContext from "@/context/data/useDataContext";
 import database from "@/lib/appwrite/database";
 
@@ -38,7 +38,7 @@ const formSchema = z.object({
     .max(250, "Title must be at most 100 characters"),
 });
 
-export default function NewCategoryDialog({}: NewCategoryDialogProps) {
+export function NewCategoryDialog({}: NewCategoryDialogProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

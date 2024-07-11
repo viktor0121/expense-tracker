@@ -1,6 +1,6 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
-import SidebarNav from "@/app/(pages)/(protected)/settings/components/sidebar-nav";
+import {SidebarNav} from "@/app/(pages)/(protected)/settings/components/sidebar-nav";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -10,7 +10,7 @@ interface BackgroundDotsProps {
   containerClassName?: string;
 }
 
-export default function BackgroundDotsContainer({
+export function BackgroundDotsContainer({
   children,
   className,
   containerClassName,

@@ -37,7 +37,7 @@ interface Command {
 
 interface CommandPalletProps {}
 
-export default function CommandPallet({}: CommandPalletProps) {
+export function CommandPallet({}: CommandPalletProps) {
   const [modifierKey, setModifierKey] = useState<EModifierKey>(EModifierKey.Other);
   const [isMobile, setIsMobile] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);

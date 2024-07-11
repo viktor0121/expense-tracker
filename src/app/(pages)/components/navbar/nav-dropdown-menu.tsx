@@ -18,7 +18,7 @@ import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 
 interface NavDropdownMenuProps {}
 
-export default function NavDropdownMenu({}: NavDropdownMenuProps) {
+export function NavDropdownMenu({}: NavDropdownMenuProps) {
   const [avatar, setAvatar] = useState<string>("");
   const { setSignOutDialog } = useOverlaysContext();
 

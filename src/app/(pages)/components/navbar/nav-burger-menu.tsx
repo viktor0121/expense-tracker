@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PanelLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import NavLogo from "@/app/(pages)/components/navbar/nav-logo";
+import {NavLogo} from "@/app/(pages)/components/navbar/nav-logo";
 import useActivePath from "@/hooks/useActivePath";
 import { cn } from "@/lib/utils";
 import { INavItem } from "@/lib/types";
@@ -29,7 +29,7 @@ const NavItem = ({ url, title, Icon }: INavItem) => {
   );
 };
 
-export default function NavBurgerMenu({ navItems, className }: MobileNavProps) {
+export function NavBurgerMenu({ navItems, className }: MobileNavProps) {
   const [open, setOpen] = useState(false);
 
   return (

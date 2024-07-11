@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ETheme } from "@/lib/enums";
 
-export default function NavThemeToggle() {
+export function NavThemeToggle() {
   const { setTheme } = useTheme();
 
   return (

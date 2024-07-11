@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ButtonWithSpinner from "@/components/button-with-spinner";
+import {ButtonWithSpinner} from "@/components/button-with-spinner";
 import useAuthContext from "@/context/auth/useAuthContext";
 import auth from "@/lib/appwrite/auth";
 
@@ -22,7 +22,7 @@ interface SignInCardProps {
   goToSignUp: () => void;
 }
 
-export default function SignInCard({ goToSignUp }: SignInCardProps) {
+export function SignInCard({ goToSignUp }: SignInCardProps) {
   const formSchema = z.object({
     email: z
       .string()

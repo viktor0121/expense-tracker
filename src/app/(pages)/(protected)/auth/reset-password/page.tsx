@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import ResetPasswordCard from "@/app/(pages)/auth/components/reset-password-card";
+import {ResetPasswordCard} from "@/app/(pages)/auth/components/reset-password-card";
 import { EAuthTabs } from "@/lib/enums";
 
 // TODO: Enable Forgot Password functionality

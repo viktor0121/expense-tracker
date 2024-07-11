@@ -34,10 +34,10 @@ import {
 } from "@/components/ui/command";
 import useAppwriteFetch from "@/hooks/useAppwriteFetch";
 import useDataContext from "@/context/data/useDataContext";
-import FormDateField from "@/components/form-date-field";
-import ButtonWithSpinner from "@/components/button-with-spinner";
-import NewCategoryDialog from "@/app/(pages)/(protected)/dashboard/components/new-category-dialog";
-import CategoryDeleteDialog from "@/app/(pages)/(protected)/dashboard/components/category-delete-dialog";
+import { FormDateField } from "@/components/form-date-field";
+import { ButtonWithSpinner } from "@/components/button-with-spinner";
+import { NewCategoryDialog } from "@/app/(pages)/(protected)/dashboard/components/new-category-dialog";
+import { CategoryDeleteDialog } from "@/app/(pages)/(protected)/dashboard/components/category-delete-dialog";
 import { cn } from "@/lib/utils";
 import { EExpenseType } from "@/lib/enums";
 import { IExpense, IExpenseCategory } from "@/lib/types";
@@ -79,7 +79,7 @@ const formSchema = z.object({
   category: z.string().min(1, "Category is required"),
 });
 
-export default function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormProps) {
+export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormProps) {
   const { toast } = useToast();
   const categoryTriggerButtonRef = useRef<HTMLButtonElement>(null);
   const [comboBoxWidth, setComboBoxWidth] = useState<Number>(-1);

@@ -13,8 +13,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import FormDateField from "@/components/form-date-field";
-import ButtonWithSpinner from "@/components/button-with-spinner";
+import {FormDateField} from "@/components/form-date-field";
+import {ButtonWithSpinner} from "@/components/button-with-spinner";
 import database from "@/lib/appwrite/database";
 import useDataContext from "@/context/data/useDataContext";
 import { IEarning } from "@/lib/types";
@@ -50,7 +50,7 @@ const formSchema = z.object({
     .refine((str) => parseFloat(str) < 10_00_00_000, "Amount must be at most 10,00,00,000"),
 });
 
-export default function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormProps) {
+export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:

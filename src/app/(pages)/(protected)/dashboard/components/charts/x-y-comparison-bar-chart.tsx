@@ -26,7 +26,7 @@ interface BarChartProps {
   containerClasses?: string;
 }
 
-export default function XYComparisonBarChart({ data, isLoading, containerClasses }: BarChartProps) {
+export function XYComparisonBarChart({ data, isLoading, containerClasses }: BarChartProps) {
   const { currency } = useCurrencyContext();
 
   return (

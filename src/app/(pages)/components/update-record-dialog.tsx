@@ -7,10 +7,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
-import IncomeForm from "@/app/(pages)/(protected)/dashboard/components/income-form";
-import ExpenseForm from "@/app/(pages)/(protected)/dashboard/components/expense-form";
+import {IncomeForm} from "@/app/(pages)/(protected)/dashboard/components/income-form";
+import {ExpenseForm} from "@/app/(pages)/(protected)/dashboard/components/expense-form";
 
-export default function UpdateRecordDialog() {
+export function UpdateRecordDialog() {
   const { updateRecordDialog, setUpdateRecordDialog } = useOverlaysContext();
   const { recordType, record } = updateRecordDialog;
 

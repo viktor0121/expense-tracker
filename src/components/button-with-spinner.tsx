@@ -10,7 +10,7 @@ type ButtonWithSpinnerProps = ButtonProps & {
   btnText: string;
 };
 
-export default function ButtonWithSpinner({
+export function ButtonWithSpinner({
   isLoading,
   children,
   className,

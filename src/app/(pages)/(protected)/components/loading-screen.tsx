@@ -1,7 +1,7 @@
 import React from "react";
 import { Circle, DollarSign } from "lucide-react";
 
-export default function LoadingScreen() {
+export function LoadingScreen() {
   return (
     <div className="z-40 flex flex-col justify-center items-center gap-4 absolute inset-0 bg-background">
       <h1 className="text-4xl font-bold text-accent-foreground">Adis Money</h1>

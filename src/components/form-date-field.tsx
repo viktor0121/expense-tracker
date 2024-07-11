@@ -14,7 +14,7 @@ interface FormDateFieldProps {
   control: Control<any, any>;
 }
 
-export default function FormDateField({ name, label, placeholder, control }: FormDateFieldProps) {
+export function FormDateField({ name, label, placeholder, control }: FormDateFieldProps) {
   return (
     <FormField
       control={control}

@@ -7,7 +7,7 @@ interface SectionWrapperProps {
   description: string;
 }
 
-export default function SectionWrapper({ children, title, description }: SectionWrapperProps) {
+export function SectionWrapper({ children, title, description }: SectionWrapperProps) {
   return (
     <div className="space-y-6">
       <div>

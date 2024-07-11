@@ -1,8 +1,8 @@
-import Spotlight from "@/components/spotlight";
-import FlipWords from "@/app/(pages)/components/flip-words";
-import ActionButtons from "@/app/(pages)/components/actions-button";
-import FeatureCards from "@/app/(pages)/components/feature-cards";
-import BackgroundDotsContainer from "@/components/background-dots-container";
+import { Spotlight } from "@/components/spotlight";
+import { FlipWords } from "@/app/(pages)/components/flip-words";
+import { ActionButtons } from "@/app/(pages)/components/actions-button";
+import { FeatureCards } from "@/app/(pages)/components/feature-cards";
+import { BackgroundDotsContainer } from "@/components/background-dots-container";
 
 export default function Page() {
   const heroWords = ["Goals", "Expenses", "Earnings"];
@@ -14,7 +14,7 @@ export default function Page() {
 
         <div className="container max-w-3xl px-4 md:px-6 flex flex-col justify-center items-center space-y-4">
           <h1 className="space-y-3 text-center text-5xl font-bold tracking-tighter sm:text-6xl">
-              <div className="text-primary">AdisMoney</div>
+            <div className="text-primary">AdisMoney</div>
             <div>
               Your Personal
               <FlipWords words={heroWords} />

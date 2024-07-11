@@ -14,7 +14,7 @@ import {
 import { INavTrail } from "@/lib/types";
 import { trails } from "@/lib/constants";
 
-export default function NavTrail() {
+export function NavTrail() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [navTrails, setNavTrails] = useState<INavTrail[]>([]);

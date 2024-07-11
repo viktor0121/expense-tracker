@@ -9,13 +9,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import ButtonWithSpinner from "@/components/button-with-spinner";
+import {ButtonWithSpinner} from "@/components/button-with-spinner";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { toast } from "@/components/ui/use-toast";
 import useDataContext from "@/context/data/useDataContext";
 import database from "@/lib/appwrite/database";
 
-export default function DeleteRecordAlertDialog() {
+export function DeleteRecordAlertDialog() {
   const { setExpenses, setEarnings } = useDataContext();
   const { deleteRecordDialog, setDeleteRecordDialog } = useOverlaysContext();
   const { recordType, record } = deleteRecordDialog;

@@ -11,7 +11,7 @@ interface ActionButtonProps {
   containerClasses?: string;
 }
 
-export default function ActionButtons({ containerClasses }: ActionButtonProps) {
+export function ActionButtons({ containerClasses }: ActionButtonProps) {
   const { authStatus, isAuthLoading } = useAuthContext();
 
   return (

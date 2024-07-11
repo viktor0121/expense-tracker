@@ -10,7 +10,7 @@ interface PasswordConfirmCardProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function PasswordConfirmCard({
+export function PasswordConfirmCard({
   title,
   description,
   value,

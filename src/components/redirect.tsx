@@ -5,7 +5,7 @@ interface RedirectProps {
   params?: URLSearchParams;
 }
 
-export default function Redirect({ pathname, params }: RedirectProps) {
+export function Redirect({ pathname, params }: RedirectProps) {
   const paramsString = params ? `?${params.toString()}` : "";
   redirect(pathname + paramsString);
   return <></>;

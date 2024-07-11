@@ -3,15 +3,15 @@
 import React, { Suspense, useState } from "react";
 import { CreditCard, DollarSign, Home, LogIn, Settings, Target } from "lucide-react";
 import useAuthContext from "@/context/auth/useAuthContext";
-import NavBurgerMenu from "@/app/(pages)/components/navbar/nav-burger-menu";
-import NavTrail from "@/app/(pages)/components/navbar/nav-trail";
-import CommandPallet from "@/components/command-pallet";
-import NavThemeToggle from "@/app/(pages)/components/navbar/nav-theme-toggle";
-import NavDropdownMenu from "@/app/(pages)/components/navbar/nav-dropdown-menu";
+import { NavBurgerMenu } from "@/app/(pages)/components/navbar/nav-burger-menu";
+import { NavTrail } from "@/app/(pages)/components/navbar/nav-trail";
+import { CommandPallet } from "@/components/command-pallet";
+import { NavThemeToggle } from "@/app/(pages)/components/navbar/nav-theme-toggle";
+import { NavDropdownMenu } from "@/app/(pages)/components/navbar/nav-dropdown-menu";
 import { INavItem } from "@/lib/types";
 import { navigations } from "@/lib/constants";
 
-export default function Navbar() {
+export function Navbar() {
   const { authStatus, isAuthLoading } = useAuthContext();
 
   const authNavItems = [

@@ -7,7 +7,7 @@ interface NavLogoProps {
   className?: string;
 }
 
-export default function NavLogo({ className }: NavLogoProps) {
+export function NavLogo({ className }: NavLogoProps) {
   return (
     <Link
       href="/public"

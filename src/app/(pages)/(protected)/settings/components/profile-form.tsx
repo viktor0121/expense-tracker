@@ -21,8 +21,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ButtonWithSpinner from "@/components/button-with-spinner";
-import PasswordConfirmCard from "@/app/(pages)/(protected)/settings/components/password-confirm-card";
+import {ButtonWithSpinner} from "@/components/button-with-spinner";
+import {PasswordConfirmCard} from "@/app/(pages)/(protected)/settings/components/password-confirm-card";
 import { IUser } from "@/lib/types";
 import { SUPPORTED_IMAGE_FORMATS } from "@/lib/constants";
 import auth from "@/lib/appwrite/auth";
@@ -81,7 +81,7 @@ function InputResetButton({ reset }: InputResetButtonProps) {
   );
 }
 
-export default function ProfileForm() {
+export function ProfileForm() {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {

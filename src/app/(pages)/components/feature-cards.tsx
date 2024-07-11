@@ -30,7 +30,7 @@ const features = [
   },
 ];
 
-export default function FeatureCards() {
+export function FeatureCards() {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (

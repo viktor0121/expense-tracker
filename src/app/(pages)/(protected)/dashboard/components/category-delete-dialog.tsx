@@ -23,7 +23,7 @@ interface CategoryDeleteDialogProps {
   category: IExpenseCategory;
 }
 
-export default function CategoryDeleteDialog({ category }: CategoryDeleteDialogProps) {
+export function CategoryDeleteDialog({ category }: CategoryDeleteDialogProps) {
   const { setExpenseCategories } = useDataContext();
 
   const deleteCategory = async () => {

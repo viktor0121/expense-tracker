@@ -16,7 +16,7 @@ interface ActionDropdownProps {
   updateRecord: () => void;
 }
 
-export default function ActionsDropdown({ deleteRecord, updateRecord }: ActionDropdownProps) {
+export function ActionsDropdown({ deleteRecord, updateRecord }: ActionDropdownProps) {
   return (
     <>
       <DropdownMenu>

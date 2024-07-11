@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import SectionWrapper from "@/app/(pages)/(protected)/settings/components/section-wrapper";
-import AppearanceForm from "@/app/(pages)/(protected)/settings/components/appearance-form";
+import {SectionWrapper} from "@/app/(pages)/(protected)/settings/components/section-wrapper";
+import {AppearanceForm} from "@/app/(pages)/(protected)/settings/components/appearance-form";
 
 export const metadata: Metadata = {
   title: "Appearance",

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import ProfileForm from "@/app/(pages)/(protected)/settings/components/profile-form";
-import SectionWrapper from "@/app/(pages)/(protected)/settings/components/section-wrapper";
+import {ProfileForm} from "@/app/(pages)/(protected)/settings/components/profile-form";
+import {SectionWrapper} from "@/app/(pages)/(protected)/settings/components/section-wrapper";
 
 export const metadata: Metadata = {
   title: "Profile",

@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import Redirect from "@/components/redirect";
+import { Redirect } from "@/components/redirect";
 import useAuthContext from "@/context/auth/useAuthContext";
-import LoadingScreen from "@/app/(pages)/(protected)/components/loading-screen";
+import { LoadingScreen } from "@/app/(pages)/(protected)/components/loading-screen";
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const { authStatus, isAuthLoading } = useAuthContext();

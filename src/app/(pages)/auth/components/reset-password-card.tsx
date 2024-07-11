@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ButtonWithSpinner from "@/components/button-with-spinner";
+import {ButtonWithSpinner} from "@/components/button-with-spinner";
 
 interface ResetPasswordCardProps {
   title: string;
@@ -23,7 +23,7 @@ interface ResetPasswordCardProps {
   children?: React.ReactNode;
 }
 
-export default function ResetPasswordCard({
+export function ResetPasswordCard({
   title,
   description,
   children,

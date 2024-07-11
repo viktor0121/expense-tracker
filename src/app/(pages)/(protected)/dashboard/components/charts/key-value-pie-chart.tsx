@@ -17,7 +17,7 @@ interface KeyValuePieChart {
   isLoading?: boolean;
 }
 
-export default function CategoryPie({ containerClasses, isLoading, data }: KeyValuePieChart) {
+export function KeyValuePieChart({ containerClasses, isLoading, data }: KeyValuePieChart) {
   const { currency } = useCurrencyContext();
 
   return (
