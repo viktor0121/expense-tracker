@@ -9,9 +9,9 @@ import AuthProvider from "@/context/auth/provider";
 import DataProvider from "@/context/data/provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
-import { Navbar } from "@/app/(pages)/components/navbar";
+import { Navbar } from "./_components/navbar";
 import { Toaster } from "@/components/ui/toaster";
-import {OverlaysProvider as OverlaysComponentProvider} from "@/components/providers/overlays-provider";
+import { OverlaysProvider as OverlaysComponentProvider } from "@/components/providers/overlays-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
