@@ -28,7 +28,6 @@ import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 import { useAuth } from "@/store/useAuth";
 import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
-import { checkIsMobile, getModifierKey } from "@/lib/utils";
 
 interface Command {
   title: string;
@@ -39,8 +38,6 @@ interface Command {
 interface CommandPalletProps {}
 
 export function CommandPallet({}: CommandPalletProps) {
-  const [modifierKey, setModifierKey] = useState<EModifierKey>(EModifierKey.Other);
-  const [isMobile, setIsMobile] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
 
   const signOutDialog = useSignOutDialog();
@@ -134,9 +131,6 @@ export function CommandPallet({}: CommandPalletProps) {
   ];
 
   useEffect(() => {
-    setIsMobile(checkIsMobile());
-    setModifierKey(getModifierKey());
-
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -152,20 +146,16 @@ export function CommandPallet({}: CommandPalletProps) {
       <Button
         onClick={toggle}
         variant="outline"
-        className="ml-auto gap-2 text-muted-foreground hover:text-accent-foreground"
+        className="ml-auto gap-2 px-2 text-muted-foreground hover:text-accent-foreground"
       >
         <div className="flex items-center">
           <Terminal className="h-4" />
           <span>Command</span>
         </div>
 
-        {!isMobile ? (
-          //TODO: Check if any font size mismatch is there in mac device
-          <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] text-xs font-medium opacity-100 sm:flex">
-            <span>{modifierKey}</span>
-            {"K"}
-          </kbd>
-        ) : null}
+        <kbd className="pointer-events-none hidden h-5 select-none items-center gap-0.5 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+          <span className="text-sm">{EModifierKey.Mac}</span>K
+        </kbd>
       </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
