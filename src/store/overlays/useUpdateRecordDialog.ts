@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { IEarning, IExpense, IRecordDialogState } from "@/lib/types";
 
-type UpdateRecordDialog = IRecordDialogState & {
+type UpdateRecordDialogStore = IRecordDialogState & {
   openExpense: (record: IExpense) => void;
   openEarning: (record: IEarning) => void;
   close: () => void;
 };
 
-export const useUpdateRecordDialog = create<UpdateRecordDialog>((set) => ({
+export const useUpdateRecordDialog = create<UpdateRecordDialogStore>((set) => ({
   isOpen: false,
   recordType: undefined,
   record: undefined,

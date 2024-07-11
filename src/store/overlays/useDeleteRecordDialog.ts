@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { IEarning, IExpense, IRecordDialogState } from "@/lib/types";
 
-type DeleteRecordDialog = IRecordDialogState & {
+type DeleteRecordDialogStore = IRecordDialogState & {
   openExpense: (record: IExpense) => void;
   openEarning: (record: IEarning) => void;
   close: () => void;
 };
 
-export const useDeleteRecordDialog = create<DeleteRecordDialog>((set) => ({
+export const useDeleteRecordDialog = create<DeleteRecordDialogStore>((set) => ({
   isOpen: false,
   recordType: undefined,
   record: undefined,
