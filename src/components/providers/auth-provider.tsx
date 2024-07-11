@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useAuth } from "@/store/useAuth";
-import auth from "@/lib/appwrite/auth";
+import { auth } from "@/lib/appwrite/auth";
 
 export function AuthProvider() {
   const { setIsAuthLoading, setAuthStatus } = useAuth();

@@ -9,7 +9,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
-import auth from "@/lib/appwrite/auth";
+import { auth } from "@/lib/appwrite/auth";
 import { ETheme } from "@/lib/enums";
 import { cn } from "@/lib/utils";
 

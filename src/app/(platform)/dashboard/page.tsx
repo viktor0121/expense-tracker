@@ -10,7 +10,7 @@ import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
 import { useUpdateRecordDialog } from "@/store/overlays/useUpdateRecordDialog";
 import { useCurrency } from "@/store/useCurrency";
 import { useData } from "@/store/useData";
-import database from "@/lib/appwrite/database";
+import { database } from "@/lib/appwrite/database";
 import { EDashboardTabs } from "@/lib/enums";
 import { IEarning, IExpense } from "@/lib/types";
 import { cn } from "@/lib/utils";

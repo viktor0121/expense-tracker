@@ -19,7 +19,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { useData } from "@/store/useData";
-import database from "@/lib/appwrite/database";
+import { database } from "@/lib/appwrite/database";
 
 interface NewCategoryDialogProps {}
 

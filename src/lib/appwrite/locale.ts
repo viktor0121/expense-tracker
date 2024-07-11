@@ -33,5 +33,4 @@ export class LocaleService {
   }
 }
 
-const locale = new LocaleService();
-export default locale;
+export const locale = new LocaleService();

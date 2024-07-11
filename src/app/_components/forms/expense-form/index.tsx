@@ -17,7 +17,7 @@ import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { FormDateField } from "@/components/form-date-field";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useData } from "@/store/useData";
-import database from "@/lib/appwrite/database";
+import { database } from "@/lib/appwrite/database";
 import { EExpenseType } from "@/lib/enums";
 import { IExpense, IExpenseCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";

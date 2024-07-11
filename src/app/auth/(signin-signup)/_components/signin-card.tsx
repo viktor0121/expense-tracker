@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { useAuth } from "@/store/useAuth";
-import auth from "@/lib/appwrite/auth";
+import { auth } from "@/lib/appwrite/auth";
 
 interface SignInCardProps {
   goToSignUp: () => void;

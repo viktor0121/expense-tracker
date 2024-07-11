@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useCurrency } from "@/store/useCurrency";
-import database from "@/lib/appwrite/database";
+import { database } from "@/lib/appwrite/database";
 import { MONTHS_MMM } from "@/lib/constants";
 import { EExpenseType } from "@/lib/enums";
 import { IEarning, IExpense, IExpenseCategory } from "@/lib/types";

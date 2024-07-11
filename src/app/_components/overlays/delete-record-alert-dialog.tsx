@@ -13,7 +13,7 @@ import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { useDeleteRecordDialog } from "@/store/overlays/useDeleteRecordDialog";
 import { useData } from "@/store/useData";
-import database from "@/lib/appwrite/database";
+import { database } from "@/lib/appwrite/database";
 
 export function DeleteRecordAlertDialog() {
   const { expenses, setExpenses, earnings, setEarnings } = useData();

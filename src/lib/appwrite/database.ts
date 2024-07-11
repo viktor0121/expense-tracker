@@ -1,5 +1,5 @@
 import { Client, Databases, ID, Permission, Query, Role } from "appwrite";
-import auth from "@/lib/appwrite/auth";
+import { auth } from "@/lib/appwrite/auth";
 import env from "@/lib/env";
 import { IExpense, IExpenseCategory, IEarning } from "@/lib/types";
 
@@ -221,5 +221,4 @@ export class DatabaseServices {
   }
 }
 
-const database = new DatabaseServices();
-export default database;
+export const database = new DatabaseServices();

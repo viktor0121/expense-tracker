@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useCurrency } from "@/store/useCurrency";
-import locale from "@/lib/appwrite/locale";
+import { locale } from "@/lib/appwrite/locale";
 
 export function CurrencyProvider() {
   const { setCurrency } = useCurrency();

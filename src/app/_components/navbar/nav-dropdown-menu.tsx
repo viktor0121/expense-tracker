@@ -12,9 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
-import auth from "@/lib/appwrite/auth";
-import avatars from "@/lib/appwrite/avatars";
-import storage from "@/lib/appwrite/storage";
+import { auth } from "@/lib/appwrite/auth";
+import { avatars } from "@/lib/appwrite/avatars";
+import { storage } from "@/lib/appwrite/storage";
 
 interface NavDropdownMenuProps {}
 
