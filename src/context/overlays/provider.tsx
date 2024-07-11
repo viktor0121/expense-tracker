@@ -6,7 +6,6 @@ import { EAddSheetTabs } from "@/lib/enums";
 import { IAddNewSheetState, IRecordDialogState } from "@/lib/types";
 
 export default function OverlaysProvider({ children }: Readonly<{ children: React.ReactNode }>) {
-  const [signOutDialog, setSignOutDialog] = useState<boolean>(false);
   const [addNewSideSheet, setAddNewSideSheet] = useState<IAddNewSheetState>({
     open: false,
     defaultTab: EAddSheetTabs.Expense,
@@ -21,12 +20,12 @@ export default function OverlaysProvider({ children }: Readonly<{ children: Reac
   return (
     <OverlaysContext.Provider
       value={{
-        signOutDialog,
-        setSignOutDialog,
         addNewSideSheet,
         setAddNewSideSheet,
+
         deleteRecordDialog,
         setDeleteRecordDialog,
+
         updateRecordDialog,
         setUpdateRecordDialog,
       }}

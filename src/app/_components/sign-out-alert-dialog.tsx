@@ -16,14 +16,15 @@ import useAuthContext from "@/context/auth/useAuthContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import auth from "@/lib/appwrite/auth";
 import { toast } from "@/components/ui/use-toast";
-import {ButtonWithSpinner} from "@/components/button-with-spinner";
+import { ButtonWithSpinner } from "@/components/button-with-spinner";
+import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 
 interface SignOutAlertDialogProps {}
 
 export function SignOutAlertDialog({}: SignOutAlertDialogProps) {
   const [isSigningOut, setIsSigningOut] = useState(false);
-  const { signOutDialog, setSignOutDialog } = useOverlaysContext();
   const { setAuthStatus } = useAuthContext();
+  const signOutDialog = useSignOutDialog();
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -38,12 +39,12 @@ export function SignOutAlertDialog({}: SignOutAlertDialogProps) {
       });
     } finally {
       setIsSigningOut(false);
-      setSignOutDialog(false);
+      signOutDialog.close();
     }
   };
 
   return (
-    <AlertDialog open={signOutDialog} onOpenChange={setSignOutDialog}>
+    <AlertDialog open={signOutDialog.isOpen} onOpenChange={signOutDialog.close}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>You are about to sign out</AlertDialogTitle>

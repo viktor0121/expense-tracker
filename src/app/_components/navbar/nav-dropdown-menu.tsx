@@ -15,12 +15,13 @@ import auth from "@/lib/appwrite/auth";
 import avatars from "@/lib/appwrite/avatars";
 import storage from "@/lib/appwrite/storage";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
+import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 
 interface NavDropdownMenuProps {}
 
 export function NavDropdownMenu({}: NavDropdownMenuProps) {
   const [avatar, setAvatar] = useState<string>("");
-  const { setSignOutDialog } = useOverlaysContext();
+  const signOutDialog = useSignOutDialog();
 
   useEffect(() => {
     (async function () {
@@ -61,7 +62,7 @@ export function NavDropdownMenu({}: NavDropdownMenuProps) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <button onClick={() => setSignOutDialog(true)} className="w-full">
+          <button onClick={signOutDialog.open} className="w-full">
             Logout
           </button>
         </DropdownMenuItem>

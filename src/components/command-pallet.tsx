@@ -28,6 +28,7 @@ import useAuthContext from "@/context/auth/useAuthContext";
 import useOverlaysContext from "@/context/overlays/useOverlaysContext";
 import { checkIsMobile, getModifierKey } from "@/lib/utils";
 import { EAddSheetTabs, EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
+import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 
 interface Command {
   title: string;
@@ -42,8 +43,10 @@ export function CommandPallet({}: CommandPalletProps) {
   const [isMobile, setIsMobile] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
 
+  const signOutDialog = useSignOutDialog();
+
   const { setTheme, systemTheme, theme } = useTheme();
-  const { setSignOutDialog, setAddNewSideSheet } = useOverlaysContext();
+  const { setAddNewSideSheet } = useOverlaysContext();
   const { authStatus } = useAuthContext();
   const router = useRouter();
 
@@ -126,7 +129,7 @@ export function CommandPallet({}: CommandPalletProps) {
     {
       title: "Sign Out",
       Icon: LogOut,
-      action: () => commandAction(() => setSignOutDialog(true)),
+      action: () => commandAction(signOutDialog.open),
     },
   ];
 
