@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { CurrencyProvider } from "@/components/providers/currency-provider";
 import { OverlaysProvider } from "@/components/providers/overlays-provider";
-import ThemeProvider from "@/components/providers/theme-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import { Navbar } from "./_components/navbar";
 import "./globals.css";

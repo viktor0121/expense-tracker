@@ -8,7 +8,7 @@ import auth from "@/lib/appwrite/auth";
 import { ETheme } from "@/lib/enums";
 import { useAuth } from "@/store/useAuth";
 
-export default function ThemeProvider({ children }: ThemeProviderProps) {
+export function ThemeProvider({ children }: ThemeProviderProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
