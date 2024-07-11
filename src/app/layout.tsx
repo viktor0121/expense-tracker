@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import CurrencyProvider from "@/context/currency/provider";
-import ThemeProvider from "@/context/theme/provider";
+import ThemeProvider from "@/components/providers/theme-provider";
 import AuthProvider from "@/context/auth/provider";
 import DataProvider from "@/context/data/provider";
 import { cn } from "@/lib/utils";
