@@ -17,7 +17,10 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   manifest: "/manifest.json",
-  title: "AdisMoney",
+  title: {
+    default: "AdisMoney",
+    template: `%s - AdisMoney`,
+  },
   description: "AdisMoney is a personal finance app that helps you track your expenses and income.",
 };
 
