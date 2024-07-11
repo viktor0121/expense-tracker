@@ -1,5 +1,5 @@
 import { Client, ID, ImageGravity, Storage } from "appwrite";
-import env from "@/lib/env";
+import { env } from "@/lib/env";
 
 interface CreateProfilePhotoParams {
   file: File;

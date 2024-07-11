@@ -1,5 +1,5 @@
 import { Avatars, Client } from "appwrite";
-import env from "@/lib/env";
+import { env } from "@/lib/env";
 
 export class AvatarsService {
   client = new Client();

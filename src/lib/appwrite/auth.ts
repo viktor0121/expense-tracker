@@ -1,6 +1,6 @@
 import { Account, Client, ID, Models } from "appwrite";
 import { IUser, IUserPreferences } from "@/lib/types";
-import env from "../env";
+import { env } from "../env";
 
 interface CreateAccountParams {
   name: string;

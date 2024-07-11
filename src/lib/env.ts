@@ -10,7 +10,7 @@ const EnvSchema = z.object({
   awProfilePhotoStorageId: z.string(),
 });
 
-const env = {
+export const env = {
   awProjectUrl: process.env.NEXT_PUBLIC_AW_PROJECT_URL as string,
   awProjectId: process.env.NEXT_PUBLIC_AW_PROJECT_ID as string,
   awDatabaseId: process.env.NEXT_PUBLIC_AW_DATABASE_ID as string,
@@ -25,5 +25,3 @@ try {
 } catch (error: any) {
   throw new Error(`Environment variable validation error: ${error.message}`);
 }
-
-export default env;

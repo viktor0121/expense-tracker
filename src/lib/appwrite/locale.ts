@@ -1,5 +1,5 @@
 import { Client, Locale } from "appwrite";
-import env from "@/lib/env";
+import { env } from "@/lib/env";
 import { ICurrency } from "@/lib/types";
 
 export class LocaleService {
