@@ -65,6 +65,7 @@ export class DatabaseServices {
     ];
   }
 
+  // EXPENSE
   async getExpenses(queries?: string[]): Promise<IExpense[]> {
     try {
       const data = await this.databases.listDocuments(
@@ -75,34 +76,6 @@ export class DatabaseServices {
       return data.documents as IExpense[];
     } catch (error: any) {
       console.error("Appwrite :: getExpenses() :: ", error);
-      throw error;
-    }
-  }
-
-  async getIncomes(queries?: string[]): Promise<IEarning[]> {
-    try {
-      const data = await this.databases.listDocuments(
-        env.awDatabaseId,
-        env.awIncomeCollectionId,
-        [Query.orderDesc("date")].concat(queries && queries.length > 0 ? queries : []),
-      );
-      return data.documents as IEarning[];
-    } catch (error: any) {
-      console.error("Appwrite :: getIncomes() :: ", error);
-      throw error;
-    }
-  }
-
-  async getExpenseCategories(queries?: string[]) {
-    try {
-      const data = await this.databases.listDocuments(
-        env.awDatabaseId,
-        env.awExpenseCategoryCollectionId,
-        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
-      );
-      return data.documents as IExpenseCategory[];
-    } catch (error: any) {
-      console.error("Appwrite :: getExpenseCategories() :: ", error);
       throw error;
     }
   }
@@ -143,6 +116,21 @@ export class DatabaseServices {
     }
   }
 
+  // INCOME
+  async getIncomes(queries?: string[]): Promise<IEarning[]> {
+    try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awIncomeCollectionId,
+        [Query.orderDesc("date")].concat(queries && queries.length > 0 ? queries : []),
+      );
+      return data.documents as IEarning[];
+    } catch (error: any) {
+      console.error("Appwrite :: getIncomes() :: ", error);
+      throw error;
+    }
+  }
+
   async createIncome({ title, amount, date }: CreateIncomeParams): Promise<IEarning> {
     try {
       const data = { title, amount, date };
@@ -173,6 +161,21 @@ export class DatabaseServices {
       return await this.databases.deleteDocument(env.awDatabaseId, env.awIncomeCollectionId, id);
     } catch (error: any) {
       console.error("Appwrite :: deleteIncome() :: ", error);
+      throw error;
+    }
+  }
+
+  // EXPENSE CATEGORIES
+  async getExpenseCategories(queries?: string[]) {
+    try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awExpenseCategoryCollectionId,
+        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
+      );
+      return data.documents as IExpenseCategory[];
+    } catch (error: any) {
+      console.error("Appwrite :: getExpenseCategories() :: ", error);
       throw error;
     }
   }
