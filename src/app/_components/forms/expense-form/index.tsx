@@ -87,8 +87,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     try {
       if (recordType === "add") {
-        const newExpense = await database.addUpdateExpense({
-          actionType: "add",
+        const newExpense = await database.createExpense({
           title,
           amount: Number(amount),
           date,
@@ -97,8 +96,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
         });
         setExpenses([newExpense, ...expenses]);
       } else {
-        const updatedExpense = await database.addUpdateExpense({
-          actionType: "update",
+        const updatedExpense = await database.updateExpense({
           id: record.$id,
           ...(dirtyFields.title ? { title } : {}),
           ...(dirtyFields.amount ? { amount: Number(amount) } : {}),
