@@ -40,9 +40,13 @@ interface CreateExpenseCategoryParams {
   title: string;
 }
 
-interface DeleteParams {
+interface DeleteExpenseParams {
   id: string;
 }
+
+interface DeleteIncomeParams extends DeleteExpenseParams {}
+
+interface DeleteExpenseCategoryParams extends DeleteExpenseParams {}
 
 export class DatabaseServices {
   client = new Client();
@@ -119,6 +123,15 @@ export class DatabaseServices {
     }
   }
 
+  async deleteExpense({ id }: DeleteExpenseParams): Promise<{}> {
+    try {
+      return await this.databases.deleteDocument(env.awDatabaseId, env.awExpenseCollectionId, id);
+    } catch (error: any) {
+      console.error("Appwrite :: deleteExpense() :: ", error);
+      throw error;
+    }
+  }
+
   async addUpdateIncome({ actionType, id, title, amount, date }: CreateUpdateIncomeParams): Promise<IEarning> {
     try {
       if (actionType === "update") {
@@ -165,16 +178,7 @@ export class DatabaseServices {
     }
   }
 
-  async deleteExpense({ id }: DeleteParams): Promise<{}> {
-    try {
-      return await this.databases.deleteDocument(env.awDatabaseId, env.awExpenseCollectionId, id);
-    } catch (error: any) {
-      console.error("Appwrite :: deleteExpense() :: ", error);
-      throw error;
-    }
-  }
-
-  async deleteIncome({ id }: DeleteParams): Promise<{}> {
+  async deleteIncome({ id }: DeleteIncomeParams): Promise<{}> {
     try {
       return await this.databases.deleteDocument(env.awDatabaseId, env.awIncomeCollectionId, id);
     } catch (error: any) {
@@ -183,7 +187,7 @@ export class DatabaseServices {
     }
   }
 
-  async deleteExpenseCategory({ id }: DeleteParams): Promise<{}> {
+  async deleteExpenseCategory({ id }: DeleteExpenseCategoryParams): Promise<{}> {
     try {
       return await this.databases.deleteDocument(env.awDatabaseId, env.awExpenseCategoryCollectionId, id);
     } catch (error: any) {
