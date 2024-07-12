@@ -10,7 +10,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   return isAuthLoading ? (
     <LoadingScreen />
   ) : authStatus ? (
-    <div className="pt-3 sm:pt-6">{children}</div>
+    <div className="pt-3 sm:pt-6 px-3 sm:px-6">{children}</div>
   ) : (
     <Redirect pathname="/auth" />
   );

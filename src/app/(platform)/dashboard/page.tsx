@@ -154,7 +154,7 @@ export default function DashboardPage() {
       value={tab}
       onValueChange={onTabChange}
       className={cn(
-        "space-y-4 px-3 sm:px-6",
+        "space-y-4",
         tab === EDashboardTabs.Expenses || tab === EDashboardTabs.Earnings ? "max-h-screen" : "min-h-screen",
       )}
     >
