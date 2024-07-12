@@ -66,6 +66,12 @@ export const navigations: INavItem[] = [
     authRequired: true,
   },
   {
+    title: "Goals",
+    Icon: Target,
+    url: "/goals",
+    authRequired: true,
+  },
+  {
     title: "Settings",
     Icon: Settings,
     url: "/settings",

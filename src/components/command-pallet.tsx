@@ -13,6 +13,7 @@ import {
   Terminal,
   User,
   UserPlus,
+  BarChart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -79,10 +80,10 @@ export function CommandPallet({}: CommandPalletProps) {
     },
   ];
 
-  const dashboardCommands: Command[] = [
+  const gotoCommands: Command[] = [
     {
       title: "Analytics",
-      Icon: Target,
+      Icon: BarChart,
       action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Analytics}`)),
     },
     {
@@ -94,6 +95,11 @@ export function CommandPallet({}: CommandPalletProps) {
       title: "Earnings",
       Icon: DollarSign,
       action: () => commandAction(() => router.push(`/dashboard?tab=${EDashboardTabs.Earnings}`)),
+    },
+    {
+      title: "Goals",
+      Icon: Target,
+      action: () => commandAction(() => router.push("/goals")),
     },
   ];
 
@@ -177,8 +183,8 @@ export function CommandPallet({}: CommandPalletProps) {
             </>
           ) : (
             <>
-              <CommandGroup heading="Dashboard">
-                {dashboardCommands.map((command, index) => (
+              <CommandGroup heading="Goto">
+                {gotoCommands.map((command, index) => (
                   <CommandItem key={index} onSelect={command.action}>
                     <command.Icon className="mr-2 h-4 w-4" />
                     <span>{command.title}</span>
