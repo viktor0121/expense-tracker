@@ -12,10 +12,7 @@ import { NavTrail } from "./nav-trail";
 
 export function Navbar() {
   const { authStatus, isAuthLoading } = useAuth();
-
-  const authNavItems = [navigations.analytics, navigations.expense, navigations.earnings, navigations.settings];
-  const nonAuthNavItems = [navigations.home, navigations.signin];
-  const navItems: INavItem[] = authStatus ? authNavItems : nonAuthNavItems;
+  const navItems: INavItem[] = Object.values(navigations).filter((navItem) => navItem.authRequired === authStatus);
 
   return (
     <>

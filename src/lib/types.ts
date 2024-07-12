@@ -14,6 +14,7 @@ export interface INavItem {
   title: string;
   Icon: React.FC<LucideProps>;
   posBottom?: boolean;
+  authRequired: boolean;
 }
 
 export interface IOverallStats {

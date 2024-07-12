@@ -1,4 +1,4 @@
-import { CreditCard, DollarSign, Home, LogIn, Settings, Target } from "lucide-react";
+import { BarChart, CreditCard, DollarSign, Home, LogIn, Settings, Target } from "lucide-react";
 import { EDashboardTabs } from "@/lib/enums";
 import { INavItem, INavTrail } from "@/lib/types";
 import { shuffleArray } from "@/lib/utils";
@@ -7,15 +7,6 @@ import heroImage from "../assets/signin-side.png";
 type Trails = {
   [path: string]: INavTrail[];
 };
-
-enum ENavKey {
-  home = "home",
-  signin = "signin",
-  analytics = "analytics",
-  expense = "expense",
-  earnings = "earnings",
-  settings = "settings",
-}
 
 export const trails: Trails = {
   "/auth": [
@@ -43,39 +34,45 @@ export const trails: Trails = {
   ],
 };
 
-export const navigations: { [key in ENavKey]: INavItem } = {
-  [ENavKey.home]: {
+export const navigations: INavItem[] = [
+  {
     title: "Home",
     Icon: Home,
     url: "/",
+    authRequired: false,
   },
-  [ENavKey.signin]: {
+  {
     title: "SignIn",
     Icon: LogIn,
     url: "/auth",
+    authRequired: false,
   },
-  [ENavKey.analytics]: {
+  {
     title: "Analytics",
-    Icon: Target,
+    Icon: BarChart,
     url: `/dashboard?tab=${EDashboardTabs.Analytics}`,
+    authRequired: true,
   },
-  [ENavKey.expense]: {
+  {
     title: "Expenses",
     Icon: CreditCard,
     url: `/dashboard?tab=${EDashboardTabs.Expenses}`,
+    authRequired: true,
   },
-  [ENavKey.earnings]: {
+  {
     title: "Earnings",
     Icon: DollarSign,
     url: `/dashboard?tab=${EDashboardTabs.Earnings}`,
+    authRequired: true,
   },
-  [ENavKey.settings]: {
+  {
     title: "Settings",
     Icon: Settings,
     url: "/settings",
     posBottom: true,
+    authRequired: true,
   },
-};
+];
 
 export const images = { heroImage };
 
