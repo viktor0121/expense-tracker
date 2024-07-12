@@ -96,6 +96,20 @@ export class DatabaseServices {
     }
   }
 
+  async getExpenseCategories(queries?: string[]) {
+    try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awExpenseCategoryCollectionId,
+        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
+      );
+      return data.documents as IExpenseCategory[];
+    } catch (error: any) {
+      console.error("Appwrite :: getExpenseCategories() :: ", error);
+      throw error;
+    }
+  }
+
   async createExpense({ title, amount, date, category, type }: CreateExpenseParams): Promise<IExpense> {
     try {
       const data = { title, amount, date, category, type };
@@ -160,6 +174,15 @@ export class DatabaseServices {
     }
   }
 
+  async deleteIncome({ id }: DeleteIncomeParams): Promise<{}> {
+    try {
+      return await this.databases.deleteDocument(env.awDatabaseId, env.awIncomeCollectionId, id);
+    } catch (error: any) {
+      console.error("Appwrite :: deleteIncome() :: ", error);
+      throw error;
+    }
+  }
+
   async createExpenseCategory({ title }: CreateExpenseCategoryParams): Promise<IExpenseCategory> {
     try {
       const data = { title };
@@ -178,34 +201,11 @@ export class DatabaseServices {
     }
   }
 
-  async deleteIncome({ id }: DeleteIncomeParams): Promise<{}> {
-    try {
-      return await this.databases.deleteDocument(env.awDatabaseId, env.awIncomeCollectionId, id);
-    } catch (error: any) {
-      console.error("Appwrite :: deleteIncome() :: ", error);
-      throw error;
-    }
-  }
-
   async deleteExpenseCategory({ id }: DeleteExpenseCategoryParams): Promise<{}> {
     try {
       return await this.databases.deleteDocument(env.awDatabaseId, env.awExpenseCategoryCollectionId, id);
     } catch (error: any) {
       console.log("Appwrite :: deleteExpenseCategory() :: ", error);
-      throw error;
-    }
-  }
-
-  async getExpenseCategories(queries?: string[]) {
-    try {
-      const data = await this.databases.listDocuments(
-        env.awDatabaseId,
-        env.awExpenseCategoryCollectionId,
-        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
-      );
-      return data.documents as IExpenseCategory[];
-    } catch (error: any) {
-      console.error("Appwrite :: getExpenseCategories() :: ", error);
       throw error;
     }
   }
