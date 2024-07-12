@@ -3,28 +3,18 @@ import { auth } from "@/lib/appwrite/auth";
 import { env } from "@/lib/env";
 import { IExpense, IExpenseCategory, IEarning } from "@/lib/types";
 
-type CreateUpdateIncomeParams =
-  | {
-      actionType: "add";
-      id?: undefined;
-      title: string;
-      amount: number;
-      date: Date;
-    }
-  | {
-      actionType: "update";
-      id: string;
-      title?: string;
-      amount?: number;
-      date?: Date;
-    };
-
 interface CreateExpenseParams {
   title: string;
   amount: number;
   date: Date;
   type: string;
   category: string;
+}
+
+interface CreateIncomeParams {
+  title: string;
+  amount: number;
+  date: Date;
 }
 
 interface UpdateExpenseParams {
@@ -34,6 +24,13 @@ interface UpdateExpenseParams {
   date?: Date;
   type?: string;
   category?: string;
+}
+
+interface UpdateIncomeParams {
+  id: string;
+  title?: string;
+  amount?: number;
+  date?: Date;
 }
 
 interface CreateExpenseCategoryParams {
@@ -146,30 +143,27 @@ export class DatabaseServices {
     }
   }
 
-  async addUpdateIncome({ actionType, id, title, amount, date }: CreateUpdateIncomeParams): Promise<IEarning> {
+  async createIncome({ title, amount, date }: CreateIncomeParams): Promise<IEarning> {
     try {
-      if (actionType === "update") {
-        const data = {
-          ...(title ? { title } : {}),
-          ...(amount ? { amount } : {}),
-          ...(date ? { date } : {}),
-        };
-
-        return this.databases.updateDocument(env.awDatabaseId, env.awIncomeCollectionId, id as string, data);
-      } else {
-        const data = { title, amount, date };
-        const permissions = await this._getRUDPermissions();
-
-        return this.databases.createDocument(
-          env.awDatabaseId,
-          env.awIncomeCollectionId,
-          ID.unique(),
-          data,
-          permissions,
-        );
-      }
+      const data = { title, amount, date };
+      const permissions = await this._getRUDPermissions();
+      return this.databases.createDocument(env.awDatabaseId, env.awIncomeCollectionId, ID.unique(), data, permissions);
     } catch (error: any) {
       console.error("Appwrite :: createIncome() :: ", error);
+      throw error;
+    }
+  }
+
+  async updateIncome({ id, title, amount, date }: UpdateIncomeParams): Promise<IEarning> {
+    try {
+      const data = {
+        ...(title ? { title } : {}),
+        ...(amount ? { amount } : {}),
+        ...(date ? { date } : {}),
+      };
+      return this.databases.updateDocument(env.awDatabaseId, env.awIncomeCollectionId, id as string, data);
+    } catch (error: any) {
+      console.error("Appwrite :: updateIncome() :: ", error);
       throw error;
     }
   }

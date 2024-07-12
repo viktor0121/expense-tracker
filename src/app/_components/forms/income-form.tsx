@@ -64,16 +64,14 @@ export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormPro
   const submit = form.handleSubmit(async ({ date, amount, title }) => {
     try {
       if (recordType === "add") {
-        const newIncome = await database.addUpdateIncome({
-          actionType: "add",
+        const newIncome = await database.createIncome({
           title,
           amount: Number(amount),
           date,
         });
         setEarnings([newIncome, ...earnings]);
       } else {
-        const updatedIncome = await database.addUpdateIncome({
-          actionType: "update",
+        const updatedIncome = await database.updateIncome({
           id: record.$id,
           ...(dirtyFields.title ? { title } : {}),
           ...(dirtyFields.amount ? { amount: Number(amount) } : {}),
