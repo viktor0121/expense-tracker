@@ -22,6 +22,10 @@ export const trails: Trails = {
     { title: "Home", href: "/" },
     { title: "Dashboard", href: "" },
   ],
+  "/goals": [
+    { title: "Home", href: "/" },
+    { title: "Goals", href: "" },
+  ],
   "/settings/profile": [
     { title: "Dashboard", href: "/dashboard" },
     { title: "Settings", href: "" },
