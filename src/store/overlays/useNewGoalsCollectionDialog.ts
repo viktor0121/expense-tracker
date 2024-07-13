@@ -6,7 +6,7 @@ type NewGoalDialogStore = {
   close: () => void;
 };
 
-export const useNewGoalDialog = create<NewGoalDialogStore>((set) => ({
+export const useNewGoalsCollectionDialog = create<NewGoalDialogStore>((set) => ({
   isOpen: false,
   open: () => set({ isOpen: true }),
   close: () => set({ isOpen: false }),

@@ -6,7 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
-import { useNewGoalDialog } from "@/store/overlays/useNewGoalDialog";
+import { useNewGoalsCollectionDialog } from "@/store/overlays/useNewGoalsCollectionDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 
@@ -23,7 +23,7 @@ export function NewCollectionDialog() {
   });
   const { isSubmitting, isValid, isDirty } = form.formState;
 
-  const newGoalDialog = useNewGoalDialog();
+  const newGoalsCollectionDialog = useNewGoalsCollectionDialog();
   const { setGoalLists, goalLists } = useData();
 
   const submit = form.handleSubmit(async ({ title }) => {
@@ -34,7 +34,7 @@ export function NewCollectionDialog() {
         title: "Success!",
         description: `New goals collection created successfully.`,
       });
-      newGoalDialog.close();
+      newGoalsCollectionDialog.close();
       form.reset();
     } catch (error: any) {
       toast({
@@ -46,8 +46,8 @@ export function NewCollectionDialog() {
   });
 
   return (
-    <Dialog open={newGoalDialog.isOpen} onOpenChange={newGoalDialog.close}>
-      <DialogContent className="sm:max-w-[500px] space-y-1">
+    <Dialog open={newGoalsCollectionDialog.isOpen} onOpenChange={newGoalsCollectionDialog.close}>
+      <DialogContent className="space-y-1 sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-2xl">Create goals collection</DialogTitle>
           <DialogDescription>

@@ -7,14 +7,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { BgHoverDotsContainer } from "@/components/bg-hover-dots-container";
 import { BgMotionCard } from "@/components/bg-motion-card";
 import { useGoalsDialog } from "@/store/overlays/useGoalsDialog";
-import { useNewGoalDialog } from "@/store/overlays/useNewGoalDialog";
+import { useNewGoalsCollectionDialog } from "@/store/overlays/useNewGoalsCollectionDialog";
 import { useData } from "@/store/useData";
 
 export const Collections = () => {
   let [activeIndex, setActiveIndex] = useState<number | null>(null);
   const { goalLists } = useData();
   const goalsDialog = useGoalsDialog();
-  const newGoalDialog = useNewGoalDialog();
+  const newGoalsCollectionDialog = useNewGoalsCollectionDialog();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -29,7 +29,7 @@ export const Collections = () => {
       ))}
 
       <BgMotionCard index={-1} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
-        <Card onClick={newGoalDialog.open} className="cursor-pointer">
+        <Card onClick={newGoalsCollectionDialog.open} className="cursor-pointer">
           <BgHoverDotsContainer>
             <CardContent className="flex min-h-60 items-center justify-center p-6">
               <CardTitle className="flex items-center gap-1 tracking-wide">
