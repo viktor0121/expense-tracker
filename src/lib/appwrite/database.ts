@@ -52,8 +52,7 @@ interface DeleteExpenseCategoryParams extends DeleteExpenseParams {}
 interface CreateGoalParams {
   title: string;
   target: number;
-  collected: number;
-  imageId: string | null;
+  imageId?: string;
 }
 
 interface DeleteGoalParams extends DeleteExpenseParams {}
@@ -242,9 +241,9 @@ export class DatabaseServices {
     }
   }
 
-  async createGoal({ title, target, collected, imageId }: CreateGoalParams): Promise<IGoal> {
+  async createGoal({ title, target, imageId }: CreateGoalParams): Promise<IGoal> {
     try {
-      const data = { title, target, collected, imageId };
+      const data = { title, target, ...(imageId ? { imageId } : {}) };
       const permissions = await this._getRUDPermissions();
       return this.databases.createDocument(env.awDatabaseId, env.awGoalCollectionId, ID.unique(), data, permissions);
     } catch (error: any) {
