@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <main>{children}</main>;
+  return <main className="px-3 pt-3 sm:px-6 sm:pt-6">{children}</main>;
 }

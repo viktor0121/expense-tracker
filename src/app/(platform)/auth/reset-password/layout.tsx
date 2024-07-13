@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <main className="mx-auto mt-16 w-full max-w-[500px]">{children}</main>;
+  return <main className="mx-auto mt-16 w-full max-w-[500px] px-3 sm:px-6">{children}</main>;
 }
