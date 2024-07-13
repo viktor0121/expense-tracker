@@ -19,8 +19,6 @@ import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { EExpenseType } from "@/lib/enums";
 import { IExpense, IExpenseCategory } from "@/lib/types";
-import { CategoryCreateDialog } from "./category-create-dialog";
-import { CategoryDeleteDialog } from "./category-delete-dialog";
 
 type AddUpdateTypes =
   | {
@@ -220,9 +218,6 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
           />
         </form>
       </Form>
-
-      <CategoryCreateDialog />
-      <CategoryDeleteDialog />
     </>
   );
 }
