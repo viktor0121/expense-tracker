@@ -49,7 +49,20 @@ export interface IExpense extends Models.Document {
   amount: number;
   date: Date | string;
   type: EExpenseType;
-  category: string | IExpenseCategory;
+  category: IExpenseCategory;
+}
+
+export interface IGoalList extends Models.Document {
+  title: string;
+  goals: IGoal[];
+}
+
+export interface IGoal extends Models.Document {
+  title: string;
+  target: number;
+  collected: number;
+  imageId: string | null;
+  goalList: IGoalList;
 }
 
 // STATES
