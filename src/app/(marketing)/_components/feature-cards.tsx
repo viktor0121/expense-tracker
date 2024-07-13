@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { BarChart, DollarSign, Target, Wallet } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { BgMotionCard } from "@/components/bg-motion-card";
 
 const features = [
   {
@@ -34,30 +34,7 @@ export function FeatureCards() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {features.map((feature, index) => (
-        <div
-          key={index}
-          className="group relative block h-full w-full p-2"
-          onMouseEnter={() => setHoveredIndex(index)}
-          onMouseLeave={() => setHoveredIndex(null)}
-        >
-          <AnimatePresence>
-            {hoveredIndex === index && (
-              <motion.span
-                className="absolute inset-0 block h-full w-full rounded-3xl bg-accent"
-                layoutId="hoverBackground"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  transition: { duration: 0.15 },
-                }}
-                exit={{
-                  opacity: 0,
-                  transition: { duration: 0.15, delay: 0.2 },
-                }}
-              />
-            )}
-          </AnimatePresence>
-
+        <BgMotionCard key={index} index={index} activeIndex={hoveredIndex} setActiveIndex={setHoveredIndex}>
           <Card className="relative z-20 flex flex-col items-center">
             <CardHeader className="z-20">
               <feature.icon className="size-10 text-accent-foreground" />
@@ -69,7 +46,7 @@ export function FeatureCards() {
               {feature.description}
             </CardFooter>
           </Card>
-        </div>
+        </BgMotionCard>
       ))}
     </div>
   );
