@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusIcon } from "lucide-react";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,13 +9,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
+import { useExpenseCategoryCreateDialog } from "@/store/overlays/useExpenseCategoryCreateDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 
@@ -36,8 +33,8 @@ export function CategoryCreateDialog({}: NewCategoryDialogProps) {
   });
   const { isSubmitting, isValid } = form.formState;
 
-  const [open, setOpen] = useState<boolean>(false);
   const { setExpenseCategories, expenseCategories } = useData();
+  const { isOpen, close } = useExpenseCategoryCreateDialog();
 
   const submit = form.handleSubmit(async ({ title }) => {
     try {
@@ -48,7 +45,7 @@ export function CategoryCreateDialog({}: NewCategoryDialogProps) {
         description: "New category has been added successfully.",
       });
       form.reset();
-      setOpen(false);
+      close();
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -59,24 +56,7 @@ export function CategoryCreateDialog({}: NewCategoryDialogProps) {
   });
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <Tooltip>
-        <DialogTrigger asChild>
-          <TooltipTrigger asChild>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="absolute right-1 top-1/2 size-9 -translate-y-1/2 rounded-sm text-muted-foreground hover:text-white"
-            >
-              <PlusIcon className="size-[18px]" />
-            </Button>
-          </TooltipTrigger>
-        </DialogTrigger>
-        <TooltipContent>
-          <p>New category</p>
-        </TooltipContent>
-      </Tooltip>
-
+    <Dialog open={isOpen} onOpenChange={close}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>New Category</DialogTitle>

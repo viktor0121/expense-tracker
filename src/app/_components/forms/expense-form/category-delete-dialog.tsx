@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,20 +10,18 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { useExpenseCategoryDeleteDialog } from "@/store/overlays/useExpenseCategoryDeleteDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
-import { IExpenseCategory } from "@/lib/types";
 
-interface CategoryDeleteDialogProps {
-  category: IExpenseCategory;
-}
-
-export function CategoryDeleteDialog({ category }: CategoryDeleteDialogProps) {
+export function CategoryDeleteDialog() {
   const { setExpenseCategories, expenseCategories } = useData();
+  const { category, isOpen, close } = useExpenseCategoryDeleteDialog();
+
+  if (!category) return null;
 
   const deleteCategory = async () => {
     try {
@@ -49,10 +46,7 @@ export function CategoryDeleteDialog({ category }: CategoryDeleteDialogProps) {
   };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger className="hidden pr-2 group-hover:block">
-        <Trash2 className="size-4 text-muted-foreground hover:text-destructive" />
-      </AlertDialogTrigger>
+    <AlertDialog open={isOpen} onOpenChange={close}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

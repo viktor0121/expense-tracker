@@ -1,26 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PopoverClose } from "@radix-ui/react-popover";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { PlusIcon, Trash2 } from "lucide-react";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { FormDateField } from "@/components/form-date-field";
+import { FormSelectRelatedField } from "@/components/form-select-related-field";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
+import { useExpenseCategoryCreateDialog } from "@/store/overlays/useExpenseCategoryCreateDialog";
+import { useExpenseCategoryDeleteDialog } from "@/store/overlays/useExpenseCategoryDeleteDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { EExpenseType } from "@/lib/enums";
 import { IExpense, IExpenseCategory } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import { CategoryCreateDialog } from "./category-create-dialog";
 import { CategoryDeleteDialog } from "./category-delete-dialog";
 
@@ -57,8 +55,6 @@ const formSchema = z.object({
 
 export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormProps) {
   const { toast } = useToast();
-  const categoryTriggerButtonRef = useRef<HTMLButtonElement>(null);
-  const [comboBoxWidth, setComboBoxWidth] = useState<Number>(-1);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -83,6 +79,9 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
   const { isSubmitting, isValid, dirtyFields, isDirty } = form.formState;
   const { expenses, setExpenses, expenseCategories, setExpenseCategories } = useData();
   const { data: categoriesData } = useAppwriteFetch(() => database.getExpenseCategories());
+
+  const expenseCategoryCreateDialog = useExpenseCategoryCreateDialog();
+  const expenseCategoryDeleteDialog = useExpenseCategoryDeleteDialog();
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     try {
@@ -129,157 +128,101 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
     setExpenseCategories(categoriesData || []);
   }, [categoriesData]);
 
-  useEffect(() => {
-    // Set ComboBox Width
-    const updateComboBoxWidth = () => {
-      if (categoryTriggerButtonRef.current) setComboBoxWidth(categoryTriggerButtonRef.current.offsetWidth);
-    };
-    updateComboBoxWidth();
-    window.addEventListener("resize", updateComboBoxWidth);
-
-    // Cleanup function to remove event listener on unmount
-    return () => window.removeEventListener("resize", updateComboBoxWidth);
-  }, []);
-
   return (
-    <Form {...form}>
-      <form onSubmit={submit} className="grid gap-3">
-        {/*Name Input*/}
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter title" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Amount</FormLabel>
-              <FormControl>
-                <Input type="number" placeholder="Enter amount" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormDateField name="date" label="Date" placeholder="Pick a date" control={form.control} />
-
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Category</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      ref={categoryTriggerButtonRef}
-                      variant="outline"
-                      role="combobox"
-                      className={cn("justify-between capitalize", !field.value && "text-muted-foreground")}
-                    >
-                      {field.value
-                        ? expenseCategories.find((category) => category.$id === field.value)?.title
-                        : "Select Category"}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-
-                <PopoverContent
-                  // This will prevent AddNewCategory buttons tooltip auto open
-                  onOpenAutoFocus={(e) => e.preventDefault()}
-                  className="p-0"
-                  style={{ width: `${comboBoxWidth}px` }}
-                >
-                  <Command>
-                    <div className="relative">
-                      <CategoryCreateDialog />
-                      <CommandInput placeholder="Search Category" className="pr-8" />
-                    </div>
-
-                    <CommandEmpty>No category found.</CommandEmpty>
-
-                    <CommandList>
-                      <CommandGroup>
-                        {expenseCategories.map((category, index) => (
-                          <div key={index} className="group flex rounded-md hover:bg-accent">
-                            <PopoverClose className="flex-1">
-                              <CommandItem
-                                value={category.title}
-                                key={category.$id}
-                                className="flex-1"
-                                onSelect={() => field.onChange(category.$id)}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 size-4",
-                                    category.$id === field.value ? "opacity-100" : "opacity-0",
-                                  )}
-                                />
-                                {category.title}
-                              </CommandItem>
-                            </PopoverClose>
-
-                            <CategoryDeleteDialog category={category} />
-                          </div>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="type"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Type</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+    <>
+      <Form {...form}>
+        <form onSubmit={submit} className="grid gap-3">
+          {/*Name Input*/}
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <SelectTrigger className="capitalize">
-                    <SelectValue placeholder="Select a type" />
-                  </SelectTrigger>
+                  <Input placeholder="Enter title" {...field} />
                 </FormControl>
-                <SelectContent>
-                  {Object.values(EExpenseType).map((type, index) => (
-                    <SelectItem key={index} value={type} className="capitalize">
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        {/*Submit Button*/}
-        <ButtonWithSpinner
-          isLoading={isSubmitting}
-          disabled={!isValid || !isDirty}
-          type="submit"
-          className="mt-2 w-full"
-          btnText={`${recordType} Record`}
-        />
-      </form>
-    </Form>
+          <FormField
+            control={form.control}
+            name="amount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Amount</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="Enter amount" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormDateField name="date" label="Date" placeholder="Pick a date" control={form.control} />
+
+          <FormSelectRelatedField
+            name="category"
+            label="Category"
+            placeholder="Select Category"
+            control={form.control}
+            relatedData={expenseCategories}
+            valueKey="$id"
+            displayKey="title"
+            commandEmptyText="No category found."
+            commandInputPlaceholder="Search Category"
+            mainButton={{
+              tooltip: "New category",
+              icon: PlusIcon,
+              onClick: expenseCategoryCreateDialog.open,
+            }}
+            actionButton={{
+              icon: Trash2,
+              onClick: (category) => expenseCategoryDeleteDialog.open(category),
+              iconClassName: "hover:text-destructive",
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Type</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="capitalize">
+                      <SelectValue placeholder="Select a type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {Object.values(EExpenseType).map((type, index) => (
+                      <SelectItem key={index} value={type} className="capitalize">
+                        {type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/*Submit Button*/}
+          <ButtonWithSpinner
+            isLoading={isSubmitting}
+            disabled={!isValid || !isDirty}
+            type="submit"
+            className="mt-2 w-full"
+            btnText={`${recordType} Record`}
+          />
+        </form>
+      </Form>
+
+      <CategoryCreateDialog />
+      <CategoryDeleteDialog />
+    </>
   );
 }
