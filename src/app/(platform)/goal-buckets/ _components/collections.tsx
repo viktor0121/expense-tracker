@@ -19,7 +19,7 @@ export const Collections = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {goalLists.map((goalList, index) => (
         <BgMotionCard key={index} index={index} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
-          <Link className="bg-red-400" href={`/goals/collection?collectionId=${goalList.$id}`}>
+          <Link className="bg-red-400" href={`/goal-buckets/goals?bucketId=${goalList.$id}`}>
             <Card className="cursor-pointer">
               <CardContent className="flex min-h-60 items-center justify-center p-6">
                 <CardTitle className="tracking-wide">{goalList.title}</CardTitle>
