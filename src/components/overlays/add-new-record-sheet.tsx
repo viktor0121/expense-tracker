@@ -4,8 +4,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
 import { EAddSheetTabs, EDashboardTabs } from "@/lib/enums";
-import { ExpenseForm } from "../../app/_components/forms/expense-form";
-import { IncomeForm } from "../../app/_components/forms/income-form";
+import { ExpenseForm } from "@/components/forms/expense-form";
+import { IncomeForm } from "@/components/forms/income-form";
 
 interface AddNewSheetProps {}
 

@@ -3,12 +3,12 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Navbar } from "@/components/navbar";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { CurrencyProvider } from "@/components/providers/currency-provider";
 import { OverlaysProvider } from "@/components/providers/overlays-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
-import { Navbar } from "./_components/navbar";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });

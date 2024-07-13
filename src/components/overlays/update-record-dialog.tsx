@@ -1,8 +1,8 @@
 import React from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useUpdateRecordDialog } from "@/store/overlays/useUpdateRecordDialog";
-import { ExpenseForm } from "../../app/_components/forms/expense-form";
-import { IncomeForm } from "../../app/_components/forms/income-form";
+import { ExpenseForm } from "@/components/forms/expense-form";
+import { IncomeForm } from "@/components/forms/income-form";
 
 export function UpdateRecordDialog() {
   const updateDialog = useUpdateRecordDialog();
