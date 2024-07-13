@@ -17,10 +17,11 @@ export default function GoalPage() {
 
   return (
     <>
-      <div className="mx-auto max-w-screen-xl">
+      <section className="mx-auto max-w-screen-xl">
+        <h2 className="mb-3 ml-2 mt-1 text-2xl font-semibold">Goal Collections</h2>
         {isGoalListsLoading ? <Collections.Skeleton /> : <Collections />}
         <NewCollectionDialog />
-      </div>
+      </section>
     </>
   );
 }
