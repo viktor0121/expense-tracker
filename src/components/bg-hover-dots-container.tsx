@@ -10,7 +10,7 @@ interface BackgroundDotsProps {
   containerClassName?: string;
 }
 
-export function BackgroundDotsContainer({ children, className, containerClassName }: BackgroundDotsProps) {
+export function BgHoverDotsContainer({ children, className, containerClassName }: BackgroundDotsProps) {
   let mouseX = useMotionValue(0);
   let mouseY = useMotionValue(0);
 

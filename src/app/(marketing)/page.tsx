@@ -1,5 +1,5 @@
 import { ActionButtons } from "./_components/actions-button";
-import { BackgroundDotsContainer } from "./_components/background-dots-container";
+import { BgHoverDotsContainer } from "../../components/bg-hover-dots-container";
 import { FeatureCards } from "./_components/feature-cards";
 import { FlipWords } from "./_components/flip-words";
 import { Spotlight } from "./_components/spotlight";
@@ -36,7 +36,7 @@ export default function Page() {
       </section>
 
       <section className="w-full border-t bg-background">
-        <BackgroundDotsContainer containerClassName="py-12 md:py-24 lg:py-32">
+        <BgHoverDotsContainer containerClassName="py-12 md:py-24 lg:py-32">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
@@ -49,7 +49,7 @@ export default function Page() {
 
             <ActionButtons containerClasses="flex justify-center mt-2" />
           </div>
-        </BackgroundDotsContainer>
+        </BgHoverDotsContainer>
       </section>
     </>
   );
