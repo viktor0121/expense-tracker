@@ -1,30 +1,31 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { PlusIcon } from "lucide-react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BgHoverDotsContainer } from "@/components/bg-hover-dots-container";
 import { BgMotionCard } from "@/components/bg-motion-card";
-import { useGoalsDialog } from "@/store/overlays/useGoalsDialog";
 import { useNewGoalsCollectionDialog } from "@/store/overlays/useNewGoalsCollectionDialog";
 import { useData } from "@/store/useData";
 
 export const Collections = () => {
   let [activeIndex, setActiveIndex] = useState<number | null>(null);
   const { goalLists } = useData();
-  const goalsDialog = useGoalsDialog();
   const newGoalsCollectionDialog = useNewGoalsCollectionDialog();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {goalLists.map((goalList, index) => (
         <BgMotionCard key={index} index={index} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
-          <Card onClick={() => goalsDialog.open(goalList.id)} className="cursor-pointer">
-            <CardContent className="flex min-h-60 items-center justify-center p-6">
-              <CardTitle className="tracking-wide">{goalList.title}</CardTitle>
-            </CardContent>
-          </Card>
+          <Link className="bg-red-400" href={`/goals/collection?collectionId=${goalList.$id}`}>
+            <Card className="cursor-pointer">
+              <CardContent className="flex min-h-60 items-center justify-center p-6">
+                <CardTitle className="tracking-wide">{goalList.title}</CardTitle>
+              </CardContent>
+            </Card>
+          </Link>
         </BgMotionCard>
       ))}
 

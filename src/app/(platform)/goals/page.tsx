@@ -4,8 +4,8 @@ import React, { useEffect } from "react";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
-import { NewCollectionDialog } from "@/app/(platform)/goals/ _components/new-collection-dialog";
 import { Collections } from "./ _components/collections";
+import { NewCollectionDialog } from "./ _components/new-collection-dialog";
 
 export default function GoalPage() {
   const { setGoalLists } = useData();
