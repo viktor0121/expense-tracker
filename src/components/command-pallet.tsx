@@ -99,7 +99,7 @@ export function CommandPallet({}: CommandPalletProps) {
     {
       title: "Goals",
       Icon: Target,
-      action: () => commandAction(() => router.push("/goals")),
+      action: () => commandAction(() => router.push("/goal-buckets")),
     },
   ];
 

@@ -22,7 +22,7 @@ export const trails: Trails = {
     { title: "Home", href: "/" },
     { title: "Dashboard", href: "" },
   ],
-  "/goals": [
+  "/goal-buckets": [
     { title: "Home", href: "/" },
     { title: "Goals", href: "" },
   ],
@@ -72,7 +72,7 @@ export const navigations: INavItem[] = [
   {
     title: "Goals",
     Icon: Target,
-    url: "/goals",
+    url: "/goal-buckets",
     authRequired: true,
   },
   {

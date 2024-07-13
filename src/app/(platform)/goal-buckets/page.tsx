@@ -18,7 +18,7 @@ export default function GoalPage() {
   return (
     <>
       <section className="mx-auto max-w-screen-xl">
-        <h2 className="mb-3 ml-2 mt-1 text-2xl font-semibold">Goal Collections</h2>
+        <h2 className="mb-3 ml-2 mt-1 text-2xl font-semibold">Goal Buckets</h2>
         {isGoalListsLoading ? <Collections.Skeleton /> : <Collections />}
         <NewCollectionDialog />
       </section>
