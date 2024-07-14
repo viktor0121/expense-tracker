@@ -6,7 +6,7 @@ interface ExpenseCategoryCreateDialog {
   close: () => void;
 }
 
-export const useExpenseCategoryCreateDialog = create<ExpenseCategoryCreateDialog>((set) => ({
+export const useCreateExpenseCategoryDialog = create<ExpenseCategoryCreateDialog>((set) => ({
   isOpen: false,
   open: () => set({ isOpen: true }),
   close: () => set({ isOpen: false }),

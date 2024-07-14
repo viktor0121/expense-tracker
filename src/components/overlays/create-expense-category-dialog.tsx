@@ -14,7 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
-import { useExpenseCategoryCreateDialog } from "@/store/overlays/useExpenseCategoryCreateDialog";
+import { useCreateExpenseCategoryDialog } from "@/store/overlays/useCreateExpenseCategoryDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 
@@ -34,7 +34,7 @@ export function CreateExpenseCategoryDialog({}: NewCategoryDialogProps) {
   const { isSubmitting, isValid } = form.formState;
 
   const { setExpenseCategories, expenseCategories } = useData();
-  const { isOpen, close } = useExpenseCategoryCreateDialog();
+  const { isOpen, close } = useCreateExpenseCategoryDialog();
 
   const submit = form.handleSubmit(async ({ title }) => {
     try {

@@ -13,7 +13,7 @@ import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { FormDateField } from "@/components/form-date-field";
 import { FormSelectRelatedField } from "@/components/form-select-related-field";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
-import { useExpenseCategoryCreateDialog } from "@/store/overlays/useExpenseCategoryCreateDialog";
+import { useCreateExpenseCategoryDialog } from "@/store/overlays/useCreateExpenseCategoryDialog";
 import { useExpenseCategoryDeleteDialog } from "@/store/overlays/useExpenseCategoryDeleteDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
@@ -78,7 +78,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
   const { expenses, setExpenses, expenseCategories, setExpenseCategories } = useData();
   const { data: categoriesData } = useAppwriteFetch(() => database.getExpenseCategories());
 
-  const expenseCategoryCreateDialog = useExpenseCategoryCreateDialog();
+  const createExpenseCategoryDialog = useCreateExpenseCategoryDialog();
   const expenseCategoryDeleteDialog = useExpenseCategoryDeleteDialog();
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
@@ -174,7 +174,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
             mainButton={{
               tooltip: "New category",
               icon: PlusIcon,
-              onClick: expenseCategoryCreateDialog.open,
+              onClick: createExpenseCategoryDialog.open,
             }}
             actionButton={{
               icon: Trash2,

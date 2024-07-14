@@ -26,7 +26,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { useCreateRecordSheet } from "@/store/overlays/useCreateRecordSheet";
-import { useExpenseCategoryCreateDialog } from "@/store/overlays/useExpenseCategoryCreateDialog";
+import { useCreateExpenseCategoryDialog } from "@/store/overlays/useCreateExpenseCategoryDialog";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 import { useAuth } from "@/store/useAuth";
 import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
@@ -44,7 +44,7 @@ export function CommandPallet({}: CommandPalletProps) {
 
   const signOutDialog = useSignOutDialog();
   const createRecordSheet = useCreateRecordSheet();
-  const createExpenseCategoryDialog = useExpenseCategoryCreateDialog();
+  const createExpenseCategoryDialog = useCreateExpenseCategoryDialog();
 
   const { setTheme, systemTheme, theme } = useTheme();
   const { authStatus } = useAuth();
