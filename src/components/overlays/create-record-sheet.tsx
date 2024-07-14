@@ -9,7 +9,7 @@ import { IncomeForm } from "@/components/forms/income-form";
 
 interface AddNewSheetProps {}
 
-export function AddNewRecordSheet({}: AddNewSheetProps) {
+export function CreateRecordSheet({}: AddNewSheetProps) {
   const createRecordSheet = useCreateRecordSheet();
 
   return (

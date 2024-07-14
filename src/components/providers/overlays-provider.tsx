@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { AddNewRecordSheet } from "@/components/overlays/add-new-record-sheet";
+import { CreateRecordSheet } from "@/components/overlays/create-record-sheet";
 import { DeleteRecordAlertDialog } from "@/components/overlays/delete-record-alert-dialog";
 import { SignOutAlertDialog } from "@/components/overlays/sign-out-alert-dialog";
 import { UpdateRecordDialog } from "@/components/overlays/update-record-dialog";
@@ -14,7 +14,7 @@ export function OverlaysProvider() {
       <SignOutAlertDialog />
 
       {/*Expense and Earning*/}
-      <AddNewRecordSheet />
+      <CreateRecordSheet />
       <DeleteRecordAlertDialog />
       <UpdateRecordDialog />
       <ExpenseCategoryCreateDialog />
