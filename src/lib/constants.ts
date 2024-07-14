@@ -24,6 +24,11 @@ export const trails: Trails = {
   ],
   "/goal-buckets": [
     { title: "Home", href: "/" },
+    { title: "Goal Buckets", href: "" },
+  ],
+  "/goal-buckets/goals": [
+    { title: "Home", href: "/" },
+    { title: "Buckets", href: "/goal-buckets" },
     { title: "Goals", href: "" },
   ],
   "/settings/profile": [
