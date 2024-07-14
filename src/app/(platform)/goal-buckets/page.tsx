@@ -25,8 +25,6 @@ export default function GoalPage() {
 
   return (
     <>
-      <h2 className="mb-3 ml-2 mt-1 text-2xl font-semibold">Goal Buckets</h2>
-
       {isGoalListsLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(5)].map((_, index) => (
