@@ -5,7 +5,6 @@ import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { Collections } from "./ _components/collections";
-import { NewCollectionDialog } from "./ _components/new-collection-dialog";
 
 export default function GoalPage() {
   const { setGoalLists } = useData();
@@ -20,7 +19,6 @@ export default function GoalPage() {
       <section className="mx-auto max-w-screen-xl">
         <h2 className="mb-3 ml-2 mt-1 text-2xl font-semibold">Goal Buckets</h2>
         {isGoalListsLoading ? <Collections.Skeleton /> : <Collections />}
-        <NewCollectionDialog />
       </section>
     </>
   );

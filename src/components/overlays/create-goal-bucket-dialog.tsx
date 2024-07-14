@@ -14,7 +14,7 @@ const formSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(250, "Title must be at most 250 characters"),
 });
 
-export function NewCollectionDialog() {
+export function CreateGoalBucketDialog() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

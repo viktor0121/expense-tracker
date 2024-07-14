@@ -7,6 +7,7 @@ import { SignOutAlertDialog } from "@/components/overlays/sign-out-alert-dialog"
 import { UpdateRecordDialog } from "@/components/overlays/update-record-dialog";
 import { CreateExpenseCategoryDialog } from "@/components/overlays/create-expense-category-dialog";
 import { DeleteExpenseCategoryAlertDialog } from "@/components/overlays/delete-expense-category-alert-dialog";
+import { CreateGoalBucketDialog } from "@/components/overlays/create-goal-bucket-dialog";
 
 export function OverlaysProvider() {
   return (
@@ -19,6 +20,7 @@ export function OverlaysProvider() {
       <UpdateRecordDialog />
       <CreateExpenseCategoryDialog />
       <DeleteExpenseCategoryAlertDialog />
+      <CreateGoalBucketDialog />
 
 
       {/*Goal*/}
