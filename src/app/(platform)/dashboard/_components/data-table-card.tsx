@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
+import { useCreateRecordSheet } from "@/store/overlays/useCreateRecordSheet";
 import { DataTable, IDataTableFilter } from "./data-table";
 
 interface DataTableCardProps<T> {
@@ -16,7 +16,7 @@ interface DataTableCardProps<T> {
 }
 
 export function DataTableCard<T>({ title, description, columns, filter, data, isLoading }: DataTableCardProps<T>) {
-  const addNewRecordSheet = useAddNewRecordSheet();
+  const createRecordSheet = useCreateRecordSheet();
 
   return (
     <Card className="flex h-full min-h-96 flex-col">
@@ -34,7 +34,7 @@ export function DataTableCard<T>({ title, description, columns, filter, data, is
         <Button
           variant="outline"
           className="space-x-1"
-          onClick={title === "earning" ? addNewRecordSheet.openEarning : addNewRecordSheet.openExpense}
+          onClick={title === "earning" ? createRecordSheet.openEarning : createRecordSheet.openExpense}
         >
           <PlusIcon className="size-5" />
           <span>Add New</span>

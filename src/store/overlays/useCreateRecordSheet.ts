@@ -9,7 +9,7 @@ interface AddNewRecordSheetStore {
   close: () => void;
 }
 
-export const useAddNewRecordSheet = create<AddNewRecordSheetStore>((set) => ({
+export const useCreateRecordSheet = create<AddNewRecordSheetStore>((set) => ({
   isOpen: false,
   tab: EAddSheetTabs.Expense,
   openExpense: () => set({ tab: EAddSheetTabs.Expense, isOpen: true }),
