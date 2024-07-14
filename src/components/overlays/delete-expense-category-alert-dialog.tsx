@@ -17,7 +17,7 @@ import { useExpenseCategoryDeleteDialog } from "@/store/overlays/useExpenseCateg
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 
-export function DeleteExpenseCategoryDialog() {
+export function DeleteExpenseCategoryAlertDialog() {
   const { setExpenseCategories, expenseCategories } = useData();
   const { category, isOpen, close } = useExpenseCategoryDeleteDialog();
 
