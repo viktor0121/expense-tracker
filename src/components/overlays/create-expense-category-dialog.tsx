@@ -24,7 +24,7 @@ const formSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(250, "Title must be at most 100 characters"),
 });
 
-export function ExpenseCategoryCreateDialog({}: NewCategoryDialogProps) {
+export function CreateExpenseCategoryDialog({}: NewCategoryDialogProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
