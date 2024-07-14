@@ -26,6 +26,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { useAddNewRecordSheet } from "@/store/overlays/useAddNewRecordSheet";
+import { useExpenseCategoryCreateDialog } from "@/store/overlays/useExpenseCategoryCreateDialog";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 import { useAuth } from "@/store/useAuth";
 import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
@@ -43,6 +44,7 @@ export function CommandPallet({}: CommandPalletProps) {
 
   const signOutDialog = useSignOutDialog();
   const addNewRecordSheet = useAddNewRecordSheet();
+  const createExpenseCategoryDialog = useExpenseCategoryCreateDialog();
 
   const { setTheme, systemTheme, theme } = useTheme();
   const { authStatus } = useAuth();
@@ -69,14 +71,19 @@ export function CommandPallet({}: CommandPalletProps) {
 
   const addNewCommands: Command[] = [
     {
-      title: "Add Expense",
+      title: "Expense",
       Icon: PlusIcon,
       action: () => commandAction(addNewRecordSheet.openExpense),
     },
     {
-      title: "Add Earning",
+      title: "Earning",
       Icon: PlusIcon,
       action: () => commandAction(addNewRecordSheet.openEarning),
+    },
+    {
+      title: "Expense Category",
+      Icon: PlusIcon,
+      action: () => commandAction(createExpenseCategoryDialog.open),
     },
   ];
 
