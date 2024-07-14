@@ -14,7 +14,7 @@ import { FormDateField } from "@/components/form-date-field";
 import { FormSelectRelatedField } from "@/components/form-select-related-field";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useCreateExpenseCategoryDialog } from "@/store/overlays/useCreateExpenseCategoryDialog";
-import { useExpenseCategoryDeleteDialog } from "@/store/overlays/useExpenseCategoryDeleteDialog";
+import { useDeleteExpenseCategoryDialog } from "@/store/overlays/useDeleteExpenseCategoryDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { EExpenseType } from "@/lib/enums";
@@ -79,7 +79,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
   const { data: categoriesData } = useAppwriteFetch(() => database.getExpenseCategories());
 
   const createExpenseCategoryDialog = useCreateExpenseCategoryDialog();
-  const expenseCategoryDeleteDialog = useExpenseCategoryDeleteDialog();
+  const deleteExpenseCategoryDialog = useDeleteExpenseCategoryDialog();
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     try {
@@ -178,7 +178,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
             }}
             actionButton={{
               icon: Trash2,
-              onClick: (category) => expenseCategoryDeleteDialog.open(category),
+              onClick: (category) => deleteExpenseCategoryDialog.open(category),
               iconClassName: "hover:text-destructive",
             }}
           />

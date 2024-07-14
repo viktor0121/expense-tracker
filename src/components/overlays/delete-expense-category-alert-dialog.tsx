@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { useExpenseCategoryDeleteDialog } from "@/store/overlays/useExpenseCategoryDeleteDialog";
+import { useDeleteExpenseCategoryDialog } from "@/store/overlays/useDeleteExpenseCategoryDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 
 export function DeleteExpenseCategoryAlertDialog() {
   const { setExpenseCategories, expenseCategories } = useData();
-  const { category, isOpen, close } = useExpenseCategoryDeleteDialog();
+  const { category, isOpen, close } = useDeleteExpenseCategoryDialog();
 
   if (!category) return null;
 

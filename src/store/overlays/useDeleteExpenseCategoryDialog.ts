@@ -8,7 +8,7 @@ interface ExpenseCategoryDeleteDialog {
   close: () => void;
 }
 
-export const useExpenseCategoryDeleteDialog = create<ExpenseCategoryDeleteDialog>((set) => ({
+export const useDeleteExpenseCategoryDialog = create<ExpenseCategoryDeleteDialog>((set) => ({
   isOpen: false,
   category: null,
   open: (category) => set({ isOpen: true, category }),
