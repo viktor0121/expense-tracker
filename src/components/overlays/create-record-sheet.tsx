@@ -2,10 +2,10 @@ import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useCreateRecordSheet } from "@/store/overlays/useCreateRecordSheet";
-import { EAddSheetTabs, EDashboardTabs } from "@/lib/enums";
 import { ExpenseForm } from "@/components/forms/expense-form";
 import { IncomeForm } from "@/components/forms/income-form";
+import { useCreateRecordSheet } from "@/store/overlays/useCreateRecordSheet";
+import { EAddSheetTabs, EDashboardTabs } from "@/lib/enums";
 
 interface AddNewSheetProps {}
 
@@ -31,13 +31,13 @@ export function CreateRecordSheet({}: AddNewSheetProps) {
 
           <TabsContent value={EAddSheetTabs.Expense}>
             <SheetCardWrapper title="Add New Expense">
-              <ExpenseForm recordType="add" runAfterSubmit={createRecordSheet.close} />
+              <ExpenseForm action="add" runAfterSubmit={createRecordSheet.close} />
             </SheetCardWrapper>
           </TabsContent>
 
           <TabsContent value={EAddSheetTabs.Earning}>
             <SheetCardWrapper title="Add New Earning">
-              <IncomeForm recordType="add" runAfterSubmit={createRecordSheet.close} />
+              <IncomeForm action="add" runAfterSubmit={createRecordSheet.close} />
             </SheetCardWrapper>
           </TabsContent>
         </Tabs>

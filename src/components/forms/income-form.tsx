@@ -14,11 +14,11 @@ import { IEarning } from "@/lib/types";
 
 type AddUpdateTypes =
   | {
-      recordType: "add";
+      action: "add";
       record?: undefined;
     }
   | {
-      recordType: "update";
+      action: "update";
       record: IEarning;
     };
 
@@ -39,11 +39,11 @@ const formSchema = z.object({
     .refine((str) => parseFloat(str) < 10_00_00_000, "Amount must be at most 10,00,00,000"),
 });
 
-export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormProps) {
+export function IncomeForm({ action, record, runAfterSubmit }: IncomeFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:
-      recordType === "add"
+      action === "add"
         ? {
             title: "",
             // @ts-ignore
@@ -63,7 +63,7 @@ export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormPro
 
   const submit = form.handleSubmit(async ({ date, amount, title }) => {
     try {
-      if (recordType === "add") {
+      if (action === "add") {
         const newIncome = await database.createIncome({
           title,
           amount: Number(amount),
@@ -82,7 +82,7 @@ export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormPro
 
       toast({
         title: "Success!",
-        description: `Your income have been ${recordType === "add" ? "added" : "updated"} successfully.`,
+        description: `Your income have been ${action === "add" ? "added" : "updated"} successfully.`,
       });
 
       form.reset();
@@ -138,7 +138,7 @@ export function IncomeForm({ recordType, record, runAfterSubmit }: IncomeFormPro
           disabled={!isValid || !isDirty}
           type="submit"
           className="mt-2 w-full"
-          btnText={`${recordType} Record`}
+          btnText={`${action} Record`}
         />
       </form>
     </Form>

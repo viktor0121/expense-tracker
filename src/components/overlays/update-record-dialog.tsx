@@ -1,8 +1,8 @@
 import React from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useUpdateRecordDialog } from "@/store/overlays/useUpdateRecordDialog";
 import { ExpenseForm } from "@/components/forms/expense-form";
 import { IncomeForm } from "@/components/forms/income-form";
+import { useUpdateRecordDialog } from "@/store/overlays/useUpdateRecordDialog";
 
 export function UpdateRecordDialog() {
   const updateDialog = useUpdateRecordDialog();
@@ -18,9 +18,9 @@ export function UpdateRecordDialog() {
           <DialogDescription>Make changes to your record here. Click update when you&apos;re done.</DialogDescription>
         </DialogHeader>
         {updateDialog.recordType === "earning" ? (
-          <IncomeForm recordType="update" record={updateDialog.record} runAfterSubmit={updateDialog.close} />
+          <IncomeForm action="update" record={updateDialog.record} runAfterSubmit={updateDialog.close} />
         ) : (
-          <ExpenseForm recordType="update" record={updateDialog.record} runAfterSubmit={updateDialog.close} />
+          <ExpenseForm action="update" record={updateDialog.record} runAfterSubmit={updateDialog.close} />
         )}
       </DialogContent>
     </Dialog>

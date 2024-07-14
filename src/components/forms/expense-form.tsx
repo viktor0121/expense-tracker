@@ -22,11 +22,11 @@ import { IExpense, IExpenseCategory } from "@/lib/types";
 
 type AddUpdateTypes =
   | {
-      recordType: "add";
+      action: "add";
       record?: undefined;
     }
   | {
-      recordType: "update";
+      action: "update";
       record: IExpense;
     };
 
@@ -51,13 +51,13 @@ const formSchema = z.object({
   category: z.string().min(1, "Category is required"),
 });
 
-export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormProps) {
+export function ExpenseForm({ action, record, runAfterSubmit }: ExpenseFormProps) {
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:
-      recordType === "add"
+      action === "add"
         ? {
             // @ts-ignore
             amount: "",
@@ -83,7 +83,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
 
   const submit = form.handleSubmit(async ({ date, amount, title, type, category }) => {
     try {
-      if (recordType === "add") {
+      if (action === "add") {
         const newExpense = await database.createExpense({
           title,
           amount: Number(amount),
@@ -106,7 +106,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
 
       toast({
         title: "Success!",
-        description: `Your expense has been ${recordType === "add" ? "added" : "updated"} successfully.`,
+        description: `Your expense has been ${action === "add" ? "added" : "updated"} successfully.`,
       });
 
       form.reset();
@@ -214,7 +214,7 @@ export function ExpenseForm({ recordType, record, runAfterSubmit }: ExpenseFormP
             disabled={!isValid || !isDirty}
             type="submit"
             className="mt-2 w-full"
-            btnText={`${recordType} Record`}
+            btnText={`${action} Record`}
           />
         </form>
       </Form>
