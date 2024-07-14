@@ -39,7 +39,7 @@ const formSchema = z.object({
     .refine((str) => parseFloat(str) < 10_00_00_000, "Amount must be at most 10,00,00,000"),
 });
 
-export function IncomeForm({ action, record, runAfterSubmit }: IncomeFormProps) {
+export function EarningForm({ action, record, runAfterSubmit }: IncomeFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:

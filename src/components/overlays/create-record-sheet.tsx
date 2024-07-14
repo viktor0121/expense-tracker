@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExpenseForm } from "@/components/forms/expense-form";
-import { IncomeForm } from "@/components/forms/income-form";
+import { EarningForm } from "@/components/forms/earning-form";
 import { useCreateRecordSheet } from "@/store/overlays/useCreateRecordSheet";
 import { EAddSheetTabs, EDashboardTabs } from "@/lib/enums";
 
@@ -37,7 +37,7 @@ export function CreateRecordSheet({}: AddNewSheetProps) {
 
           <TabsContent value={EAddSheetTabs.Earning}>
             <SheetCardWrapper title="Add New Earning">
-              <IncomeForm action="add" runAfterSubmit={createRecordSheet.close} />
+              <EarningForm action="add" runAfterSubmit={createRecordSheet.close} />
             </SheetCardWrapper>
           </TabsContent>
         </Tabs>
