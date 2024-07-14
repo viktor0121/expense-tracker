@@ -57,7 +57,7 @@ export function CreateExpenseCategoryDialog({}: NewCategoryDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>New Category</DialogTitle>
           <DialogDescription>Create your own categories</DialogDescription>

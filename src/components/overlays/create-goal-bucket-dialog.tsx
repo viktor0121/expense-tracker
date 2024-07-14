@@ -47,7 +47,7 @@ export function CreateGoalBucketDialog() {
 
   return (
     <Dialog open={createGoalBucketDialog.isOpen} onOpenChange={createGoalBucketDialog.close}>
-      <DialogContent className="space-y-1 sm:max-w-[500px]">
+      <DialogContent className="space-y-1 sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl">Create goals collection</DialogTitle>
           <DialogDescription>
