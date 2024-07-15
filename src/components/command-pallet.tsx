@@ -25,8 +25,10 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { useCreateRecordSheet } from "@/store/overlays/useCreateRecordSheet";
 import { useCreateExpenseCategoryDialog } from "@/store/overlays/useCreateExpenseCategoryDialog";
+import { useCreateGoalBucketDialog } from "@/store/overlays/useCreateGoalBucketDialog";
+import { useCreateGoalDialog } from "@/store/overlays/useCreateGoalDialog";
+import { useCreateRecordSheet } from "@/store/overlays/useCreateRecordSheet";
 import { useSignOutDialog } from "@/store/overlays/useSignOutDialog";
 import { useAuth } from "@/store/useAuth";
 import { EAuthTabs, EDashboardTabs, EModifierKey, ETheme } from "@/lib/enums";
@@ -45,6 +47,8 @@ export function CommandPallet({}: CommandPalletProps) {
   const signOutDialog = useSignOutDialog();
   const createRecordSheet = useCreateRecordSheet();
   const createExpenseCategoryDialog = useCreateExpenseCategoryDialog();
+  const createGoalBucketDialog = useCreateGoalBucketDialog();
+  const createGoalDialog = useCreateGoalDialog();
 
   const { setTheme, systemTheme, theme } = useTheme();
   const { authStatus } = useAuth();
@@ -84,6 +88,16 @@ export function CommandPallet({}: CommandPalletProps) {
       title: "Expense Category",
       Icon: PlusIcon,
       action: () => commandAction(createExpenseCategoryDialog.open),
+    },
+    {
+      title: "Goal",
+      Icon: PlusIcon,
+      action: () => commandAction(createGoalDialog.open),
+    },
+    {
+      title: "Goal Bucket",
+      Icon: PlusIcon,
+      action: () => commandAction(createGoalBucketDialog.open),
     },
   ];
 
