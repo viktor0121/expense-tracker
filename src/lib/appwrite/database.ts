@@ -56,6 +56,15 @@ interface CreateGoalParams {
   goalList: string;
 }
 
+interface UpdateGoalParams {
+  id: string;
+  title?: string;
+  target?: number;
+  collected?: number;
+  imageId?: string;
+  goalList?: string;
+}
+
 interface DeleteGoalParams extends DeleteExpenseParams {}
 
 // GOAL LIST
@@ -233,20 +242,6 @@ export class DatabaseServices {
   }
 
   // GOALS
-  async getGoals(queries?: string[]): Promise<IGoal[]> {
-    try {
-      const data = await this.databases.listDocuments(
-        env.awDatabaseId,
-        env.awGoalCollectionId,
-        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
-      );
-      return data.documents as IGoal[];
-    } catch (error: any) {
-      console.log("Appwrite :: getGoals() :: ", error);
-      throw error;
-    }
-  }
-
   async createGoal({ title, target, imageId, goalList }: CreateGoalParams): Promise<IGoal> {
     try {
       const data = { title, target, goalList, ...(imageId ? { imageId } : {}) };
@@ -254,6 +249,22 @@ export class DatabaseServices {
       return this.databases.createDocument(env.awDatabaseId, env.awGoalCollectionId, ID.unique(), data, permissions);
     } catch (error: any) {
       console.error("Appwrite :: createGoal() :: ", error);
+      throw error;
+    }
+  }
+
+  async updateGoal({ id, title, target, collected, imageId, goalList }: UpdateGoalParams): Promise<IGoal> {
+    try {
+      const data = {
+        ...(title ? { title } : {}),
+        ...(target ? { target } : {}),
+        ...(collected ? { collected } : {}),
+        ...(imageId ? { imageId } : {}),
+        ...(goalList ? { goalList } : {}),
+      };
+      return this.databases.updateDocument(env.awDatabaseId, env.awGoalCollectionId, id as string, data);
+    } catch (error: any) {
+      console.error("Appwrite :: updateGoal() :: ", error);
       throw error;
     }
   }
