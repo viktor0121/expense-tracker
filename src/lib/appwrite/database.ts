@@ -59,6 +59,11 @@ interface CreateGoalParams {
 interface DeleteGoalParams extends DeleteExpenseParams {}
 
 // GOAL LIST
+interface GetGoalListParams {
+  id: string;
+  queries?: string[];
+}
+
 interface CreateGoalListParams {
   title: string;
 }
@@ -263,6 +268,23 @@ export class DatabaseServices {
   }
 
   // GOAL LIST
+  async getGoalList({ id, queries }: GetGoalListParams): Promise<IGoalList | "invalid_id"> {
+    try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awGoalListCollectionId,
+        [Query.orderDesc("$createdAt"), Query.equal("$id", id)].concat(queries && queries.length > 0 ? queries : []),
+      );
+
+      if (data.documents.length === 0) return "invalid_id";
+
+      return data.documents[0] as IGoalList;
+    } catch (error: any) {
+      console.log("Appwrite :: getGoalList() :: ", error);
+      throw error;
+    }
+  }
+
   async getGoalLists(queries?: string[]): Promise<IGoalList[]> {
     try {
       const data = await this.databases.listDocuments(
