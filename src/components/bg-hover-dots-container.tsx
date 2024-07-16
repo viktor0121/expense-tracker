@@ -23,7 +23,7 @@ export function BgHoverDotsContainer({ children, className, containerClassName }
   }
   return (
     <div
-      className={cn("group relative flex w-full items-center justify-center", containerClassName)}
+      className={cn("group relative flex h-full w-full items-center justify-center", containerClassName)}
       onMouseMove={handleMouseMove}
     >
       <div className="pointer-events-none absolute inset-0 bg-dot-thick-neutral-300 dark:bg-dot-thick-neutral-800" />
@@ -47,7 +47,7 @@ export function BgHoverDotsContainer({ children, className, containerClassName }
         }}
       />
 
-      <div className={cn("relative z-20", className)}>{children}</div>
+      <div className={cn("relative z-20 h-full", className)}>{children}</div>
     </div>
   );
 }

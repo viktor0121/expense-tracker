@@ -3,15 +3,17 @@
 import React, { useEffect, useState } from "react";
 import { BgMotionCard } from "@/components/bg-motion-card";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
+import { useCreateGoalBucketDialog } from "@/store/overlays/useCreateGoalBucketDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { BucketCard } from "./_components/bucket-card";
-import { CreateBucketCard } from "./_components/create-bucket-card";
+import { CreateCard } from "./_components/create-card";
 
 export default function GoalPage() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const { goalLists, setGoalLists } = useData();
   const { data: goalListsData, isLoading: isGoalListsLoading } = useAppwriteFetch(() => database.getGoalLists());
+  const { goalLists, setGoalLists } = useData();
+  const createGoalBucketDialog = useCreateGoalBucketDialog();
 
   useEffect(() => {
     setGoalLists(goalListsData || []);
@@ -27,7 +29,7 @@ export default function GoalPage() {
             {[...Array(4)].map((_, index) => (
               <BucketCard.Skeleton key={index} />
             ))}
-            <CreateBucketCard.Skeleton />
+            <CreateCard.Skeleton />
           </>
         ) : (
           <>
@@ -38,7 +40,11 @@ export default function GoalPage() {
             ))}
 
             <BgMotionCard index={-1} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
-              <CreateBucketCard />
+              <CreateCard
+                showGradientBorder={goalLists.length === 0}
+                text="New Bucket"
+                onClick={createGoalBucketDialog.open}
+              />
             </BgMotionCard>
           </>
         )}
