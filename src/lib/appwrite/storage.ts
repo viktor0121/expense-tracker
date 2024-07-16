@@ -41,10 +41,20 @@ export class StorageService {
   // PROFILE PHOTO
   async createProfilePhoto({ file }: CreateProfilePhotoParams): Promise<string> {
     try {
-      const photo = await this.storage.createFile(env.awProfilePhotoStorageId, ID.unique(), file);
+      const permissions = await this._getUDPermissions();
+      const photo = await this.storage.createFile(env.awProfilePhotoStorageId, ID.unique(), file, permissions);
       return photo.$id;
     } catch (error: any) {
-      console.error("Appwrite :: uploadProfilePhoto() :: ", error);
+      console.error("Appwrite :: createProfilePhoto() :: ", error);
+      throw error;
+    }
+  }
+
+  async deleteProfilePhoto({ photoId }: DeleteProfilePhotoParams): Promise<void> {
+    try {
+      await this.storage.deleteFile(env.awProfilePhotoStorageId, photoId);
+    } catch (error: any) {
+      console.error("Appwrite :: deleteProfilePhoto() :: ", error);
       throw error;
     }
   }
