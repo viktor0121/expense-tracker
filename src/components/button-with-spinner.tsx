@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 type ButtonWithSpinnerProps = ButtonProps & {
   isLoading: boolean;
   btnText: string;
+  loadingText?: string;
 };
 
 export function ButtonWithSpinner({
@@ -16,12 +17,13 @@ export function ButtonWithSpinner({
   className,
   disabled,
   btnText,
+  loadingText = "Please Wait",
   ...props
 }: ButtonWithSpinnerProps) {
   return (
     <Button type="submit" disabled={disabled || isLoading} className={cn("capitalize", className)} {...props}>
-      {isLoading ? <Loader2 className="mr-1.5 size-[17px] animate-spin" /> : <></>}
-      {isLoading ? "Please Wait" : btnText}
+      {isLoading ? <Loader2 className="mr-1.5 size-[17px] animate-spin" /> : null}
+      {isLoading ? loadingText : btnText}
     </Button>
   );
 }
