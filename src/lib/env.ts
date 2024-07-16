@@ -10,6 +10,7 @@ const EnvSchema = z.object({
   awGoalCollectionId: z.string(),
   awGoalListCollectionId: z.string(),
   awProfilePhotoStorageId: z.string(),
+  awGoalPhotoStorageId: z.string(),
 });
 
 export const env = {
@@ -22,6 +23,7 @@ export const env = {
   awGoalCollectionId: process.env.NEXT_PUBLIC_AW_GOAL_COLLECTION_ID as string,
   awGoalListCollectionId: process.env.NEXT_PUBLIC_AW_GOAL_LIST_COLLECTION_ID as string,
   awProfilePhotoStorageId: process.env.NEXT_PUBLIC_AW_PROFILE_PHOTO_STORAGE_ID as string,
+  awGoalPhotoStorageId: process.env.NEXT_PUBLIC_AW_GOAL_PHOTO_STORAGE_ID as string,
 };
 
 try {
