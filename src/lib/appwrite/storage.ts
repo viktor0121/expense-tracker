@@ -102,9 +102,9 @@ export class StorageService {
       const url: URL = this.storage.getFilePreview(
         env.awGoalPhotoStorageId,
         photoId,
-        2000,
-        2000,
-        ImageGravity.Top,
+        800,
+        800,
+        ImageGravity.Center,
         100,
       );
       return url.toString();
