@@ -12,6 +12,8 @@ import { FormSelectRelatedField } from "@/components/form-select-related-field";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
+import { storage } from "@/lib/appwrite/storage";
+import { SUPPORTED_IMAGE_FORMATS } from "@/lib/constants";
 
 interface GoalFormProps {
   runAfterSubmit?: () => void;
@@ -19,6 +21,7 @@ interface GoalFormProps {
 
 const formSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(250, "Title must be at most 100 characters"),
+  image: z.instanceof(FileList).optional(),
   target: z
     .string()
     .trim()
@@ -45,26 +48,36 @@ export function GoalForm({ runAfterSubmit }: GoalFormProps) {
   const { goals, setGoals, goalLists, setGoalLists } = useData();
   const { data: goalListsData } = useAppwriteFetch(() => database.getGoalLists());
 
-  const submit = form.handleSubmit(async ({ title, target, collection }) => {
+  const submit = form.handleSubmit(async ({ title, target, collection, image: imageFileList }) => {
     try {
+      // As form image value is provided in a file list extract the first and only image form list
+      const image = imageFileList?.[0];
+
+      // If image is provided, upload it to storage and get the image id
+      let imageId: string | undefined;
+      if (image) imageId = await storage.createGoalPhoto({ file: image });
+
+      // Create new goal and add it to the list
       const newGoal = await database.createGoal({
         title,
         target: Number(target),
         goalList: collection,
+        imageId,
       });
-      setGoals([newGoal, ...goals]);
+      setGoals([...goals, newGoal]);
+
+      // Show success toast
       toast({
         title: "Success!",
         description: `New goal added successfully.`,
       });
 
+      // Reset Form & Run some extra function passed from parent component if any
       form.reset();
-
-      // Some extra function passed from parent component if any
       runAfterSubmit && runAfterSubmit();
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: "Unable to create",
         description: error.message,
         variant: "destructive",
       });
@@ -78,7 +91,7 @@ export function GoalForm({ runAfterSubmit }: GoalFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={submit} className="grid gap-3">
-        {/*Name Input*/}
+        {/*Title Input*/}
         <FormField
           control={form.control}
           name="title"
@@ -93,6 +106,7 @@ export function GoalForm({ runAfterSubmit }: GoalFormProps) {
           )}
         />
 
+        {/*Target Amount*/}
         <FormField
           control={form.control}
           name="target"
@@ -107,6 +121,7 @@ export function GoalForm({ runAfterSubmit }: GoalFormProps) {
           )}
         />
 
+        {/*Collection Select*/}
         <FormSelectRelatedField
           name="collection"
           label="Collection"
@@ -117,6 +132,30 @@ export function GoalForm({ runAfterSubmit }: GoalFormProps) {
           displayKey="title"
           commandEmptyText="No collection found."
           commandInputPlaceholder="Search Collection"
+        />
+
+        {/*Goal Image*/}
+        <FormField
+          name="image"
+          control={form.control}
+          render={({ field: { onChange, value, ...rest } }) => (
+            <FormItem>
+              <FormLabel>Goal Image (Optional)</FormLabel>
+
+              <FormControl>
+                <Input
+                  type="file"
+                  accept={SUPPORTED_IMAGE_FORMATS.join()}
+                  onChange={(event) => {
+                    const files = event.target.files;
+                    onChange(files);
+                  }}
+                  {...rest}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
 
         {/*Submit Button*/}
