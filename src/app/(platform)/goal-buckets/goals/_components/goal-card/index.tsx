@@ -6,6 +6,7 @@ import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { IGoal } from "@/lib/types";
 import { DecrementButton } from "./decrement-button";
+import { GoalImage } from "./goal-image";
 import { GoalProgress } from "./goal-progress";
 import { IncrementButton } from "./increment-button";
 import { SaveButton } from "./save-button";
@@ -47,6 +48,8 @@ export function GoalCard({ id, title, target, collected, imageId }: BucketCardPr
   return (
     <Card className="h-full">
       <CardContent className="flex h-full min-h-60 flex-col p-2">
+        <GoalImage imageId={imageId} />
+
         <div className="relative flex w-full flex-1 flex-col items-center justify-evenly gap-8 px-3 py-5">
           <CardTitle className="tracking-wide">{title}</CardTitle>
 
