@@ -67,7 +67,7 @@ export function FormSelectRelatedField<T extends { [key: string]: any }, K exten
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col">
+        <FormItem className="flex w-full max-w-full flex-col overflow-auto">
           <FormLabel>{label}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
@@ -78,7 +78,11 @@ export function FormSelectRelatedField<T extends { [key: string]: any }, K exten
                   role="combobox"
                   className={cn("justify-between capitalize", !field.value && "text-muted-foreground")}
                 >
-                  {field.value ? relatedData.find((item) => item[valueKey] === field.value)?.[displayKey] : placeholder}
+                  <span className="truncate">
+                    {field.value
+                      ? relatedData.find((item) => item[valueKey] === field.value)?.[displayKey]
+                      : placeholder}
+                  </span>
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </FormControl>
@@ -124,20 +128,19 @@ export function FormSelectRelatedField<T extends { [key: string]: any }, K exten
                   <CommandGroup>
                     {relatedData.map((item, index) => (
                       <div key={index} className="group flex rounded-md hover:bg-accent">
-                        <PopoverClose className="flex-1">
+                        <PopoverClose className="w-full">
                           <CommandItem
                             value={item[displayKey]}
                             key={item[valueKey]}
-                            className="flex-1"
                             onSelect={() => field.onChange(item[valueKey])}
                           >
                             <Check
                               className={cn(
-                                "mr-2 size-4",
+                                "mr-2 size-4 shrink-0",
                                 item[valueKey] === field.value ? "opacity-100" : "opacity-0",
                               )}
                             />
-                            {item[displayKey]}
+                            <span className="truncate">{item[displayKey]}</span>
                           </CommandItem>
                         </PopoverClose>
 
@@ -150,10 +153,7 @@ export function FormSelectRelatedField<T extends { [key: string]: any }, K exten
                             )}
                           >
                             <actionButton.icon
-                              className={cn(
-                                "size-4 text-muted-foreground transition",
-                                actionButton.iconClassName,
-                              )}
+                              className={cn("size-4 text-muted-foreground transition", actionButton.iconClassName)}
                             />
                           </Button>
                         ) : null}
