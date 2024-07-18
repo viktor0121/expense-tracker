@@ -40,7 +40,7 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
     <>
       <h2 className="mb-3 px-2 text-2xl font-semibold">{bucketTitle}</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {isGoalListLoading ? (
           <>
             {[...Array(4)].map((_, index) => (
