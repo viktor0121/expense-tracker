@@ -7,6 +7,7 @@ import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useCreateGoalDialog } from "@/store/overlays/useCreateGoalDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
+import { OptionsPopover } from "@/app/(platform)/goal-buckets/goals/_components/options-popover";
 import { CreateCard } from "../_components/create-card";
 import { GoalCard } from "./_components/goal-card";
 
@@ -31,14 +32,21 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
     }),
   );
 
+  // Update goals when goalListData changes
   useEffect(() => {
     if (goalListData === "invalid_id") notFound();
     if (goalListData) setGoals(goalListData.goals);
   }, [goalListData, setGoals]);
 
+  // Clear goals when component unmounts
+  useEffect(() => setGoals([]), [setGoals]);
+
   return (
     <>
-      <h2 className="mb-3 px-2 text-2xl font-semibold">{bucketTitle}</h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="px-2 text-2xl font-semibold">{bucketTitle}</h2>
+        <OptionsPopover bucketId={bucketId} />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {isGoalListLoading ? (
