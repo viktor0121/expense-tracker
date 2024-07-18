@@ -51,7 +51,7 @@ export function GoalCard({ id, title, target, collected, imageId }: BucketCardPr
         <GoalImage imageId={imageId} />
 
         <div className="relative flex w-full flex-1 flex-col items-center justify-evenly gap-8 px-3 py-5">
-          <CardTitle className="tracking-wide">{title}</CardTitle>
+          <CardTitle className="tracking-wide text-xl text-center">{title}</CardTitle>
 
           {/*Save button visible when collected amount is changed*/}
           {amount !== collected ? <SaveButton onClick={updateCollectedAmount} isLoading={isUpdating} /> : null}

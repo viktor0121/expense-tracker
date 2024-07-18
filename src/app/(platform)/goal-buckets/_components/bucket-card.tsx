@@ -13,7 +13,7 @@ export function BucketCard({ id, title }: BucketCardProps) {
     <Link href={`/goal-buckets/goals?bucketId=${id}&bucketTitle=${title}`}>
       <Card className="h-full cursor-pointer">
         <CardContent className="flex h-full min-h-60 items-center justify-center p-6">
-          <CardTitle className="tracking-wide">{title}</CardTitle>
+          <CardTitle className="tracking-wide text-xl text-center">{title}</CardTitle>
         </CardContent>
       </Card>
     </Link>
