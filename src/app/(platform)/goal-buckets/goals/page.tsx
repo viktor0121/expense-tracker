@@ -7,9 +7,10 @@ import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useCreateGoalDialog } from "@/store/overlays/useCreateGoalDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
-import { OptionsPopover } from "@/app/(platform)/goal-buckets/goals/_components/options-popover";
+import { IGoalList } from "@/lib/types";
 import { CreateCard } from "../_components/create-card";
 import { GoalCard } from "./_components/goal-card";
+import { OptionsPopover } from "./_components/options-popover";
 
 interface CollectionPageProps {
   searchParams: {
@@ -23,19 +24,22 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
   const bucketTitle = searchParams.bucketTitle;
   if (!bucketId || !bucketTitle) notFound();
 
-  const createGoalDialog = useCreateGoalDialog();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [bucket, setBucket] = useState<IGoalList | null>(null);
   const { goals, setGoals } = useData();
-  const { data: goalListData, isLoading: isGoalListLoading } = useAppwriteFetch(() =>
-    database.getGoalList({
-      id: bucketId,
-    }),
-  );
+  const createGoalDialog = useCreateGoalDialog();
 
-  // Update goals when goalListData changes
+  // Fetch goal list data
+  const fetcher = () => database.getGoalList({ id: bucketId });
+  const { data: goalListData, isLoading: isGoalListLoading } = useAppwriteFetch(fetcher);
+
+  // Set goals and bucket data when fetched
   useEffect(() => {
     if (goalListData === "invalid_id") notFound();
-    if (goalListData) setGoals(goalListData.goals);
+    if (goalListData) {
+      setGoals(goalListData.goals);
+      setBucket(goalListData);
+    }
   }, [goalListData, setGoals]);
 
   // Clear goals when component unmounts
@@ -45,7 +49,7 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
     <>
       <div className="mb-3 flex items-center justify-between">
         <h2 className="px-2 text-2xl font-semibold">{bucketTitle}</h2>
-        <OptionsPopover bucketId={bucketId} />
+        <OptionsPopover bucket={bucket} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

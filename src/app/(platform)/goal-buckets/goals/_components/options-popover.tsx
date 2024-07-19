@@ -3,12 +3,11 @@ import { EllipsisIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "@/components/ui/use-toast";
-import { database } from "@/lib/appwrite/database";
-import { redirect, useRouter } from "next/navigation";
+import { useDeleteGoalBucketDialog } from "@/store/overlays/useDeleteGoalBucketDialog";
+import { IGoalList } from "@/lib/types";
 
 interface OptionsPopoverProps {
-  bucketId: string;
+  bucket: IGoalList;
 }
 
 export function OptionsPopover({ bucketId }: OptionsPopoverProps) {
@@ -30,6 +29,9 @@ export function OptionsPopover({ bucketId }: OptionsPopoverProps) {
       });
     }
   };
+export function OptionsPopover({ bucket }: OptionsPopoverProps) {
+  const deleteBucketDialog = useDeleteGoalBucketDialog();
+  const onDelete = () => deleteBucketDialog.open(bucket);
 
   return (
     <Popover>
