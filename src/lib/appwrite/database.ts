@@ -289,7 +289,15 @@ export class DatabaseServices {
 
       if (data.documents.length === 0) return "invalid_id";
 
-      return data.documents[0] as IGoalList;
+      const goalList = data.documents[0] as IGoalList;
+      goalList.goals.forEach((goal) => {
+        goal.goalList = {
+          $id: goalList.$id,
+          title: goalList.title,
+        };
+      });
+
+      return goalList;
     } catch (error: any) {
       console.log("Appwrite :: getGoalList() :: ", error);
       throw error;
