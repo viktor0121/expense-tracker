@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Query } from "appwrite";
 import { BgMotionCard } from "@/components/bg-motion-card";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useCreateGoalBucketDialog } from "@/store/overlays/useCreateGoalBucketDialog";
@@ -11,9 +12,12 @@ import { CreateCard } from "./_components/create-card";
 
 export default function GoalPage() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const { data: goalListsData, isLoading: isGoalListsLoading } = useAppwriteFetch(() => database.getGoalLists());
+
   const { goalLists, setGoalLists } = useData();
   const createGoalBucketDialog = useCreateGoalBucketDialog();
+
+  const fetcher = () => database.getGoalLists([Query.select(["$id", "title", "$createdAt", "$updatedAt"])]);
+  const { data: goalListsData, isLoading: isGoalListsLoading } = useAppwriteFetch(fetcher);
 
   useEffect(() => {
     setGoalLists(goalListsData || []);
