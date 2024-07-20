@@ -45,6 +45,8 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
   // Clear goals when component unmounts
   useEffect(() => setGoals([]), [setGoals]);
 
+  if (!bucket) return null;
+
   return (
     <>
       <div className="mb-3 flex items-center justify-between">
