@@ -14,6 +14,7 @@ import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { storage } from "@/lib/appwrite/storage";
 import { SUPPORTED_IMAGE_FORMATS } from "@/lib/constants";
+import { truncateString } from "@/lib/utils";
 
 interface GoalFormProps {
   runAfterSubmit?: () => void;
@@ -69,7 +70,11 @@ export function GoalForm({ runAfterSubmit }: GoalFormProps) {
       // Show success toast
       toast({
         title: "Success!",
-        description: `New goal added successfully.`,
+        description: (
+          <p>
+            New goal <b>{truncateString(title, 20)}</b> has been added successfully.
+          </p>
+        ),
       });
 
       // Reset Form & Run some extra function passed from parent component if any
@@ -77,7 +82,7 @@ export function GoalForm({ runAfterSubmit }: GoalFormProps) {
       runAfterSubmit && runAfterSubmit();
     } catch (error: any) {
       toast({
-        title: "Unable to create",
+        title: "Uh oh! Something went wrong.",
         description: error.message,
         variant: "destructive",
       });

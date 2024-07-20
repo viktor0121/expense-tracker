@@ -41,8 +41,12 @@ export function DeleteRecordAlertDialog() {
 
       // Show success toast and close dialog
       toast({
-        title: `${deleteDialog.recordType} deleted`,
-        description: `${deleteDialog.record.title} deleted successfully`,
+        title: "Success!",
+        description: (
+          <p>
+            The {deleteDialog.recordType} <b>{deleteDialog.record.title}</b> has been deleted successfully
+          </p>
+        ),
       });
       deleteDialog.close();
     } catch (error: any) {

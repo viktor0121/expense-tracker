@@ -13,6 +13,7 @@ import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { useDeleteGoalDialog } from "@/store/overlays/useDeleteGoalDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
+import { truncateString } from "@/lib/utils";
 
 export function DeleteGoalAlertDialog() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -31,8 +32,12 @@ export function DeleteGoalAlertDialog() {
 
       // Show success toast and close dialog
       toast({
-        title: "Goal deleted",
-        description: `Goal ${goal.title} deleted successfully`,
+        title: "Success!",
+        description: (
+          <p>
+            Goal <b>{truncateString(goal.title, 20)}</b> has been deleted successfully
+          </p>
+        ),
       });
       close();
     } catch (error: any) {

@@ -4,6 +4,7 @@ import { useCreateGoalBucketDialog } from "@/store/overlays/useCreateGoalBucketD
 
 export function CreateGoalBucketDialog() {
   const createGoalBucketDialog = useCreateGoalBucketDialog();
+
   return (
     <Dialog open={createGoalBucketDialog.isOpen} onOpenChange={createGoalBucketDialog.close}>
       <DialogContent className="space-y-1 sm:max-w-lg">

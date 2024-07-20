@@ -16,6 +16,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useDeleteExpenseCategoryDialog } from "@/store/overlays/useDeleteExpenseCategoryDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
+import { truncateString } from "@/lib/utils";
 
 export function DeleteExpenseCategoryAlertDialog() {
   const { setExpenseCategories, expenseCategories } = useData();
@@ -29,10 +30,10 @@ export function DeleteExpenseCategoryAlertDialog() {
       const newExpenseCategories = expenseCategories.filter((item) => item.$id !== category.$id);
       setExpenseCategories(newExpenseCategories);
       toast({
-        title: "Category Deleted",
+        title: "Success",
         description: (
           <p>
-            Category <b>{category.title}</b> has been deleted.
+            Category <b>{truncateString(category.title, 20)}</b> has been deleted successfully.
           </p>
         ),
       });

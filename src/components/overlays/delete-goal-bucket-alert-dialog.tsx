@@ -14,6 +14,7 @@ import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { useDeleteGoalBucketDialog } from "@/store/overlays/useDeleteGoalBucketDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
+import { truncateString } from "@/lib/utils";
 
 export function DeleteGoalBucketAlertDialog() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -35,7 +36,11 @@ export function DeleteGoalBucketAlertDialog() {
       // Show success toast and close dialog
       toast({
         title: "Success!",
-        description: `Bucket ${bucket.title} deleted successfully`,
+        description: (
+          <p>
+            Bucket <b>{truncateString(bucket.title, 20)}</b> deleted successfully
+          </p>
+        ),
       });
 
       router.push("/goal-buckets");

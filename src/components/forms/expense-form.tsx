@@ -19,6 +19,7 @@ import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { EExpenseType } from "@/lib/enums";
 import { IExpense, IExpenseCategory } from "@/lib/types";
+import { truncateString } from "@/lib/utils";
 
 type AddUpdateTypes =
   | {
@@ -92,6 +93,14 @@ export function ExpenseForm({ action, record, runAfterSubmit }: ExpenseFormProps
           category,
         });
         setExpenses([newExpense, ...expenses]);
+        toast({
+          title: "Success!",
+          description: (
+            <p>
+              New expense <b>{truncateString(title, 20)}</b> has been created successfully.
+            </p>
+          ),
+        });
       } else {
         const updatedExpense = await database.updateExpense({
           id: record.$id,
@@ -102,20 +111,22 @@ export function ExpenseForm({ action, record, runAfterSubmit }: ExpenseFormProps
           ...(dirtyFields.category ? { category } : {}),
         });
         setExpenses(expenses.map((item) => (item.$id === updatedExpense.$id ? updatedExpense : item)));
+        toast({
+          title: "Success!",
+          description: (
+            <p>
+              Expense <b>{truncateString(title, 20)}</b> has been updated successfully.
+            </p>
+          ),
+        });
       }
 
-      toast({
-        title: "Success!",
-        description: `Your expense has been ${action === "add" ? "added" : "updated"} successfully.`,
-      });
-
+      // Reset form & Run extra function passed from parent component if any
       form.reset();
-
-      // Some extra function passed from parent component
       runAfterSubmit && runAfterSubmit();
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: "Uh oh! Something went wrong.",
         description: error.message,
         variant: "destructive",
       });

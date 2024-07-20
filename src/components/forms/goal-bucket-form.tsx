@@ -1,3 +1,4 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -58,7 +59,11 @@ export function GoalBucketForm({ action, bucket, runAfterSubmit }: GoalBucketFor
         // Show success toast
         toast({
           title: "Success!",
-          description: `New bucket ${truncateString(title, 10)} created successfully.`,
+          description: (
+            <p>
+              New bucket <b>{truncateString(title, 20)}</b> has been created successfully.
+            </p>
+          ),
         });
 
         // Redirect to new bucket
@@ -75,7 +80,11 @@ export function GoalBucketForm({ action, bucket, runAfterSubmit }: GoalBucketFor
         // Show success toast
         toast({
           title: "Success!",
-          description: `Bucket ${truncateString(title, 10)} updated successfully.`,
+          description: (
+            <p>
+              Bucket <b>{truncateString(title, 20)}</b> has been updated successfully.
+            </p>
+          ),
         });
 
         // Update URL search params with updated title

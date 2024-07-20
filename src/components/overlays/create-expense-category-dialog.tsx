@@ -17,6 +17,7 @@ import { ButtonWithSpinner } from "@/components/button-with-spinner";
 import { useCreateExpenseCategoryDialog } from "@/store/overlays/useCreateExpenseCategoryDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
+import { truncateString } from "@/lib/utils";
 
 interface NewCategoryDialogProps {}
 
@@ -42,7 +43,11 @@ export function CreateExpenseCategoryDialog({}: NewCategoryDialogProps) {
       setExpenseCategories([...expenseCategories, newCategory]);
       toast({
         title: "Success!",
-        description: "New category has been added successfully.",
+        description: (
+          <p>
+            New category <b>{truncateString(title, 20)}</b> has been added successfully.
+          </p>
+        ),
       });
       form.reset();
       close();

@@ -11,6 +11,7 @@ import { FormDateField } from "@/components/form-date-field";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { IEarning } from "@/lib/types";
+import { truncateString } from "@/lib/utils";
 
 type AddUpdateTypes =
   | {
@@ -70,6 +71,14 @@ export function EarningForm({ action, record, runAfterSubmit }: IncomeFormProps)
           date,
         });
         setEarnings([newIncome, ...earnings]);
+        toast({
+          title: "Success!",
+          description: (
+            <p>
+              New earning <b>{truncateString(title, 20)}</b> has been created successfully.
+            </p>
+          ),
+        });
       } else {
         const updatedIncome = await database.updateIncome({
           id: record.$id,
@@ -78,16 +87,18 @@ export function EarningForm({ action, record, runAfterSubmit }: IncomeFormProps)
           ...(dirtyFields.date ? { date } : {}),
         });
         setEarnings(earnings.map((item) => (item.$id === updatedIncome.$id ? updatedIncome : item)));
+        toast({
+          title: "Success!",
+          description: (
+            <p>
+              Earning <b>{truncateString(title, 20)}</b> has been updated successfully.
+            </p>
+          ),
+        });
       }
 
-      toast({
-        title: "Success!",
-        description: `Your income have been ${action === "add" ? "added" : "updated"} successfully.`,
-      });
-
+      // Reset form & Run extra function passed from parent component if any
       form.reset();
-
-      // Some extra function passed from parent component if any
       runAfterSubmit && runAfterSubmit();
     } catch (error: any) {
       toast({
