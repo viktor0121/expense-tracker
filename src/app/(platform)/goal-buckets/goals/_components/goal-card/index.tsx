@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { Edit3Icon, Trash2Icon } from "lucide-react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { IGoal } from "@/lib/types";
+import { ActionButton } from "@/app/(platform)/goal-buckets/goals/_components/goal-card/action-button";
 import { DecrementButton } from "./decrement-button";
 import { GoalImage } from "./goal-image";
 import { GoalProgress } from "./goal-progress";
@@ -25,6 +27,7 @@ export function GoalCard({ id, title, target, collected, imageId }: BucketCardPr
 
   const increment = () => setAmount((prev) => Math.min(prev + 10, target));
   const decrement = () => setAmount((prev) => Math.max(prev - 10, 0));
+
   const updateCollectedAmount = async () => {
     if (amount === collected) return;
     if (amount > target || amount < 0) return;
@@ -47,22 +50,27 @@ export function GoalCard({ id, title, target, collected, imageId }: BucketCardPr
 
   return (
     <Card className="h-full">
-      <CardContent className="flex h-full min-h-60 flex-col p-2">
-        <GoalImage imageId={imageId} />
+      <CardContent className="group h-full min-h-60 p-2">
+        <div className="relative h-full overflow-hidden">
+          <GoalImage imageId={imageId} />
 
-        <div className="relative flex w-full flex-1 flex-col items-center justify-evenly gap-5 min-h-52 px-3 py-5">
-          <CardTitle className="tracking-wide text-xl text-center">{title}</CardTitle>
+          <ActionButton side="left" icon={Edit3Icon} onClick={() => {}} />
+          <ActionButton side="right" icon={Trash2Icon} onClick={() => {}} className="hover:text-red-500" />
 
-          {/*Save button visible when collected amount is changed*/}
-          {amount !== collected ? <SaveButton onClick={updateCollectedAmount} isLoading={isUpdating} /> : null}
+          <div className="relative flex min-h-52 w-full flex-1 flex-col items-center justify-evenly gap-5 px-3 py-5">
+            <CardTitle className="text-center text-xl tracking-wide">{title}</CardTitle>
 
-          <div className="flex w-full items-center justify-between">
-            <DecrementButton decrement={decrement} value={amount} />
-            <TargetAccomplishmentText value={amount} targetValue={target} />
-            <IncrementButton increment={increment} value={amount} maxValue={target} />
+            {/*Save button visible when collected amount is changed*/}
+            {amount !== collected ? <SaveButton onClick={updateCollectedAmount} isLoading={isUpdating} /> : null}
+
+            <div className="flex w-full items-center justify-between">
+              <DecrementButton decrement={decrement} value={amount} />
+              <TargetAccomplishmentText value={amount} targetValue={target} />
+              <IncrementButton increment={increment} value={amount} maxValue={target} />
+            </div>
+
+            <GoalProgress value={progress} />
           </div>
-
-          <GoalProgress value={progress} />
         </div>
       </CardContent>
     </Card>

@@ -18,7 +18,7 @@ export function GoalImage({ imageId }: GoalImageProps) {
   }, [imageId]);
 
   return (
-    <div className="relative z-50 aspect-video w-full overflow-hidden rounded-md">
+    <div className="relative aspect-video w-full overflow-hidden rounded-md">
       {imageUrl ? (
         <Image
           fill
