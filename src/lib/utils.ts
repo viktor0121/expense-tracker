@@ -13,3 +13,8 @@ export function shuffleArray<T>(array: T[]): T[] {
 
   return array;
 }
+
+export function truncateString(str: string, size: number): string {
+  if (str.length > size) return str.substring(0, size) + "...";
+  return str;
+}
