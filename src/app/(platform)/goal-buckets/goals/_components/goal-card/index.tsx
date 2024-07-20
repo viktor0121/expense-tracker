@@ -14,11 +14,13 @@ import { IncrementButton } from "./increment-button";
 import { SaveButton } from "./save-button";
 import { TargetAccomplishmentText } from "./target-accomplishment-text";
 
-interface BucketCardProps extends Pick<IGoal, "title" | "target" | "collected" | "imageId"> {
-  id: string;
+interface BucketCardProps {
+  goal: IGoal;
 }
 
-export function GoalCard({ id, title, target, collected, imageId }: BucketCardProps) {
+export function GoalCard({ goal }: BucketCardProps) {
+  const { $id: id, title, target, collected, imageId } = goal;
+
   const [amount, setAmount] = useState(collected);
   const [isUpdating, setIsUpdating] = useState(false);
   const { goals, setGoals } = useData();

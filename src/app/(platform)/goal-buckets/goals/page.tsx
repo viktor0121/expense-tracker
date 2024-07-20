@@ -66,13 +66,7 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
           <>
             {goals.map((goal, index) => (
               <BgMotionCard key={index} index={index} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
-                <GoalCard
-                  id={goal.$id}
-                  title={goal.title}
-                  target={goal.target}
-                  collected={goal.collected}
-                  imageId={goal.imageId}
-                />
+                <GoalCard goal={goal} />
               </BgMotionCard>
             ))}
 
