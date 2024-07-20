@@ -61,9 +61,10 @@ export function GoalCard({ goal }: BucketCardProps) {
         <div className="relative h-full overflow-hidden">
           <GoalImage imageId={imageId} />
 
-          <ActionButton side="left" icon={Edit3Icon} onClick={() => updateGoalDialog.open(goal)} />
+          <ActionButton side="left" text="Update" icon={Edit3Icon} onClick={() => updateGoalDialog.open(goal)} />
           <ActionButton
             side="right"
+            text="Delete"
             icon={Trash2Icon}
             onClick={() => deleteGoalDialog.open(goal)}
             className="hover:text-red-500"

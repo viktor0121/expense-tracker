@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 interface ActionButtonProps {
   side: "left" | "right";
+  text: string;
   icon: LucideIcon;
   onClick: () => void;
   className?: string;
@@ -13,7 +14,7 @@ interface ActionButtonProps {
 /*
  * This should be placed in a group container to show the button on group hover
  */
-export function ActionButton({ side, icon: Icon, onClick, className }: ActionButtonProps) {
+export function ActionButton({ side,text, icon: Icon, onClick, className }: ActionButtonProps) {
   return (
     <Button
       size="sm"
@@ -47,7 +48,7 @@ export function ActionButton({ side, icon: Icon, onClick, className }: ActionBut
       )}
     >
       <Icon className="size-4" />
-      <span>Delete</span>
+      <span>{text}</span>
     </Button>
   );
 }
