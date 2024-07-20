@@ -14,7 +14,7 @@ export function CreateGoalDialog() {
           <DialogDescription>Create a new goal</DialogDescription>
         </DialogHeader>
 
-        <GoalForm runAfterSubmit={close} />
+        <GoalForm action="add" runAfterSubmit={close} />
       </DialogContent>
     </Dialog>
   );

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Query } from "appwrite";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -14,11 +15,22 @@ import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { storage } from "@/lib/appwrite/storage";
 import { SUPPORTED_IMAGE_FORMATS } from "@/lib/constants";
+import { IGoal } from "@/lib/types";
 import { truncateString } from "@/lib/utils";
 
-interface GoalFormProps {
+type AddUpdateTypes =
+  | {
+      action: "add";
+      goal?: undefined;
+    }
+  | {
+      action: "update";
+      goal: IGoal;
+    };
+
+type GoalFormProps = AddUpdateTypes & {
   runAfterSubmit?: () => void;
-}
+};
 
 const formSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(250, "Title must be at most 100 characters"),
@@ -34,18 +46,25 @@ const formSchema = z.object({
   collection: z.string().min(1, "Collection is required"),
 });
 
-export function GoalForm({ runAfterSubmit }: GoalFormProps) {
+export function GoalForm({ action, goal, runAfterSubmit }: GoalFormProps) {
+  const addActionDefaultValues = {
+    title: "",
+    target: "",
+    collection: "",
+    image: undefined,
+  };
+  const updateActionDefaultValues = {
+    title: goal?.title,
+    target: String(goal?.target),
+    collection: goal?.goalList.$id,
+    image: undefined,
+  };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      // @ts-ignore
-      target: "",
-      title: "",
-      collection: "",
-    },
+    defaultValues: action === "add" ? addActionDefaultValues : updateActionDefaultValues,
   });
-  const { isSubmitting, isValid, dirtyFields, isDirty } = form.formState;
 
+  const { isSubmitting, isValid, isDirty } = form.formState;
   const { goals, setGoals, goalLists, setGoalLists } = useData();
 
   const fetcher = () => database.getGoalLists([Query.select(["title", "$id"])]);
@@ -60,24 +79,41 @@ export function GoalForm({ runAfterSubmit }: GoalFormProps) {
       let imageId: string | undefined;
       if (image) imageId = await storage.createGoalPhoto({ file: image });
 
-      // Create new goal and add it to the list
-      const newGoal = await database.createGoal({
-        title,
-        target: Number(target),
-        goalList: collection,
-        imageId,
-      });
-      setGoals([...goals, newGoal]);
-
-      // Show success toast
-      toast({
-        title: "Success!",
-        description: (
-          <p>
-            New goal <b>{truncateString(title, 20)}</b> has been added successfully.
-          </p>
-        ),
-      });
+      // Create new goal / update goal and add it to the list
+      if (action === "add") {
+        const newGoal = await database.createGoal({
+          title,
+          target: Number(target),
+          goalList: collection,
+          imageId,
+        });
+        setGoals([...goals, newGoal]);
+        toast({
+          title: "Success!",
+          description: (
+            <p>
+              New goal <b>{truncateString(title, 20)}</b> has been added successfully.
+            </p>
+          ),
+        });
+      } else {
+        const updatedGoal = await database.updateGoal({
+          id: goal.$id,
+          ...(goal.title !== title && { title }),
+          ...(goal.target !== Number(target) && { target: Number(target) }),
+          ...(goal.goalList.$id !== collection && { goalList: collection }),
+          ...(goal.imageId !== imageId && { imageId }),
+        });
+        setGoals(goals.map((goal) => (goal.$id === updatedGoal.$id ? updatedGoal : goal)));
+        toast({
+          title: "Success!",
+          description: (
+            <p>
+              Goal <b>{truncateString(title, 20)}</b> has been updated successfully.
+            </p>
+          ),
+        });
+      }
 
       // Reset Form & Run some extra function passed from parent component if any
       form.reset();
