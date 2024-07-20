@@ -12,7 +12,7 @@ export function SaveButton({ onClick, isLoading }: SaveButtonProps) {
       size="sm"
       onClick={onClick}
       variant="secondary"
-      className="absolute right-0 top-2 rounded-sm"
+      className="absolute h-8  right-0 top-2 rounded-sm"
       btnText="Save"
       isLoading={isLoading}
       loadingText="Saving..."
