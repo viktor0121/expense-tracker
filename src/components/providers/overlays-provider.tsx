@@ -6,6 +6,7 @@ import { CreateGoalBucketDialog } from "@/components/overlays/create-goal-bucket
 import { CreateGoalDialog } from "@/components/overlays/create-goal-dialog";
 import { CreateRecordSheet } from "@/components/overlays/create-record-sheet";
 import { DeleteExpenseCategoryAlertDialog } from "@/components/overlays/delete-expense-category-alert-dialog";
+import { DeleteGoalAlertDialog } from "@/components/overlays/delete-goal-alert-dialog";
 import { DeleteGoalBucketAlertDialog } from "@/components/overlays/delete-goal-bucket-alert-dialog";
 import { DeleteRecordAlertDialog } from "@/components/overlays/delete-record-alert-dialog";
 import { SignOutAlertDialog } from "@/components/overlays/sign-out-alert-dialog";
@@ -31,6 +32,7 @@ export function OverlaysProvider() {
 
       {/*Goal*/}
       <CreateGoalDialog />
+      <DeleteGoalAlertDialog />
 
       {/*Auth*/}
       <SignOutAlertDialog />
