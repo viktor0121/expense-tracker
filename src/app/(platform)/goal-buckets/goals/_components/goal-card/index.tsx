@@ -3,6 +3,8 @@ import { Edit3Icon, Trash2Icon } from "lucide-react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
+import { useDeleteGoalDialog } from "@/store/overlays/useDeleteGoalDialog";
+import { useUpdateGoalDialog } from "@/store/overlays/useUpdateGoalDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { IGoal } from "@/lib/types";
@@ -24,6 +26,9 @@ export function GoalCard({ goal }: BucketCardProps) {
   const [amount, setAmount] = useState(collected);
   const [isUpdating, setIsUpdating] = useState(false);
   const { goals, setGoals } = useData();
+
+  const deleteGoalDialog = useDeleteGoalDialog();
+  const updateGoalDialog = useUpdateGoalDialog();
 
   const progress = (amount / target) * 100;
 
@@ -56,8 +61,13 @@ export function GoalCard({ goal }: BucketCardProps) {
         <div className="relative h-full overflow-hidden">
           <GoalImage imageId={imageId} />
 
-          <ActionButton side="left" icon={Edit3Icon} onClick={() => {}} />
-          <ActionButton side="right" icon={Trash2Icon} onClick={() => {}} className="hover:text-red-500" />
+          <ActionButton side="left" icon={Edit3Icon} onClick={() => updateGoalDialog.open(goal)} />
+          <ActionButton
+            side="right"
+            icon={Trash2Icon}
+            onClick={() => deleteGoalDialog.open(goal)}
+            className="hover:text-red-500"
+          />
 
           <div className="relative flex min-h-52 w-full flex-1 flex-col items-center justify-evenly gap-5 px-3 py-5">
             <CardTitle className="text-center text-xl tracking-wide">{title}</CardTitle>
