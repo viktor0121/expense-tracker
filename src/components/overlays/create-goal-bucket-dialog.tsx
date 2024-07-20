@@ -14,7 +14,7 @@ export function CreateGoalBucketDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <GoalBucketForm runAfterSubmit={createGoalBucketDialog.close} />
+        <GoalBucketForm action="add" runAfterSubmit={createGoalBucketDialog.close} />
       </DialogContent>
     </Dialog>
   );

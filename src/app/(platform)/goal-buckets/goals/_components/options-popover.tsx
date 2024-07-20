@@ -4,34 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { useDeleteGoalBucketDialog } from "@/store/overlays/useDeleteGoalBucketDialog";
+import { useUpdateGoalBucketDialog } from "@/store/overlays/useUpdateGoalBucketDialog";
 import { IGoalList } from "@/lib/types";
 
 interface OptionsPopoverProps {
   bucket: IGoalList;
 }
 
-export function OptionsPopover({ bucketId }: OptionsPopoverProps) {
-  const router = useRouter();
-
-  const onDelete = async () => {
-    try {
-      await database.deleteGoalList({ id: bucketId });
-      toast({
-        title: "Success!",
-        description: "Bucket deleted successfully.",
-      });
-      router.push("/goal-buckets")
-    } catch (error: any) {
-      toast({
-        title: "Uh oh! Something went wrong.",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
-  };
 export function OptionsPopover({ bucket }: OptionsPopoverProps) {
   const deleteBucketDialog = useDeleteGoalBucketDialog();
+  const updateBucketDialog = useUpdateGoalBucketDialog();
+
   const onDelete = () => deleteBucketDialog.open(bucket);
+  const onUpdate = () => updateBucketDialog.open(bucket);
 
   return (
     <Popover>
@@ -55,6 +40,15 @@ export function OptionsPopover({ bucket }: OptionsPopoverProps) {
               className="flex w-full items-center justify-start gap-2 rounded-none text-start"
             >
               Delete Bucket
+            </Button>
+
+            <Button
+              size="sm"
+              onClick={onUpdate}
+              variant="ghost"
+              className="flex w-full items-center justify-start gap-2 rounded-none text-start"
+            >
+              Update Bucket
             </Button>
           </div>
         </div>
