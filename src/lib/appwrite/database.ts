@@ -77,6 +77,11 @@ interface CreateGoalListParams {
   title: string;
 }
 
+interface UpdateGoalListParams {
+  id: string;
+  title?: string;
+}
+
 interface DeleteGoalListParams extends DeleteExpenseParams {}
 
 export class DatabaseServices {
@@ -332,6 +337,18 @@ export class DatabaseServices {
       );
     } catch (error: any) {
       console.error("Appwrite :: createGoalList() :: ", error);
+      throw error;
+    }
+  }
+
+  async updateGoalList({ id, title }: UpdateGoalListParams): Promise<IGoalList> {
+    try {
+      const data = {
+        ...(title ? { title } : {}),
+      };
+      return this.databases.updateDocument(env.awDatabaseId, env.awGoalListCollectionId, id as string, data);
+    } catch (error: any) {
+      console.error("Appwrite :: updateGoalList() :: ", error);
       throw error;
     }
   }
