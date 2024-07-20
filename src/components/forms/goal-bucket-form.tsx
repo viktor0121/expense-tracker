@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { ButtonWithSpinner } from "@/components/button-with-spinner";
+import { useReplaceSearchParam } from "@/hooks/useReplaceSearchParam";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { IGoalList } from "@/lib/types";
@@ -43,25 +45,41 @@ export function GoalBucketForm({ action, bucket, runAfterSubmit }: GoalBucketFor
   const { isSubmitting, isValid, isDirty } = form.formState;
   const { setGoalLists, goalLists } = useData();
 
+  const replaceSearchParam = useReplaceSearchParam();
+  const router = useRouter();
+
   const submit = form.handleSubmit(async ({ title }) => {
     try {
       if (action === "add") {
+        // Create new bucket and add to bucket list
         const newGoalList = await database.createGoalList({ title });
         setGoalLists([newGoalList, ...goalLists]);
+
+        // Show success toast
         toast({
           title: "Success!",
           description: `New bucket ${truncateString(title, 10)} created successfully.`,
         });
+
+        // Redirect to new bucket
+        const newBucketUrl = `/goal-buckets/goals?bucketId=${encodeURIComponent(newGoalList.$id)}&bucketTitle=${encodeURIComponent(newGoalList.title)}`;
+        router.push(newBucketUrl);
       } else {
+        // Update existing bucket and update bucket list
         const updatedGoalList = await database.updateGoalList({
           id: bucket.$id,
           ...(title !== bucket?.title ? { title } : {}),
         });
         setGoalLists(goalLists.map((item) => (item.$id === updatedGoalList.$id ? updatedGoalList : item)));
+
+        // Show success toast
         toast({
           title: "Success!",
           description: `Bucket ${truncateString(title, 10)} updated successfully.`,
         });
+
+        // Update URL search params with updated title
+        replaceSearchParam("bucketTitle", updatedGoalList.title);
       }
 
       // Reset form & run extra function passed from parent component
