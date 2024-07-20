@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Edit3Icon, Trash2Icon } from "lucide-react";
+import { CheckIcon, CheckSquareIcon, CircleCheckBigIcon, CircleCheckIcon, Edit3Icon, Trash2Icon } from "lucide-react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
@@ -61,13 +61,26 @@ export function GoalCard({ goal }: BucketCardProps) {
         <div className="relative h-full overflow-hidden">
           <GoalImage imageId={imageId} />
 
-          <ActionButton side="left" text="Update" icon={Edit3Icon} onClick={() => updateGoalDialog.open(goal)} />
+          <ActionButton
+            side="right"
+            text="Update"
+            icon={Edit3Icon}
+            onClick={() => updateGoalDialog.open(goal)}
+            className="top-1 translate-y-0"
+          />
+          <ActionButton
+            side="right"
+            text="Mark Complete"
+            icon={CheckSquareIcon}
+            onClick={() => {}}
+            className="top-2 translate-y-full"
+          />
           <ActionButton
             side="right"
             text="Delete"
             icon={Trash2Icon}
             onClick={() => deleteGoalDialog.open(goal)}
-            className="hover:text-red-500"
+            className="top-3 translate-y-[200%] hover:text-red-500"
           />
 
           <div className="relative flex min-h-52 w-full flex-1 flex-col items-center justify-evenly gap-5 px-3 py-5">
