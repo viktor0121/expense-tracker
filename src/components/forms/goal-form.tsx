@@ -47,7 +47,9 @@ export function GoalForm({ runAfterSubmit }: GoalFormProps) {
   const { isSubmitting, isValid, dirtyFields, isDirty } = form.formState;
 
   const { goals, setGoals, goalLists, setGoalLists } = useData();
-  const { data: goalListsData } = useAppwriteFetch(() => database.getGoalLists());
+
+  const fetcher = () => database.getGoalLists([Query.select(["title", "$id"])]);
+  const { data: goalListsData } = useAppwriteFetch(fetcher);
 
   const submit = form.handleSubmit(async ({ title, target, collection, image: imageFileList }) => {
     try {
