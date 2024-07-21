@@ -63,6 +63,7 @@ export interface IGoal extends Models.Document {
   collected: number;
   imageId: string | null;
   goalList: IGoalList | Pick<IGoalList, "$id" | "title">;
+  completed: boolean;
 }
 
 // STATES

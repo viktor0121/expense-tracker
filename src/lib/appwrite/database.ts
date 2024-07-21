@@ -63,6 +63,7 @@ interface UpdateGoalParams {
   collected?: number;
   imageId?: string;
   goalList?: string;
+  completed?: boolean;
 }
 
 interface DeleteGoalParams extends DeleteExpenseParams {}
@@ -258,12 +259,13 @@ export class DatabaseServices {
     }
   }
 
-  async updateGoal({ id, title, target, collected, imageId, goalList }: UpdateGoalParams): Promise<IGoal> {
+  async updateGoal({ id, title, target, completed, collected, imageId, goalList }: UpdateGoalParams): Promise<IGoal> {
     try {
       const data = {
         ...(title ? { title } : {}),
         ...(target ? { target } : {}),
         ...(collected ? { collected } : {}),
+        ...(completed === true || completed === false ? { completed } : {}),
         ...(imageId ? { imageId } : {}),
         ...(goalList ? { goalList } : {}),
       };
