@@ -32,7 +32,7 @@ export function OptionsPopover({ bucket }: OptionsPopoverProps) {
           <h4 className="text-center font-medium leading-none">Bucket Options</h4>
           <Separator />
 
-          <div className="grid gap-2">
+          <div className="grid">
             <Button
               size="sm"
               onClick={onDelete}
