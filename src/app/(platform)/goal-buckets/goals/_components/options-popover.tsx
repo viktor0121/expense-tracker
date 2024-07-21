@@ -35,20 +35,19 @@ export function OptionsPopover({ bucket }: OptionsPopoverProps) {
           <div className="grid">
             <Button
               size="sm"
-              onClick={onDelete}
-              variant="ghost"
-              className="flex w-full items-center justify-start gap-2 rounded-none text-start"
-            >
-              Delete Bucket
-            </Button>
-
-            <Button
-              size="sm"
               onClick={onUpdate}
               variant="ghost"
               className="flex w-full items-center justify-start gap-2 rounded-none text-start"
             >
               Update Bucket
+            </Button>
+            <Button
+              size="sm"
+              onClick={onDelete}
+              variant="ghost"
+              className="flex w-full items-center justify-start gap-2 rounded-none text-start hover:text-red-500"
+            >
+              Delete Bucket
             </Button>
           </div>
         </div>
