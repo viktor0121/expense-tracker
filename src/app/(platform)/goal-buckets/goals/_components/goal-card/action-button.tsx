@@ -1,9 +1,10 @@
 import React from "react";
-import { LucideIcon } from "lucide-react";
+import { Loader2Icon, LoaderCircle, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface ActionButtonProps {
+  isSubmitting?: boolean;
   side: "left" | "right";
   text: string;
   icon: LucideIcon;
@@ -14,13 +15,14 @@ interface ActionButtonProps {
 /*
  * This should be placed in a group container to show the button on group hover
  */
-export function ActionButton({ side, text, icon: Icon, onClick, className }: ActionButtonProps) {
+export function ActionButton({ side, isSubmitting, text, icon: Icon, onClick, className }: ActionButtonProps) {
   return (
     <Button
       size="sm"
       variant="ghost"
       onClick={onClick}
       aria-label="Delete goal"
+      disabled={isSubmitting}
       className={cn(
         // Translate the button to the left or right
         "gap-2.5 px-2.5",
@@ -47,7 +49,7 @@ export function ActionButton({ side, text, icon: Icon, onClick, className }: Act
         className,
       )}
     >
-      <Icon className="size-4" />
+      {isSubmitting ? <Loader2Icon className="size-4 animate-spin" /> : <Icon className="size-4" />}
       <span>{text}</span>
     </Button>
   );
