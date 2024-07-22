@@ -37,8 +37,12 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
   useEffect(() => {
     if (goalListData === "invalid_id") notFound();
     if (goalListData) {
-      setGoals(goalListData.goals);
       setBucket(goalListData);
+
+      // TODO: Try to improve this by only fetching incomplete goals
+      // Setting goals which are not completed to goals state
+      const incomplete_goals = goalListData.goals.filter((goal) => !goal.completed);
+      setGoals(incomplete_goals);
     }
   }, [goalListData, setGoals]);
 
