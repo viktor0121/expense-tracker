@@ -37,7 +37,7 @@ export function GoalCard({ goal }: BucketCardProps) {
   const deleteGoalDialog = useDeleteGoalDialog();
   const updateGoalDialog = useUpdateGoalDialog();
 
-  const { goals, setGoals } = useData();
+  const { unfinishedGoals, setUnfinishedGoals } = useData();
   const progress = (amount / target) * 100;
 
   const increment = () => setAmount((prev) => Math.min(prev + 10, target));
@@ -52,8 +52,10 @@ export function GoalCard({ goal }: BucketCardProps) {
       const updatedGoal = await database.updateGoal({ id, collected: amount });
 
       // Update the goals state and also add goalList info to updatedGoal
-      const newGoals = goals.map((goal) => (goal.$id === id ? { ...updatedGoal, goalList: goal.goalList } : goal));
-      setGoals(newGoals);
+      const newGoals = unfinishedGoals.map((goal) =>
+        goal.$id === id ? { ...updatedGoal, goalList: goal.goalList } : goal,
+      );
+      setUnfinishedGoals(newGoals);
     } catch (error) {
       toast({
         title: "Uh oh! Something went wrong.",
@@ -90,9 +92,11 @@ export function GoalCard({ goal }: BucketCardProps) {
       if (goal.target !== amount) setAmount(goal.target);
 
       // Update the goals state and also add goalList info to updatedGoal
-      const newGoals = goals.map((goal) => (goal.$id === id ? { ...updatedGoal, goalList: goal.goalList } : goal));
+      const newGoals = unfinishedGoals.map((goal) =>
+        goal.$id === id ? { ...updatedGoal, goalList: goal.goalList } : goal,
+      );
 
-      setGoals(newGoals);
+      setUnfinishedGoals(newGoals);
     } catch (error: any) {
       console.log(error);
       toast({

@@ -65,7 +65,7 @@ export function GoalForm({ action, goal, runAfterSubmit }: GoalFormProps) {
   });
 
   const { isSubmitting, isValid, isDirty } = form.formState;
-  const { goals, setGoals, goalLists, setGoalLists } = useData();
+  const { unfinishedGoals, setUnfinishedGoals, goalLists, setGoalLists } = useData();
 
   const fetcher = () => database.getGoalLists([Query.select(["title", "$id"])]);
   const { data: goalListsData } = useAppwriteFetch(fetcher);
@@ -87,7 +87,7 @@ export function GoalForm({ action, goal, runAfterSubmit }: GoalFormProps) {
           goalList: collection,
           imageId,
         });
-        setGoals([...goals, newGoal]);
+        setUnfinishedGoals([...unfinishedGoals, newGoal]);
         toast({
           title: "Success!",
           description: (
@@ -104,7 +104,7 @@ export function GoalForm({ action, goal, runAfterSubmit }: GoalFormProps) {
           ...(goal.goalList.$id !== collection && { goalList: collection }),
           ...(goal.imageId !== imageId && { imageId }),
         });
-        setGoals(goals.map((goal) => (goal.$id === updatedGoal.$id ? updatedGoal : goal)));
+        setUnfinishedGoals(unfinishedGoals.map((goal) => (goal.$id === updatedGoal.$id ? updatedGoal : goal)));
         toast({
           title: "Success!",
           description: (

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
+import { Query } from "appwrite";
 import { BgMotionCard } from "@/components/bg-motion-card";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
 import { useCreateGoalDialog } from "@/store/overlays/useCreateGoalDialog";
@@ -26,28 +27,25 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [bucket, setBucket] = useState<IGoalList | null>(null);
-  const { goals, setGoals } = useData();
+  const { unfinishedGoals, setUnfinishedGoals } = useData();
   const createGoalDialog = useCreateGoalDialog();
 
   // Fetch goal list data
-  const fetcher = () => database.getGoalList({ id: bucketId });
-  const { data: goalListData, isLoading: isGoalListLoading } = useAppwriteFetch(fetcher);
+  const queries = [Query.equal("completed", false)];
+  const fetcher = () => database.getGoals({ bucketId, queries });
+  const { data: goalsData, isLoading: isGoalListLoading } = useAppwriteFetch(fetcher);
 
   // Set goals and bucket data when fetched
   useEffect(() => {
-    if (goalListData === "invalid_id") notFound();
-    if (goalListData) {
-      setBucket(goalListData);
-
-      // TODO: Try to improve this by only fetching incomplete goals
-      // Setting goals which are not completed to goals state
-      const incomplete_goals = goalListData.goals.filter((goal) => !goal.completed);
-      setGoals(incomplete_goals);
+    if (goalsData === "invalid_id") notFound();
+    if (goalsData) {
+      setBucket(goalsData[0].goalList);
+      setUnfinishedGoals(goalsData);
     }
-  }, [goalListData, setGoals]);
+  }, [goalsData, setUnfinishedGoals]);
 
   // Clear goals when component unmounts
-  useEffect(() => setGoals([]), [setGoals]);
+  useEffect(() => setUnfinishedGoals([]), [setUnfinishedGoals]);
 
   if (!bucket) return null;
 
@@ -68,14 +66,18 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
           </>
         ) : (
           <>
-            {goals.map((goal, index) => (
+            {unfinishedGoals.map((goal, index) => (
               <BgMotionCard key={index} index={index} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
                 <GoalCard goal={goal} />
               </BgMotionCard>
             ))}
 
             <BgMotionCard index={-1} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
-              <CreateCard text="New Goal" showGradientBorder={goals.length === 0} onClick={createGoalDialog.open} />
+              <CreateCard
+                text="New Goal"
+                showGradientBorder={unfinishedGoals.length === 0}
+                onClick={createGoalDialog.open}
+              />
             </BgMotionCard>
           </>
         )}

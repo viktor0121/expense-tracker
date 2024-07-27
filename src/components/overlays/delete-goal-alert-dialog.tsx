@@ -17,7 +17,7 @@ import { truncateString } from "@/lib/utils";
 
 export function DeleteGoalAlertDialog() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const { goals, setGoals } = useData();
+  const { unfinishedGoals, setUnfinishedGoals } = useData();
   const { isOpen, goal, close } = useDeleteGoalDialog();
 
   if (!isOpen || !goal) return null;
@@ -27,8 +27,8 @@ export function DeleteGoalAlertDialog() {
 
     try {
       await database.deleteGoal({ id: goal.$id });
-      const newGoals = goals.filter((item) => item.$id !== goal.$id);
-      setGoals(newGoals);
+      const newGoals = unfinishedGoals.filter((item) => item.$id !== goal.$id);
+      setUnfinishedGoals(newGoals);
 
       // Show success toast and close dialog
       toast({
