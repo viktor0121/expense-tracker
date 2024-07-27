@@ -69,8 +69,8 @@ interface UpdateGoalParams {
 interface DeleteGoalParams extends DeleteExpenseParams {}
 
 // GOAL LIST
-interface GetGoalListParams {
-  id: string;
+interface GetGoalsParams {
+  bucketId: string;
   queries?: string[];
 }
 
@@ -248,6 +248,25 @@ export class DatabaseServices {
   }
 
   // GOALS
+  async getGoals({ bucketId, queries }: GetGoalsParams): Promise<IGoal[] | "invalid_id"> {
+    try {
+      const data = await this.databases.listDocuments(
+        env.awDatabaseId,
+        env.awGoalCollectionId,
+        [Query.orderDesc("$createdAt"), Query.equal("goalList", bucketId)].concat(
+          queries && queries.length > 0 ? queries : [],
+        ),
+      );
+
+      if (data.documents.length === 0) return "invalid_id";
+
+      return data.documents as IGoal[];
+    } catch (error: any) {
+      console.log("Appwrite :: getGoalList() :: ", error);
+      throw error;
+    }
+  }
+
   async createGoal({ title, target, imageId, goalList }: CreateGoalParams): Promise<IGoal> {
     try {
       const data = { title, target, goalList, ...(imageId ? { imageId } : {}) };
@@ -286,31 +305,6 @@ export class DatabaseServices {
   }
 
   // GOAL LIST
-  async getGoalList({ id, queries }: GetGoalListParams): Promise<IGoalList | "invalid_id"> {
-    try {
-      const data = await this.databases.listDocuments(
-        env.awDatabaseId,
-        env.awGoalListCollectionId,
-        [Query.orderDesc("$createdAt"), Query.equal("$id", id)].concat(queries && queries.length > 0 ? queries : []),
-      );
-
-      if (data.documents.length === 0) return "invalid_id";
-
-      const goalList = data.documents[0] as IGoalList;
-      goalList.goals.forEach((goal) => {
-        goal.goalList = {
-          $id: goalList.$id,
-          title: goalList.title,
-        };
-      });
-
-      return goalList;
-    } catch (error: any) {
-      console.log("Appwrite :: getGoalList() :: ", error);
-      throw error;
-    }
-  }
-
   async getGoalLists(queries?: string[]): Promise<IGoalList[]> {
     try {
       const data = await this.databases.listDocuments(

@@ -54,7 +54,7 @@ export interface IExpense extends Models.Document {
 
 export interface IGoalList extends Models.Document {
   title: string;
-  goals: IGoal[];
+  goals?: IGoal[];
 }
 
 export interface IGoal extends Models.Document {
@@ -62,7 +62,7 @@ export interface IGoal extends Models.Document {
   target: number;
   collected: number;
   imageId: string | null;
-  goalList: IGoalList | Pick<IGoalList, "$id" | "title">;
+  goalList: IGoalList;
   completed: boolean;
 }
 
