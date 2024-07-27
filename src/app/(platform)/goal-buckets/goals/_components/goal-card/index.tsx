@@ -50,7 +50,9 @@ export function GoalCard({ goal }: BucketCardProps) {
     setIsCollectedUpdating(true);
     try {
       const updatedGoal = await database.updateGoal({ id, collected: amount });
-      const newGoals = goals.map((goal) => (goal.$id === id ? updatedGoal : goal));
+
+      // Update the goals state and also add goalList info to updatedGoal
+      const newGoals = goals.map((goal) => (goal.$id === id ? { ...updatedGoal, goalList: goal.goalList } : goal));
       setGoals(newGoals);
     } catch (error) {
       toast({
@@ -87,8 +89,9 @@ export function GoalCard({ goal }: BucketCardProps) {
       // Ensure that amount is equal to target after completion
       if (goal.target !== amount) setAmount(goal.target);
 
-      // Update the goals state
-      const newGoals = goals.map((goal) => (goal.$id === id ? updatedGoal : goal));
+      // Update the goals state and also add goalList info to updatedGoal
+      const newGoals = goals.map((goal) => (goal.$id === id ? { ...updatedGoal, goalList: goal.goalList } : goal));
+
       setGoals(newGoals);
     } catch (error: any) {
       console.log(error);
