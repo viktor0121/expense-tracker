@@ -8,6 +8,8 @@ interface DataStore {
   setEarnings: (earnings: IEarning[]) => void;
   expenseCategories: IExpenseCategory[];
   setExpenseCategories: (expenseCategories: IExpenseCategory[]) => void;
+  finishedGoals: IGoal[];
+  setFinishedGoals: (unfinishedGoals: IGoal[]) => void;
   unfinishedGoals: IGoal[];
   setUnfinishedGoals: (unfinishedGoals: IGoal[]) => void;
   goalLists: IGoalList[];
@@ -21,6 +23,8 @@ export const useData = create<DataStore>((set) => ({
   setEarnings: (earnings) => set({ earnings }),
   expenseCategories: [],
   setExpenseCategories: (expenseCategories) => set({ expenseCategories }),
+  finishedGoals: [],
+  setFinishedGoals: (unfinishedGoals) => set({ unfinishedGoals }),
   unfinishedGoals: [],
   setUnfinishedGoals: (unfinishedGoals) => set({ unfinishedGoals }),
   goalLists: [],
