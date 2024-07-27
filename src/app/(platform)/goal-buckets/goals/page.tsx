@@ -31,13 +31,11 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
   const createGoalDialog = useCreateGoalDialog();
 
   // Fetch goal list data
-  const queries = [Query.equal("completed", false)];
-  const fetcher = () => database.getGoals({ bucketId, queries });
+  const fetcher = () => database.getGoals([Query.equal("completed", false), Query.equal("goalList", bucketId)]);
   const { data: goalsData, isLoading: isGoalListLoading } = useAppwriteFetch(fetcher);
 
   // Set goals and bucket data when fetched
   useEffect(() => {
-    if (goalsData === "invalid_id") notFound();
     if (goalsData) {
       setBucket(goalsData[0].goalList);
       setUnfinishedGoals(goalsData);

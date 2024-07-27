@@ -69,11 +69,6 @@ interface UpdateGoalParams {
 interface DeleteGoalParams extends DeleteExpenseParams {}
 
 // GOAL LIST
-interface GetGoalsParams {
-  bucketId: string;
-  queries?: string[];
-}
-
 interface CreateGoalListParams {
   title: string;
 }
@@ -248,17 +243,13 @@ export class DatabaseServices {
   }
 
   // GOALS
-  async getGoals({ bucketId, queries }: GetGoalsParams): Promise<IGoal[] | "invalid_id"> {
+  async getGoals(queries?: string[]): Promise<IGoal[]> {
     try {
       const data = await this.databases.listDocuments(
         env.awDatabaseId,
         env.awGoalCollectionId,
-        [Query.orderDesc("$createdAt"), Query.equal("goalList", bucketId)].concat(
-          queries && queries.length > 0 ? queries : [],
-        ),
+        [Query.orderDesc("$createdAt")].concat(queries && queries.length > 0 ? queries : []),
       );
-
-      if (data.documents.length === 0) return "invalid_id";
 
       return data.documents as IGoal[];
     } catch (error: any) {
