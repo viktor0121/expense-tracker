@@ -30,39 +30,38 @@ export function OptionsPopover({ bucket }: OptionsPopoverProps) {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="px-0" side="top" align="end">
+      <PopoverContent className="px-0 pb-1" side="top" align="end">
         <h4 className="text-center font-medium leading-none">Bucket Options</h4>
-        <Separator className="mb-1 mt-4" />
 
-        <div>
-          <Button
-            size="sm"
-            onClick={onUpdate}
-            variant="ghost"
-            className="flex w-full items-center justify-start gap-2 rounded-none text-start"
-          >
-            Update Bucket
-          </Button>
-          <Button
-            size="sm"
-            onClick={onDelete}
-            variant="ghost"
-            className="flex w-full items-center justify-start gap-2 rounded-none text-start hover:text-red-500"
-          >
-            Delete Bucket
-          </Button>
+        <Separator className="mt-4" />
 
-          <Separator className="my-1" />
+        <Button
+          size="sm"
+          onClick={onUpdate}
+          variant="ghost"
+          className="flex w-full items-center justify-start gap-2 rounded-none px-5 font-semibold"
+        >
+          Update Bucket
+        </Button>
+        <Button
+          size="sm"
+          onClick={onDelete}
+          variant="ghost"
+          className="flex w-full items-center justify-start gap-2 rounded-none px-5 font-semibold hover:text-red-500"
+        >
+          Delete Bucket
+        </Button>
 
-          <Button
-            size="sm"
-            onClick={onCompletedGoals}
-            variant="ghost"
-            className="flex w-full items-center justify-start gap-2 rounded-none text-start"
-          >
-           Completed Goals
-          </Button>
-        </div>
+        <Separator />
+
+        <Button
+          size="sm"
+          onClick={onCompletedGoals}
+          variant="ghost"
+          className="flex w-full items-center justify-start gap-2 rounded-none px-5 font-semibold"
+        >
+          Completed Goals
+        </Button>
       </PopoverContent>
     </Popover>
   );
