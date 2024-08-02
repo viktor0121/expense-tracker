@@ -19,7 +19,7 @@ export function OptionsPopover({ bucket }: OptionsPopoverProps) {
 
   const onDelete = () => deleteBucketDialog.open(bucket);
   const onUpdate = () => updateBucketDialog.open(bucket);
-  const onCompletedGoals = () => completedGoalsSheet.open();
+  const onCompletedGoals = () => completedGoalsSheet.open(bucket);
 
   return (
     <Popover>
