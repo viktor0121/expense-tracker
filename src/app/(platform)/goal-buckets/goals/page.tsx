@@ -27,8 +27,11 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [bucket, setBucket] = useState<IGoalList | null>(null);
-  const { unfinishedGoals, setUnfinishedGoals } = useData();
+
   const createGoalDialog = useCreateGoalDialog();
+  const onCreate = () => createGoalDialog.open(bucket);
+
+  const { unfinishedGoals, setUnfinishedGoals } = useData();
 
   // Fetch goal list data
   const fetcher = () => database.getGoals([Query.equal("completed", false), Query.equal("goalList", bucketId)]);
@@ -71,11 +74,7 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
             ))}
 
             <BgMotionCard index={-1} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
-              <CreateCard
-                text="New Goal"
-                showGradientBorder={unfinishedGoals.length === 0}
-                onClick={createGoalDialog.open}
-              />
+              <CreateCard text="New Goal" showGradientBorder={unfinishedGoals.length === 0} onClick={onCreate} />
             </BgMotionCard>
           </>
         )}

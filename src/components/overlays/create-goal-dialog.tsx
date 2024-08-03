@@ -4,7 +4,7 @@ import { GoalForm } from "@/components/forms/goal-form";
 import { useCreateGoalDialog } from "@/store/overlays/useCreateGoalDialog";
 
 export function CreateGoalDialog() {
-  const { isOpen, close } = useCreateGoalDialog();
+  const { isOpen, close, goalList } = useCreateGoalDialog();
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
@@ -14,7 +14,7 @@ export function CreateGoalDialog() {
           <DialogDescription>Create a new goal</DialogDescription>
         </DialogHeader>
 
-        <GoalForm action="add" runAfterSubmit={close} />
+        <GoalForm action="add" goal={goalList ? { goalList } : undefined} runAfterSubmit={close} />
       </DialogContent>
     </Dialog>
   );

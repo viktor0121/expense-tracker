@@ -15,13 +15,20 @@ import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { storage } from "@/lib/appwrite/storage";
 import { SUPPORTED_IMAGE_FORMATS } from "@/lib/constants";
-import { IGoal } from "@/lib/types";
+import { IGoal, IGoalList } from "@/lib/types";
 import { truncateString } from "@/lib/utils";
 
 type AddUpdateTypes =
   | {
       action: "add";
-      goal?: undefined;
+      goal?: {
+        title?: never;
+        target?: never;
+        collected?: never;
+        imageId?: never;
+        completed?: never;
+        goalList: IGoalList;
+      };
     }
   | {
       action: "update";
@@ -50,7 +57,7 @@ export function GoalForm({ action, goal, runAfterSubmit }: GoalFormProps) {
   const addActionDefaultValues = {
     title: "",
     target: "",
-    collection: "",
+    collection: goal?.goalList.$id,
     image: undefined,
   };
   const updateActionDefaultValues = {
