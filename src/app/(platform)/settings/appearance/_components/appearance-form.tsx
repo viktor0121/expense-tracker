@@ -92,7 +92,7 @@ function ThemeFormItem({ children, value, title }: ThemeFormItemProps) {
             height: `${themeItemDimensions.height}px`,
             width: `${themeItemDimensions.width}px`,
           }}
-          className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:border-accent hover:bg-accent hover:text-accent-foreground"
+          className="mx-auto rounded-md border-2 border-muted bg-popover p-1 hover:border-accent hover:bg-accent hover:text-accent-foreground"
         >
           {children}
         </div>
@@ -146,7 +146,7 @@ export function AppearanceForm() {
               <FormLabel>Theme</FormLabel>
               <FormDescription>Select the theme for the dashboard.</FormDescription>
               <FormMessage />
-              <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-3 gap-8 pt-2">
+              <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap gap-4 sm:gap-8 pt-2">
                 <ThemeFormItem value={ETheme.Light} title="Light">
                   <LightSkeleton />
                 </ThemeFormItem>
