@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { CompletedGoalsDialog } from "@/components/overlays/completed-goals-dialog";
 import { CreateExpenseCategoryDialog } from "@/components/overlays/create-expense-category-dialog";
 import { CreateGoalBucketDialog } from "@/components/overlays/create-goal-bucket-dialog";
 import { CreateGoalDialog } from "@/components/overlays/create-goal-dialog";
@@ -30,6 +31,7 @@ export function OverlaysProvider() {
       <CreateGoalBucketDialog />
       <UpdateGoalBucketDialog />
       <DeleteGoalBucketAlertDialog />
+      <CompletedGoalsDialog />
 
       {/*Goal*/}
       <CreateGoalDialog />
