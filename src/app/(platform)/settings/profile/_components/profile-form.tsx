@@ -179,7 +179,7 @@ export function ProfileForm() {
               <FormControl className="text-base-semibold text-gray-200">
                 <>
                   <div className="flex items-center gap-5 pt-1">
-                    <div className="aspect-square size-20 overflow-hidden rounded-full outline outline-accent md:size-32">
+                    <div className="aspect-square size-20 shrink-0 overflow-hidden rounded-full outline outline-accent md:size-32">
                       {avatar ? (
                         <Image
                           src={avatar}
