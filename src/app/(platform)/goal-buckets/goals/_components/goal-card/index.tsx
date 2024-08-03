@@ -1,18 +1,18 @@
 import React, { Fragment, useState } from "react";
-import { CheckIcon, CheckSquareIcon, CircleCheckBigIcon, CircleCheckIcon, Edit3Icon, Trash2Icon } from "lucide-react";
+import { CheckSquareIcon, Edit3Icon, Trash2Icon } from "lucide-react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
 import { BorderGradient } from "@/components/border-gradient";
+import { GoalActionButton } from "@/components/goal-card/goal-action-button";
+import { GoalImage } from "@/components/goal-card/goal-image";
 import { useDeleteGoalDialog } from "@/store/overlays/useDeleteGoalDialog";
 import { useUpdateGoalDialog } from "@/store/overlays/useUpdateGoalDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { IGoal } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { ActionButton } from "@/app/(platform)/goal-buckets/goals/_components/goal-card/action-button";
 import { DecrementButton } from "./decrement-button";
-import { GoalImage } from "./goal-image";
 import { GoalProgress } from "./goal-progress";
 import { IncrementButton } from "./increment-button";
 import { SaveButton } from "./save-button";
@@ -118,7 +118,7 @@ export function GoalCard({ goal }: BucketCardProps) {
           <div className="relative h-full overflow-hidden">
             <GoalImage imageId={imageId} />
 
-            <ActionButton
+            <GoalActionButton
               side="right"
               isSubmitting={isCompletedUpdating}
               text={goal.completed ? "Mark as incomplete" : "Mark as complete"}
@@ -127,7 +127,7 @@ export function GoalCard({ goal }: BucketCardProps) {
               className={cn("top-1 translate-y-0", goal.completed && "bg-sky-500 hover:bg-sky-500")}
             />
             {!goal.completed ? (
-              <ActionButton
+              <GoalActionButton
                 side="right"
                 text="Update"
                 icon={Edit3Icon}
@@ -136,7 +136,7 @@ export function GoalCard({ goal }: BucketCardProps) {
               />
             ) : null}
             {!goal.completed ? (
-              <ActionButton
+              <GoalActionButton
                 side="right"
                 text="Delete"
                 icon={Trash2Icon}

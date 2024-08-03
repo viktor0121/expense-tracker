@@ -15,7 +15,7 @@ interface ActionButtonProps {
 /*
  * This should be placed in a group container to show the button on group hover
  */
-export function ActionButton({ side, isSubmitting, text, icon: Icon, onClick, className }: ActionButtonProps) {
+export function GoalActionButton({ side, isSubmitting, text, icon: Icon, onClick, className }: ActionButtonProps) {
   return (
     <Button
       size="sm"
