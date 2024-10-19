@@ -67,7 +67,7 @@ export function GoalBucketForm({ action, bucket, runAfterSubmit }: GoalBucketFor
         });
 
         // Redirect to new bucket
-        const newBucketUrl = `/goal-buckets/goals?bucketId=${encodeURIComponent(newGoalList.$id)}&bucketTitle=${encodeURIComponent(newGoalList.title)}`;
+        const newBucketUrl = `/goal-buckets/${encodeURIComponent(newGoalList.$id)}?bucketTitle=${encodeURIComponent(newGoalList.title)}`;
         router.push(newBucketUrl);
       } else {
         // Update existing bucket and update bucket list

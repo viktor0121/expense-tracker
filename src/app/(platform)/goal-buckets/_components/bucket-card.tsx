@@ -10,7 +10,7 @@ interface BucketCardProps {
 
 export function BucketCard({ id, title }: BucketCardProps) {
   return (
-    <Link href={`/goal-buckets/goals?bucketId=${encodeURIComponent(id)}&bucketTitle=${encodeURIComponent(title)}`}>
+    <Link href={`/goal-buckets/${encodeURIComponent(id)}?bucketTitle=${encodeURIComponent(title)}`}>
       <Card className="h-full cursor-pointer">
         <CardContent className="flex h-full min-h-60 items-center justify-center p-6">
           <CardTitle className="text-center text-xl tracking-wide">{title}</CardTitle>

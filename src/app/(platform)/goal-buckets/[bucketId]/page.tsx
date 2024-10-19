@@ -1,14 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
 import { Query } from "appwrite";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { BgMotionCard } from "@/components/bg-motion-card";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
-import { useCreateGoalDialog } from "@/store/overlays/useCreateGoalDialog";
 import { useData } from "@/store/useData";
 import { database } from "@/lib/appwrite/database";
 import { IGoalList } from "@/lib/types";
@@ -16,23 +11,19 @@ import { CreateCard } from "../_components/create-card";
 import { GoalCard } from "./_components/goal-card";
 import { OptionsPopover } from "./_components/options-popover";
 
-interface CollectionPageProps {
-  searchParams: {
-    bucketId: string;
-    bucketTitle: string;
-  };
+interface BucketPageProps {
+  params: { bucketId: string };
+  searchParams: { bucketTitle: string };
 }
 
-export default function BucketPage({ searchParams }: CollectionPageProps) {
-  const bucketId = searchParams.bucketId;
+export default function BucketPage({ params, searchParams }: BucketPageProps) {
+  const bucketId = params.bucketId;
   const bucketTitle = searchParams.bucketTitle;
+
   if (!bucketId || !bucketTitle) notFound();
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [bucket, setBucket] = useState<IGoalList | null>(null);
-
-  const createGoalDialog = useCreateGoalDialog();
-  const onCreate = () => createGoalDialog.open(bucket);
 
   const { unfinishedGoals, setUnfinishedGoals } = useData();
 
@@ -60,17 +51,7 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
     return (
       <section className="mx-auto mt-10 flex min-h-52 max-w-lg flex-col items-center justify-evenly rounded-2xl bg-background p-4 shadow-lg shadow-primary-foreground sm:mt-20">
         <h1 className="text-center text-2xl font-semibold sm:text-3xl">Bucket Not Found</h1>
-        <p className="text-center text-sm">The bucket you are looking for does not exists.</p>
-
-        <div className="mt-4 flex items-center gap-3">
-          <Button className="text-base font-semibold">
-            <Link href="/goal-buckets">See Buckets</Link>
-          </Button>
-
-          <Button asChild className="text-base font-semibold" variant="outline">
-            <Link href="/dashboard">Dashboard</Link>
-          </Button>
-        </div>
+        <p className="text-center text-sm">The bucket you are looking for does not exist.</p>
       </section>
     );
 
@@ -78,7 +59,7 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
     <>
       <div className="mb-3 flex items-center justify-between">
         {isBucketLoading ? (
-          <Skeleton className="h-8 w-36" />
+          <div className="h-8 w-36 animate-pulse bg-gray-200"></div>
         ) : (
           <h2 className="px-2 text-2xl font-semibold">{bucketTitle}</h2>
         )}
@@ -97,14 +78,10 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
         ) : (
           <>
             {unfinishedGoals.map((goal, index) => (
-              <BgMotionCard key={index} index={index} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
+              <div key={index}>
                 <GoalCard goal={goal} />
-              </BgMotionCard>
+              </div>
             ))}
-
-            <BgMotionCard index={-1} activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
-              <CreateCard text="New Goal" showGradientBorder={unfinishedGoals.length === 0} onClick={onCreate} />
-            </BgMotionCard>
           </>
         )}
       </div>
