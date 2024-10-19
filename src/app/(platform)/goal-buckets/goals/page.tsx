@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Query } from "appwrite";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BgMotionCard } from "@/components/bg-motion-card";
 import { useAppwriteFetch } from "@/hooks/useAppwriteFetch";
@@ -53,8 +55,24 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
   // Clear goals when component unmounts
   useEffect(() => setUnfinishedGoals([]), [setUnfinishedGoals]);
 
-  if (!bucket) return null;
-  if (!bucket && !isBucketLoading) return;
+  // If bucket is not found, show Separate UI
+  if (!bucket && !isBucketLoading)
+    return (
+      <section className="mx-auto mt-10 flex min-h-52 max-w-lg flex-col items-center justify-evenly rounded-2xl bg-background p-4 shadow-lg shadow-primary-foreground sm:mt-20">
+        <h1 className="text-center text-2xl font-semibold sm:text-3xl">Bucket Not Found</h1>
+        <p className="text-center text-sm">The bucket you are looking for does not exists.</p>
+
+        <div className="mt-4 flex items-center gap-3">
+          <Button className="text-base font-semibold">
+            <Link href="/goal-buckets">See Buckets</Link>
+          </Button>
+
+          <Button asChild className="text-base font-semibold" variant="outline">
+            <Link href="/dashboard">Dashboard</Link>
+          </Button>
+        </div>
+      </section>
+    );
 
   return (
     <>
