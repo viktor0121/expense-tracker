@@ -296,6 +296,17 @@ export class DatabaseServices {
   }
 
   // GOAL LIST
+  async getGoalList(id: string, queries?: string[]): Promise<IGoalList | null> {
+    try {
+      const data = await this.databases.getDocument(env.awDatabaseId, env.awGoalListCollectionId, id, queries);
+      if (!data) return null;
+      return data as IGoalList;
+    } catch (error: any) {
+      console.log("Appwrite :: getGoalList() :: ", error);
+      throw error;
+    }
+  }
+
   async getGoalLists(queries?: string[]): Promise<IGoalList[]> {
     try {
       const data = await this.databases.listDocuments(

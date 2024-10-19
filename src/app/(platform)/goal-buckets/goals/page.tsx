@@ -33,17 +33,21 @@ export default function BucketPage({ searchParams }: CollectionPageProps) {
 
   const { unfinishedGoals, setUnfinishedGoals } = useData();
 
+  // Fetch bucket details
+  const fetchBucket = () => database.getGoalList(bucketId, [Query.select(["$id", "title"])]);
+  const { data: bucketData, isLoading: isBucketLoading } = useAppwriteFetch(fetchBucket);
+
   // Fetch goal list data
-  const fetcher = () => database.getGoals([Query.equal("completed", false), Query.equal("goalList", bucketId)]);
-  const { data: goalsData, isLoading: isGoalListLoading } = useAppwriteFetch(fetcher);
+  const goalsFetch = () => database.getGoals([Query.equal("completed", false), Query.equal("goalList", bucketId)]);
+  const { data: goalsData, isLoading: isGoalListLoading } = useAppwriteFetch(goalsFetch);
 
   // Set goals and bucket data when fetched
   useEffect(() => {
-    if (goalsData) {
-      setBucket(goalsData[0].goalList);
+    if (goalsData && bucketData) {
+      setBucket(bucketData);
       setUnfinishedGoals(goalsData);
     }
-  }, [goalsData, setUnfinishedGoals]);
+  }, [goalsData, bucketData, setUnfinishedGoals]);
 
   // Clear goals when component unmounts
   useEffect(() => setUnfinishedGoals([]), [setUnfinishedGoals]);
