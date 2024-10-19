@@ -7,6 +7,7 @@ import { useCompletedGoalsSheet } from "@/store/overlays/useCompletedGoalsSheet"
 import { useDeleteGoalBucketDialog } from "@/store/overlays/useDeleteGoalBucketDialog";
 import { useUpdateGoalBucketDialog } from "@/store/overlays/useUpdateGoalBucketDialog";
 import { IGoalList } from "@/lib/types";
+import {Skeleton} from "@/components/ui/skeleton";
 
 interface OptionsPopoverProps {
   bucket: IGoalList;
@@ -65,4 +66,10 @@ export function OptionsPopover({ bucket }: OptionsPopoverProps) {
       </PopoverContent>
     </Popover>
   );
+}
+
+OptionsPopover.Skeleton = function OptionsPopoverSkeleton() {
+  return (
+      <Skeleton className="size-10" />
+  )
 }
