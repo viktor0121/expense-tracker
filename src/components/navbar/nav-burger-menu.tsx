@@ -43,7 +43,7 @@ export function NavBurgerMenu({ navItems, className }: MobileNavProps) {
         </SheetTrigger>
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="flex h-full flex-col gap-6 text-lg font-medium">
-            <Link href="/" className="flex items-center space-x-3 text-xl font-bold">
+            <Link onClick={() => setOpen(false)} href="/" className="flex items-center space-x-3 text-xl font-bold">
               <NavLogo className="size-9" />
               <h2>AdisMoney</h2>
             </Link>
