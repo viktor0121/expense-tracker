@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { User2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +20,7 @@ import { storage } from "@/lib/appwrite/storage";
 interface NavDropdownMenuProps {}
 
 export function NavDropdownMenu({}: NavDropdownMenuProps) {
+  const pathname = usePathname();
   const [avatar, setAvatar] = useState<string>("");
   const signOutDialog = useSignOutDialog();
 
@@ -54,7 +56,11 @@ export function NavDropdownMenu({}: NavDropdownMenuProps) {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="#">Profile</Link>
+          {pathname.startsWith("/goal-buckets") ? (
+            <Link href="/dashboard">Dashboard</Link>
+          ) : (
+            <Link href="/goal-buckets">Goals</Link>
+          )}
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/settings">Settings</Link>
