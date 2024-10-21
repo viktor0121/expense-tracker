@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Package2 } from "lucide-react";
+import { DollarSignIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavLogoProps {
@@ -12,11 +12,11 @@ export function NavLogo({ className }: NavLogoProps) {
     <Link
       href="/public"
       className={cn(
-        "group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base",
+        "group flex size-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base",
         className,
       )}
     >
-      <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
+      <DollarSignIcon className="size-[60%] transition-all group-hover:scale-110" />
       <span className="sr-only">Expense Tracker</span>
     </Link>
   );
