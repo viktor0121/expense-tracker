@@ -1,5 +1,5 @@
+import { BgHoverDotsContainer } from "@/components/bg-hover-dots-container";
 import { ActionButtons } from "./_components/actions-button";
-import { BgHoverDotsContainer } from "../../components/bg-hover-dots-container";
 import { FeatureCards } from "./_components/feature-cards";
 import { FlipWords } from "./_components/flip-words";
 import { Spotlight } from "./_components/spotlight";
@@ -9,20 +9,20 @@ export default function Page() {
 
   return (
     <>
-      <section className="grid h-[calc(100vh-3.5rem)] w-full place-items-center bg-background py-12 md:py-24 lg:py-32">
+      <section className="relative grid h-[calc(100vh-3.5rem)] w-full place-items-center overflow-clip bg-background py-12 md:py-24 lg:py-32">
         <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" fill="white" />
 
         <main className="container flex max-w-3xl flex-col items-center justify-center space-y-4 px-4 md:px-6">
-          <h1 className="space-y-3 text-center text-5xl font-bold tracking-tighter sm:text-6xl">
-            <div className="text-primary">AdisMoney</div>
-            <div>
+          <h1 className="space-y-1 text-center font-bold tracking-tighter sm:space-y-3">
+            <div className="text-5xl text-primary sm:text-6xl">AdisMoney</div>
+            <div className="text-3xl sm:text-5xl">
               Your Personal
               <FlipWords words={heroWords} />
               Tracker
             </div>
           </h1>
 
-          <p className="text-center md:text-lg">
+          <p className="text-center text-sm md:text-lg">
             Effortlessly track your expenses, manage your income, and gain valuable insights into your financial habits
             with our expense tracking app. Get started today!
           </p>
