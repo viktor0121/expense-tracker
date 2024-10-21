@@ -27,6 +27,7 @@ export default function BucketPage({ params, searchParams }: BucketPageProps) {
 
   if (!bucketId || !bucketTitle) notFound();
 
+  const [bucketNotFound, setBucketNotFound] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [bucket, setBucket] = useState<IGoalList | null>(null);
 
@@ -37,7 +38,8 @@ export default function BucketPage({ params, searchParams }: BucketPageProps) {
 
   // Fetch bucket details
   const fetchBucket = () => database.getGoalList(bucketId, [Query.select(["$id", "title"])]);
-  const { data: bucketData, isLoading: isBucketLoading } = useAppwriteFetch(fetchBucket);
+  const bucketOnError = () => setBucketNotFound(true);
+  const { data: bucketData, isLoading: isBucketLoading } = useAppwriteFetch(fetchBucket, bucketOnError, false);
 
   // Fetch goal list data
   const goalsFetch = () => database.getGoals([Query.equal("completed", false), Query.equal("goalList", bucketId)]);
@@ -55,7 +57,7 @@ export default function BucketPage({ params, searchParams }: BucketPageProps) {
   useEffect(() => setUnfinishedGoals([]), [setUnfinishedGoals]);
 
   // If bucket is not found, show Separate UI
-  if (!bucket && !isBucketLoading)
+  if (bucketNotFound)
     return (
       <section className="mx-auto mt-10 flex min-h-52 max-w-lg flex-col items-center justify-evenly rounded-2xl bg-background p-4 shadow-lg shadow-primary-foreground sm:mt-20">
         <h1 className="text-center text-2xl font-semibold sm:text-3xl">Bucket Not Found</h1>
