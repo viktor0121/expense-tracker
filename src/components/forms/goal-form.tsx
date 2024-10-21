@@ -214,7 +214,7 @@ export function GoalForm({ action, goal, runAfterSubmit }: GoalFormProps) {
           disabled={!isValid || !isDirty}
           type="submit"
           className="mt-2 w-full"
-          btnText="Create Goal"
+          btnText={action == "add" ? "Create Goal" : "Update Goal"}
         />
       </form>
     </Form>
