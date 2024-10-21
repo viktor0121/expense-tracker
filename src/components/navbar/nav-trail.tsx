@@ -21,9 +21,17 @@ export function NavTrail() {
 
   // Set the nav trails based on the current pathname
   useEffect(() => {
+    let pathTrail = trails[pathname];
+
+    if (!pathTrail) {
+      if (pathname.startsWith("/goal-buckets/")) pathTrail = trails["/goal-buckets/goals"];
+      else if (pathname.startsWith("/goal-buckets")) pathTrail = trails["/goal-buckets"];
+      else pathTrail = [];
+    }
+
     const tabParam = searchParams.get("tab");
     const tabTrail = tabParam ? [{ title: tabParam, href: "" }] : [];
-    const pathTrail = trails[pathname] || [];
+
     setNavTrails([...pathTrail, ...tabTrail]);
   }, [pathname, searchParams]);
 
