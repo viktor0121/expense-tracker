@@ -1,6 +1,6 @@
 import React from "react";
 import { CircleIcon } from "lucide-react";
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
+import { Cell, Legend, Pie, PieChart as PrimitivePieChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
 import { Props as LegendProps } from "recharts/types/component/DefaultLegendContent";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,53 +18,11 @@ interface KeyValuePieChart {
 }
 
 export function KeyValuePieChart({ containerClasses, isLoading, data }: KeyValuePieChart) {
-  const { currency } = useCurrency();
+  const isValidData = data && data.length > 0 && data.some((item) => item.value > 0);
 
   return (
     <ResponsiveContainer className={cn(containerClasses, "aspect-square")} minHeight={300} maxHeight={350}>
-      {isLoading ? (
-        <div className="mx-auto flex aspect-square h-full flex-col items-center justify-end gap-8">
-          <Skeleton className="mx-auto aspect-square size-[75%] rounded-full" />
-          <div className="mx-auto flex h-6 w-48 justify-between gap-2">
-            <Skeleton className="w-1/2" />
-            <Skeleton className="w-1/2" />
-          </div>
-        </div>
-      ) : (
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="value"
-            nameKey="name"
-            innerRadius="30%"
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={renderCustomPieLabel}
-            strokeWidth={2}
-          >
-            {data.map((_, index) => (
-              <Cell
-                key={index}
-                stroke={"hsl(var(--secondary))"}
-                fill={CHART_COLORS[index % CHART_COLORS.length]}
-                className="outline-none hover:opacity-80 hover:outline-none focus:outline-none active:outline-none"
-              />
-            ))}
-          </Pie>
-
-          <Tooltip
-            content={(props) =>
-              renderCustomTooltipContent({
-                ...props,
-                currencySymbol: currency.symbolNative,
-              })
-            }
-          />
-
-          <Legend content={renderCustomLegendContent} />
-        </PieChart>
-      )}
+      {isLoading ? <ChartLoading /> : isValidData ? <ChartPie data={data} /> : <ChartEmpty />}
     </ResponsiveContainer>
   );
 }
@@ -118,5 +76,69 @@ function renderCustomLegendContent({ payload }: LegendProps) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function ChartLoading() {
+  return (
+    <div className="mx-auto flex aspect-square h-full flex-col items-center justify-end gap-8">
+      <Skeleton className="mx-auto aspect-square size-[75%] rounded-full" />
+      <div className="mx-auto flex h-6 w-48 justify-between gap-2">
+        <Skeleton className="w-1/2" />
+        <Skeleton className="w-1/2" />
+      </div>
+    </div>
+  );
+}
+
+function ChartEmpty() {
+  return (
+    <div className="mx-auto flex aspect-square h-full flex-col items-center justify-end gap-8">
+      <div className="mx-auto aspect-square size-[75%] rounded-full bg-muted" />
+      <div className="mx-auto flex h-6 items-center justify-center gap-2 rounded-md bg-muted px-5 text-sm font-semibold text-muted-foreground">
+        No Data Available
+      </div>
+    </div>
+  );
+}
+
+function ChartPie({ data }: { data: { name: string; value: number }[] }) {
+  const { currency } = useCurrency();
+
+  return (
+    <PrimitivePieChart>
+      <Pie
+        data={data}
+        dataKey="value"
+        nameKey="name"
+        innerRadius="30%"
+        cx="50%"
+        cy="50%"
+        labelLine={false}
+        label={renderCustomPieLabel}
+        enableBackground={19}
+        strokeWidth={2}
+      >
+        {data.map((_, index) => (
+          <Cell
+            key={index}
+            stroke={"hsl(var(--secondary))"}
+            fill={CHART_COLORS[index % CHART_COLORS.length]}
+            className="outline-none hover:opacity-80 hover:outline-none focus:outline-none active:outline-none"
+          />
+        ))}
+      </Pie>
+
+      <Tooltip
+        content={(props) =>
+          renderCustomTooltipContent({
+            ...props,
+            currencySymbol: currency.symbolNative,
+          })
+        }
+      />
+
+      <Legend content={renderCustomLegendContent} />
+    </PrimitivePieChart>
   );
 }
